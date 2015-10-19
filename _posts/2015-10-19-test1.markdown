@@ -16,3 +16,4 @@ Anyway, the post seems editable again weee! (Gonna test it more.)
 
 Yup, saved, commited, propagated, properly. Now for some formatting exercises.
 
+Now the preview does not display anything.
