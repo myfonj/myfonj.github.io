@@ -6,11 +6,11 @@ tags: [ignore, test]
 ---
 Git commit from TinyPress editor works well.
 
-Letʼs add more meta and change "advanced options"
+Letʼs add more meta and change "advanced options."
 
 Hmm, changing path made a new post, but Itʼs probably OK.
 
-Deletion of the first works.
+Deletion of the first post works.
 
 Anyway, the post seems editable again weee! (Gonna test it more.)
 
@@ -19,3 +19,9 @@ Yup, saved, commited, propagated, properly. Now for some formatting exercises.
 Now the preview does not display anything.
 
 But posting works.
+
+
+In the meantime, remarks so far:
+  - colon in site name produces invalid YML, should be in parentheses.
+  -  advanced options lacks proper labels, using placeholder is antipattern.
+  - cannot reproduce code leakage (yet)
