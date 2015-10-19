@@ -1,0 +1,10 @@
+excerpt_separator: ""
+pygments: true
+markdown: kramdown
+url: http://myfonj.github.io
+title: Fixme: Site title
+email: myfonj@gmail.com
+author: myf
+description: Fixme: Description
+paginate: 10
+google_analytics: 
