@@ -10,4 +10,8 @@ Letʼs add more meta and change "advanced options"
 
 Hmm, changing path made a new post, but Itʼs probably OK.
 
-Anyway, the seems editable again weee! (Gonna test it more)
+Deletion of the first works.
+
+Anyway, the post seems editable again weee! (Gonna test it more.)
+
+Yup, saved, commited, propagated, properly. Now for some formatting exercises.
