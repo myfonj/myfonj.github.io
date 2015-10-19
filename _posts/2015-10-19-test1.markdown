@@ -7,3 +7,7 @@ tags: [ignore, test]
 Git commit from TinyPress editor works well.
 
 Letʼs add more meta and change "advanced options"
+
+Hmm, changing path made a new post, but Itʼs probably OK.
+
+Anyway, the seems editable again weee! (Gonna test it more)
