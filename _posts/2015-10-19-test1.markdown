@@ -29,4 +29,5 @@ In the meantime, remarks so far:
 - "Post update" commit message keeps its first value
 - preview pane definitely should be iframe
 - markdown help somewhere near the edit erea
-- this list appeareed well on github tih "-__" bullets, but not on the page, changing to "-_"
+- this list appeareed well on github with "-__" (double space) bullets, but not on the page, changing to "-_" (single space)
+-- yes, that works. Kramdown really is not markdown...
