@@ -1,0 +1,9 @@
+---
+published: true
+title: Just first try without fancy stuff
+layout: post
+tags: [ignore, test]
+---
+Git commit from TinyPress editor works well.
+
+Letʼs add more meta and change "advanced options"
