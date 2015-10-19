@@ -22,6 +22,8 @@ But posting works.
 
 
 In the meantime, remarks so far:
-  - colon in site name produces invalid YML, should be in parentheses.
-  -  advanced options lacks proper labels, using placeholder is antipattern.
-  - cannot reproduce code leakage (yet)
+- colon in site name produces invalid YML, should be in parentheses.
+-  advanced options lacks proper labels, using placeholder is antipattern.
+- cannot reproduce code leakage (yet)
+- "Post update" commit message keeps its first value
+- preview pane definitely should be iframe
