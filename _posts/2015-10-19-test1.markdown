@@ -30,4 +30,9 @@ In the meantime, remarks so far:
 - preview pane definitely should be iframe
 - markdown help somewhere near the edit erea
 - this list appeareed well on github with "-__" (double space) bullets, but not on the page, changing to "-_" (single space)
-     - yes, that works. Kramdown really is not markdown...
+    - yes, that works. [krmdn] really is not markdown...
+    - [raw]
+
+
+[krmdn]: http://kramdown.gettalong.org/syntax.html "Kramdown"
+[raw]: https://raw.githubusercontent.com/myfonj/myfonj.github.io/master/_posts/2015-10-19-test1.markdown "Source of this page at Github"
