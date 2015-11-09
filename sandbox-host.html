@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<title>HTML sandbox host page</title>
+<style>
+pre,plaintext { white-space: pre-wrap; }
+</style> 
+<p>
+	<a id="aaa" target="ggg" class="bookmarklet"
+href="data:text/html;charset=utf-8,<!DOCTYPE html><title>HTML sandbox 1.0.8</title><style>*{box-sizing:border-box;width:100vw;height:100vh;margin:0}[id]{border:inset;width:50vw;float:left}</style><body onload=A.value=decodeURIComponent((L=location).hash.slice(1)||'');T=W=0;E=RegExp('^'+(D='data:text/html;charset=utf-8,'));F=function(){if(W!=(V=A.value))W=V,M=V.match(/(^data:.+?,)?([^]*)/),I.src=(M[1]||D)+M[2].replace(/[\0-\40\43\45]/g,encodeURIComponent)};F()><textarea id=A onkeyup=clearTimeout(T);T=setTimeout(F,400) onblur=L.hash=I.src.replace(E,'')></textarea><iframe id=I></iframe><plaintext style=display:none>#"
+	>HTML sandbox 1.0.7</a>
+	<abbr title="DataURI Bookmarklet">datarklet</abbr> 
+
+<h2>Try</h2>
+<iframe id="ifr" name="ggg" src="" style="width: 90%; height: 20em;"></iframe>
+<script>
+window.onload = function () {
+	ifr.src = ptext.textContent = aaa.href
+	l.innerHTML = aaa.href.length + ' bytes.'
+}
+function r(v){
+    ifr.src = ''
+	ifr.src = aaa.href + '#asdasdasd'
+}
+</script>
+
+<h2>Features</h2>
+<pre>
+- throttled updates: update occurs after 400 ms of keyboard inactivity, not after each input 
+- no redundant updates: same data wont be consecutively pushed
+- mimetype picker: enter data:(text/plain|image/svg-xml|application/xhtml+xml|application/xml), or whatever you want to try at the beginning. (This way you can test real XHTML, for example.)
+- shareable URL - location updated upon leaving textarea): escaping only necessary characters: URL remains as readable as possible
+    - NB: firefox keeps clipboard entry clean of percent encoding as long as URL does not contain percent character
+</pre>
+
+<h2>Size</h2>
+<p id="l">
+
+<h2>Notes</h2>
+<pre>
+/ why prefers
+    - dataURI over srdcdoc: easier copypasting of result, document.location present in sandboxed content
+    - onekyup over oninput: because cursor movement should postpone updates as well
+/ Escaping necessities - What MUST be escaped in location.hash
+- %: %25, appearance of single '%' (be it escape or not) forces Fx to show (and export/copy) URI escaped
+-   newline: %0A
+-   [\0-\40\43\45] for assignment to SRC
+-   [\0-\40\43\45]
+</pre>
+
+<h2>Source:</h2>
+<plaintext id="ptext">
