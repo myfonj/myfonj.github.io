@@ -1,0 +1,42 @@
+<!doctype html>
+<title>keyboard simultaneous keys test</title>
+<p><output id="el_state">Smash as many keys as you can and observe how your keyboard handles that</output>
+<p>Record: <output id="el_record"></output>
+<p>Log: <small id="el_log"></small>
+<script>
+var keys = {};
+var rec = 0;
+const funcs =
+{ keyup : (ev) => { delete keys[ev.code]; log(`<sup>${ev.code}</sup>`)}
+, keydown : (ev) => { keys[ev.code] = 1; log(`<sub>${ev.code}</sub>`); }
+, blur : () => { keys = {}; log() }
+}
+const fn = (ev) => {
+	ev.preventDefault();
+	if (ev.repeat) return;
+	(funcs[ev.type] || console.warn)(ev);
+	print(el_state, keys);
+	if( Object.keys(keys).length > rec) {
+		rec = Object.keys(keys).length;
+		print(el_record, keys);
+	}
+	console.log(ev)
+}
+const print = (el, obj) => {
+	let keys = Object.keys(obj);
+	el.value = keys.length + ': ' + keys.join(' ');
+}
+
+const log = (str) => {
+	if (str) {
+		el_log.innerHTML += str + ' ';
+	} else {
+		el_log.innerHTML = '';
+	}
+}
+
+for (var type in funcs) {
+	window.addEventListener(type, fn);
+}
+
+</script> 
