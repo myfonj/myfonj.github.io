@@ -1,0 +1,26 @@
+<!doctype html>
+<title>Nested dataURI CSS imports test</title>
+<style>
+@import url("data:text/css;here could be mentioned original URL and timestamp of retrieval,\
+  @import url(%22data:text/css;...metadata,\
+    @import url(%2522data:text/css,\
+      @import url(%252522data:text/css,\
+        p { font-style: italic; }\
+      %252522);\
+      p { text-decoration: underline; }\
+    %2522);\
+    p { color: white; }\
+  %22);\
+  p { background-color: black; }\
+");
+body { font-family: cursive; }
+</style>
+<p>This should be white on black underlined italic cursive,
+i.e. basically the same outcome as if this document and sibling files contained
+<pre>
+/* style element content: */ @import url("a.css"); body { font-family: cursive; }
+/* a.css file content: */ @import url("b.css"); body { background-color: black; }
+/* b.css file content: */ @import url("c.css"); body { color: white; }
+/* c.css file content: */ @import url("d.css"); body{ text-decoration: underline; }
+/* d.css file content: */ body{ font-style: italic; }
+</pre>
