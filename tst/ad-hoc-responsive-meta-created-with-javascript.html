@@ -1,0 +1,23 @@
+<!doctype html>
+<head>
+<title></title>
+</head>
+<body>
+<p style="background-color: #333; color: #ccc;"></p>
+<p><a href="https://stackoverflow.com/questions/52470452/responsive-webpage-without-meta-tag/52470552"></a></p>
+
+<script>
+function addMeta(){
+var m = document.createElement('meta');
+m.setAttribute('name','viewport');
+m.setAttribute('content','width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0');
+document.head.appendChild(m);
+}
+</script>
+<button type="button" onclick="addMeta()"></button>
+<style>
+:empty:after {
+ conent: attr(onclick) attr(style) attr(href);
+}
+</style>
+</body>
