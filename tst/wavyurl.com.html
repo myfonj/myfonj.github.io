@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- 
+    Original (c) Matthew Rayfield http://wavyurl.com/
+    @see http://matthewrayfield.com/articles/animating-urls-with-javascript-and-emojis/
+    this is a test using history.replaceState
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>wavyurl.com</title>
+        <style>
+            body {
+                -webkit-font-smoothing: antialiased;
+                color: #03f;
+                font: 18px arial;
+            }
+            a {
+                color: #03f;
+                font-weight: bold;
+            }
+            #look-up {
+                text-align: center;
+            }
+            #footer {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+            }
+        </style>
+        <script>
+            // performance.now() polyfill from https://gist.github.com/paulirish/5438650#gistcomment-2187274
+            if (!window.perfomance || !window.perfomance.now) {
+                Date.now || (Date.now = function () {
+                    return new this().getTime();
+                });
+
+                (window.perfomance || (window.perfomance = {})).now = function () {
+                    return Date.now() - offset;
+                };
+
+                var offset = (window.perfomance.timing || (window.perfomance.timing = {})).navigatorStart || (window.perfomance.timing.navigatorStart = Date.now());
+            }
+            var timeoutId;
+            var prehash = location.pathname + location.search + '#'
+            function loop() {
+                var i, n, s = '';
+
+                for (i = 0; i < 10; i++) {
+                    n = Math.floor(Math.sin((performance.now()/200) + (i/2)) * 4) + 4;
+
+                    s += String.fromCharCode(0x2581 + n);
+                }
+
+                //document.body.innerHTML = s;
+                //history.pushState({}, null, s);
+                history.replaceState({}, s, prehash + s);
+                document.title = s
+                // window.location.hash = s;
+                timeoutId = setTimeout(loop, 50);
+            }
+            function pause(){
+                clearTimeout( timeoutId );
+                timeoutId = null;
+            }
+            function resume(){
+                if(!timeoutId) loop();
+            }
+            window.addEventListener('load', loop);
+            window.addEventListener('blur', pause);
+            window.addEventListener('focus', resume);
+        </script>
+    </head>
+    <body>
+        <div id="look-up">
+            👀👆
+        </div>
+        <div id="footer">
+            created by <a href="http://matthew.rayfield.world">matthew rayfield world</a> 🏄
+        </div>
+    </body>
+</html>
