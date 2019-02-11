@@ -6,7 +6,7 @@ html {
  color: snow;
  font-family: monospace, monospace;
  font-size: 40px;
- line-height: 3;
+ line-height: 2.5;
  margin: 2rem;
 }
 
@@ -16,7 +16,10 @@ span {
  border-width: 0.5em;
  border-style: solid;
  border-color: blue red darkred darkblue;
+ outline: 1px solid black;
+ opacity: 0.6;
 }
+span:hover { opacity: 1; }
 
 span::before,
 span::after {
@@ -25,6 +28,7 @@ span::after {
  width: 0.25em;
  height: 0.25em;
  border: 5px solid gold;
+ outline: 1px solid white;
 }
 
 
@@ -41,6 +45,8 @@ span::after {
 
 </style>
 
-<span>gazonk</span>
-<span>bar<br>bar</span>
+<span>foobar</span>
+<span>fooo bar</span>
+<span>foo barr</span>
+<span>foo bar</span>
 
