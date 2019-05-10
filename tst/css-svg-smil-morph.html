@@ -1,0 +1,39 @@
+<!doctype html>
+<title>Anna Tudor's "Morph SVG grid" - SMIL variation</title>
+<style>
+body {
+  background-size: 10vw;
+  background-image:
+  url('data:image/svg+xml,<?xml version="1.0"?> \
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \
+    "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [ \
+    <!ENTITY FG "dimgrey"> \
+    <!ENTITY BG "black"> \
+    <!ENTITY FROM "M-50-50 Q-25-75 0-50 Q25-25 50-50 Q75-25 50 0 Q25 25 50 50 Q25 75 0 50 Q-25 25-50 50 Q-75 25-50 0 Q-25-25-50-50"> \
+    <!ENTITY MORF "M-50-50 Q-25-25 0-50 Q25-75 50-50 Q25-25 50 0 Q75 25 50 50 Q25 25 0 50 Q-25 75-50 50 Q-25 25-50 0 Q-75-25-50-50"> \
+    ]> \
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-70 -70 140 140"> \
+    <path d="M-80-80 h160 v160 h-160 z"> \
+      <animate attributeName="fill" dur="4s" \
+        values="&FG;;&BG;;&BG;;&FG;" \
+        repeatCount="indefinite" calcMode="discrete" /> \
+    </path> \
+    <g> \
+      <path id="shape"> \
+        <animate attributeName="fill" dur="4s" \
+          values="&BG;;&FG;;&FG;;&BG;" \
+          repeatCount="indefinite" calcMode="discrete" /> \
+        <animate attributeName="d" dur="4s" \
+          values="&FROM;;&MORF;;&FROM;" repeatCount="indefinite" /> \
+        <animateTransform attributeName="transform" dur="8s" \
+          type="rotate" to="360" repeatCount="indefinite" /> \
+      </path> \
+      <use href="%23shape" x="140" /><use href="%23shape" y="140" /> \
+      <use href="%23shape" x="140" y="140" /> \
+      <animateTransform attributeName="transform" dur="4s" \
+        type="translate" values="0 0;-70 -70;-70 -70;0 0" \
+        repeatCount="indefinite" calcMode="discrete"/> \
+    </g> \
+    </svg>');
+}
+</style>
