@@ -5,9 +5,14 @@ body{background-color:#333;color:#ccc;max-width:40em;margin:0 auto;}
 h1,h2,h3,em,strong,th,thead,label,dt,legend,caption{color:#fff}
 a:link{color:#6ff}a:visited{color:#9f3}label:hover,a:hover{background-color:#000}
 html *{font-family:"Courier New",monospace}
-pre{tab-size:2;-moz-tab-size:2;background-color: #444}
+code,pre{tab-size:2;-moz-tab-size:2;background-color: #444}
 </style></head><body>
 
 <p><a title="🖱️🖱️🐛 Double click for debug inspect" href="javascript:(function(){document.body.addEventListener('dblclick',(e)=>{e.preventDefault();e.stopPropagation();console.log(e.target);debugger},{once:true,capture:true})})();">🖱️🖱️🐛 Double click for debug inspect</a> (bookmarklet)
 
+
+<p>1) Open devtools, 2) invoke bookmarklet, 3) double click on pesky ephemeral element, 4) JS processing is paused and clicked element logged in console for further inspection.
+
 <p><a href="https://twitter.com/leahjlou/status/1285703952235991044">Thanks @leahjlou for idea!</a>
+
+<p>In Firefox you can <a href="https://wiki.developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Step_through_code#Pause_on_breakpoints_overlay">disable debugger overlay</a> with <code>devtools.debugger.features.overlay</code> <code>false</code> about:config pref <small>(thans all involved in <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1579768">bug 1579768</a>.
