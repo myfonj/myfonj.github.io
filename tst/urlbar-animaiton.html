@@ -1,0 +1,52 @@
+<!DOCTYPE HTML><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>Test animation in URLbar</title>
+<style type="text/css">
+body{background-color:#333;color:#ccc;max-width:40em;margin:0 auto;}
+h1,h2,h3,em,strong,th,thead,label,dt,legend,caption{color:#fff}
+a:link{color:#6ff}a:visited{color:#9f3}label:hover,a:hover{background-color:#000}
+html *{font-family:"Courier New",monospace}
+pre{tab-size:2;-moz-tab-size:2;background-color: #444}
+
+script { display: block; white-space: pre;}
+[onclick]:empty::after {content:attr(onclick)}
+[href]:empty::after {content:attr(href)}
+</style>
+
+<body>
+
+
+<script>
+
+// based on https://matthewrayfield.com/articles/animating-urls-with-javascript-and-emojis/
+// using history.replaceState instead of location.hash assignment
+
+function loop() {
+	var phases = ['🌑', '🌒', '🌓', '🌔', '🌝', '🌖', '🌗', '🌘'];
+	var t = document.title;
+	function tick() {
+		var hash = phases[Math.floor((Date.now() / 100) % phases.length)];
+		history.replaceState(null, t, '#' + hash)
+	}
+	if (loop.interval) {
+		clearInterval(loop.interval);
+		history.replaceState(null, t, location.href.split('#')[0]);
+		delete loop.interval;
+	} else {
+		loop.interval = setInterval(tick, 50);
+	}
+}
+
+window.addEventListener('blur', function () {
+	if (loop.interval) {
+		loop();
+	}
+});
+
+// `loop.interval` is a hack, used for simplicity
+
+</script>
+
+<button onclick="loop()"></button>
+
+<p><a href="https://matthewrayfield.com/articles/animating-urls-with-javascript-and-emojis/"></a>
