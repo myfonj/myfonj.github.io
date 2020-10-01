@@ -1,0 +1,81 @@
+<!doctype html>
+<title>Ana Tudor's "Morph SVG grid" - SMIL variation</title>
+<!--
+from
+https://codepen.io/myf/pen/ZNbrLq
+based on
+https://codepen.io/thebabydino/pen/yQewOm
+-->
+<style>
+html {
+	height: 100vh;
+  background-size: 111px;
+	background-repeat: round repeat;
+	background-position: center center;
+  background-image: url('data:image/svg+xml,<?xml version="1.0"?> \
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" \
+[ <!ENTITY FG "dimgrey"> \
+  <!ENTITY BG "black"> \
+  <!ENTITY FROM "M-2,-2q+1,+1+2,0+1,-1+2,0-1,1+0,2+1,1+0,2-1,-1-2,0-1,+1-2,0+1,-1+0,-2-1,-1+0,-2"> \
+  <!ENTITY MORF "M-2,-2q+1,-1+2,0+1,+1+2,0+1,1+0,2-1,1+0,2-1,+1-2,0-1,-1-2,0-1,-1+0,-2+1,-1+0,-2"> \
+  <!ENTITY nD "-2.8284271247461903"> \
+  <!ENTITY DD "5.656854249492381"> \
+]> \
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="&nD;,&nD; &DD; &DD;" width="100" height="100"> \
+  <path d="M-3,-3h6v6h-6z"> \
+    <animate \
+      attributeName="fill" \
+      values="&FG;;&BG;;&BG;;&FG;" \
+      dur="4s" \
+      calcMode="discrete" \
+      repeatCount="indefinite" \
+    /> \
+  </path> \
+  <g> \
+    <path id="SHAPE"> \
+      <animate \
+        attributeName="fill" \
+        values="&BG;;&FG;;&FG;;&BG;" \
+        dur="4s" \
+        calcMode="discrete" \
+        repeatCount="indefinite" \
+      /> \
+      <animate \
+        attributeName="d" \
+        values="&FROM;;&MORF;;&FROM;" \
+        dur="4s" \
+        repeatCount="indefinite" \
+      /> \
+      <animateTransform \
+        attributeName="transform" \
+        type="rotate" \
+        to="90" \
+        dur="2s" \
+        repeatCount="indefinite" \
+      /> \
+    </path> \
+    <use href="%23SHAPE" x="&DD;" /> \
+    <use href="%23SHAPE" y="&DD;" /> \
+    <use href="%23SHAPE" x="&DD;" y="&DD;" /> \
+    <animateTransform \
+      attributeName="transform" \
+      type="translate" \
+      dur="4s" \
+      values="0,0;&nD;,&nD;;&nD;,&nD;;0,0" \
+      calcMode="discrete" \
+      repeatCount="indefinite" \
+    /> \
+  </g> \
+</svg>');
+}
+@media screen and (min-width: 333px) {
+  html {
+    background-size: calc(111px + (222 - 111) * ((100vw - 222px) / (1234 - 333)));
+  }
+}
+@media screen and (min-width: 1234px) {
+  html {
+		background-size: 20vw;
+  }
+}
+</style>
