@@ -1,0 +1,75 @@
+<!doctype html>
+<title>Viewport Dimensions 2 physical screen size resolution</title>
+<style>
+body {
+ background: dimgray;
+ color: snow;
+ --dppx: 1;
+ --u: calc(1rem / var(--dppx));
+ font-size: var(--u);
+ margin: var(--u);
+}
+head {
+ display: block;
+}
+head::before {
+ width: 2rem;
+ height: 2rem;
+ content: '2rem';
+ background-color: black;
+ color: snow;
+ display: block;
+ opacity: .5;
+ position: fixed;
+ right: 0;
+ top: 0;
+}
+</style>
+<body>
+<script>
+function d()
+{ var dppx = devicePixelRatio;
+; document.body.style.setProperty('--dppx', dppx)
+; var compd=getComputedStyle(document.documentElement).fontSize
+; var compb=getComputedStyle(document.body).fontSize
+; document.body.innerHTML = '<div style="font-size: calc(var(--u) * 2)">'
++ 'doc font ("1rem"): '
++ compd
++ '<br>body font ("1rem / dppx"): '
++ compb
++ '<br>dppx: '
++ dppx
++ '<br><small>(doc font / dppx) - body font: '
++ ((parseFloat(compd) / dppx) - (parseFloat(compb)))
++ '</small><hr>'
++ 'Viewport CSS px ↔' 
++ (w=window.innerWidth)
++ ' × ↕'
++ (h=window.innerHeight)
++ '<br>= physical ~ ↔'
++ w*dppx
++ ' × ↕'
++ h*dppx
++ '<hr>'
++ 'Screen CSS px ↔' 
++ (sw=screen.width)
++ ' × ↕'
++ (sh=screen.height)
++ '<br>= physical ~ ↔'
++ sw*dppx
++ ' × ↕'
++ sh*dppx
++ '<hr>'
++ 'Screen avail CSS px ↔' 
++ (saw=screen.availWidth)
++ ' × ↕'
++ (sah=screen.availHeight)
++ '<br>= physical ~ ↔'
++ saw*dppx
++ ' × ↕'
++ sah*dppx
++ '</div>'
+}
+d();
+window.onresize=d
+</script>
