@@ -1,0 +1,32 @@
+<!doctype html>
+<title>Test children display of animated backface-visibility: hidden parent</title>
+<style>
+@keyframes r {
+ to { transform: rotatey(1turn) }
+}
+div {
+ transform-style: preserve-3d;
+ backface-visibility: hidden;
+}
+span {
+  background-color: rgba(0,100,0,.5);
+  display: block;
+  transform: rotatey(-0.25turn);
+}
+</style>
+<div style="
+ --roty: 0.26;
+ transform: rotatey(calc(1turn * var(--roty)))
+">
+ <span>test 1</span>
+</div>
+<hr>
+<div style="
+ --phase: .26;
+ --dur: 10s;
+ animation: var(--dur) r infinite linear paused;
+ animation-delay: calc(-1 * var(--dur) * var(--phase));
+">
+ <span>test 2</span>
+</div>
+<hr><p lang="en">You should see two green rectangles with text "test 1" and "test 2".<p lang="en">Test 2 is not displayed in Blink-based browsers.

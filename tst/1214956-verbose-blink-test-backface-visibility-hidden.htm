@@ -1,0 +1,45 @@
+<!doctype html>
+<title>More backface-visibility: hidden tests</title>
+<style>
+div, span {
+ transform-style: preserve-3d;
+}
+div {
+ background-color: rgba(255, 0, 0, .5);
+ backface-visibility: hidden;
+ height: 1em;
+} 
+div > span {
+ background-color: rgba(0, 100, 0, .5);
+ transform: rotatey(-0.25turn);
+ position: absolute;
+ inset: 0; 
+}
+div[style^="--roty:"] {
+ transform: rotatey(calc(1turn * var(--roty)));
+}
+div[style^="--phase:"] {
+ --dur: 10s;
+ animation-name: r;
+ animation-duration: var(--dur);
+ animation-delay: calc(-1 * var(--dur) * var(--phase));
+ animation-iteration-count: infinite;
+ animation-timing-function: linear;
+ animation-play-state: paused;
+}
+body:active div[style^="--phase:"] {
+ animation-play-state: running;  
+}
+@keyframes r {
+ to { transform: rotatey(1turn) }
+}
+</style>
+<hr>test 1, should display wide green rectangle with small bright and dark red rectangles in the middle, OK: 
+<div style="--roty: .24"><span></span></div>
+<hr>test 2, should display wide green rectangle, OK:
+<div style="--roty: .26"><span></span></div>
+<hr>test 3, should look same as test 1, OK:
+<div style="--phase: .24"><span></span></div>
+<hr>test 4, should look same as test 2, not OK in Chrome:
+<div style="--phase: .26"><span></span></div>
+<hr>
