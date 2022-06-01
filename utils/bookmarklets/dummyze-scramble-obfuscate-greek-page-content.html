@@ -1,0 +1,15 @@
+<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Dummyze bookmarklet - replace all texts in page with ▒▒▒▒ and images with dummyimage.com counterparts</title><style type="text/css">
+body{background-color:#333;color:#ccc;max-width:40em;margin:0 auto;}
+h1,h2,h3,em,strong,th,thead,label,dt,legend,caption{color:#fff}
+a:link{color:#6ff}a:visited{color:#9f3}label:hover,a:hover{background-color:#000}
+html *{font-family:"Courier New",monospace}
+code,pre{tab-size:2;-moz-tab-size:2;background-color: #444}
+a[href]:empty::after { content: attr(href); }
+</style></head><body>
+
+<p><a title="Dummyze" href="javascript:(function (dummyze, entry) {function textWalker(node, cbck) {var i = -1,n, s, w, h;if (!node) {return}if (node.nodeType === 3) {cbck(node, 'nodeValue');return}if (node.tagName == 'IFRAME') {try {textWalker(node.contentDocument.documentElement, cbck)} catch (e) {}return}if (node.tagName == 'STYLE' || node.tagName == 'SCRIPT' || node.tagName == 'SVG') {return}if (node.tagName == 'IMG') {s = getComputedStyle(node);node.src = 'https://dummyimage.com/' + (parseInt(s.width) || 10) + 'x' + (parseInt(s.height) || 10);return}if (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA') {cbck(node, 'placeholder');cbck(node, 'value');return}if (node.tagName) {if ((s = node.getAttribute('style')) &amp;&amp; (s = (s = getComputedStyle(node)).backgroundImage) &amp;&amp; (s != 'none') &amp;&amp; (s = (s.match(/url\(&quot;([^&quot;]+)&quot;\)/))) &amp;&amp; (s = s[1])) {pic = new Image();pic.onload = function () {node.style.backgroundImage = 'url(https://dummyimage.com/' + (parseInt(pic.width) || 10) + 'x' + (parseInt(pic.height) || 10) + ')'};pic.src = s;}if ((b = (b = getComputedStyle(node, '::before')).content) &amp;&amp; (b != 'none') &amp;&amp; b.indexOf('attr(') == 0 &amp;&amp; (b = b.match(/^attr\((.*?)\)$/)) &amp;&amp; (b = b[1])) {cbck(node, b);}if ((b = (b = getComputedStyle(node, '::after')).content) &amp;&amp; (b != 'none') &amp;&amp; b.indexOf('attr(') == 0 &amp;&amp; (b = b.match(/^attr\((.*?)\)$/)) &amp;&amp; (b = b[1])) {cbck(node, b);}while (n = node.childNodes[++i]) textWalker(n, cbck);}};textWalker(entry, dummyze)})(function (n, p, a, w, pic) {p = p || 'nodeValue';a = n[p];if (a) {w = a.replace(/\S/g, '\u2591');if (a != w) n[p] = w} else {a = n.getAttribute &amp;&amp; n.getAttribute(p);if (a) {w = a.replace(/\S/g, '\u2591');if (a != w) n.setAttribute(p, w);}}}, document.documentElement);">Dummyze2</a> (bookmarklet)
+<p>Replaces all texts in page with ▒▒▒▒ and images with dummyimage.com counterparts
+
+<p>1) drag above link into bookmarks (favourites) bar
+<p>2) click it while on page you want to have "dummyzed" | "scrambled" | "obfuscated" | "greeked" (| …?).
