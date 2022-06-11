@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<title></title>
+<style>
+  html {
+    background: dimgray;
+    color: snow;
+  }
+</style>
+
+<p>
+
+<label for="el_template">Item template:</label>
+<br>
+<textarea id="el_template" cols="30" rows="5">return (
+`<p>${text}</p>`)</textarea> 
+
+<button onclick="rerun()" id="el_rerun" disabled>Run</button>
+
+<p>Median: <output id="el_median"></output>
+Average: <output id="el_average"></output>
+
+<br>Times: <output id="el_times"></output>
+
+<p><iframe id="el_iframe" style="width: 80vw; height: 80vh;"></iframe>
+
+<p><a href="https://news.ycombinator.com/item?id=31696475">hn comment</a>
+
+<script>
+var durations = [];
+var startTime;
+var nextPayload = '';
+const itemsInSample = 100;
+const sampleCount = 100;
+
+tick();
+
+function rerun() {
+  startTime = null;
+  durations = [];
+  tick();
+}
+
+function makeItem(index,total) {
+  const text = `${index+1} of ${total} … ${makeRandomText()}`;
+
+  const fn = new Function(
+    'text',
+    el_template.value
+  );
+  return fn(text);
+}
+
+
+function makePayload() {
+  return `<!doctype html><body>${Array(itemsInSample)
+    .fill(0)
+    .map((e,i,a) => makeItem(i,a.length))
+    .join('')}</body>`;
+}
+
+function makeRandomText() {
+  return Array(5).fill(0).map(()=>
+    String(Math.random())
+  ).join('').replace(/\.|0/g, " ");
+}
+
+function test(idleCallback) {
+  if(idleCallback.didTimeout) {
+    throw Error("Something's melting?");
+  }
+  setTimeout(
+    ()=>{
+      startTime = performance.now();
+      el_iframe.srcdoc = nextPayload;
+    },
+    250
+  )
+}
+
+function tick() {
+  if(startTime){
+    let duration = performance.now() - startTime;
+    el_times.value = '(' + durations.length +' runs) '+ [...durations].sort(compareNumbers).join(', ');
+    durations.push(duration);
+    el_average.value = average(durations);
+    el_median.value = median(durations);
+  }
+  if(durations.length <= sampleCount) {
+    // el_iframe.srcdoc = "";
+    el_iframe.onload = tick;
+    nextPayload = makePayload();
+    requestIdleCallback(
+      test,
+      {timeout: 3000}
+    );
+    el_rerun.setAttribute('disabled','');
+  } else {
+    el_rerun.removeAttribute('disabled');
+  }
+}
+
+function median(arrr) {
+  const l = arrr.length;
+  const arr = Array.from(arrr).sort(compareNumbers);
+  if(l === 1) {
+    return arr[0]
+  }
+  if(l === 2) {
+    return (arr[0] + arr[1]) / 2
+  }
+  let mid = arr.length / 2;
+  if(l % 2 !== 0) {
+    return median([
+      arr[Math.floor(mid)],
+      arr[Math.ceil(mid)],
+    ]);
+  } else {
+    return arr[mid]
+  }
+}
+
+function average(arr) {
+  return arr.reduce((acc,n)=>{return acc+n},0)
+  / arr.length
+}
+
+function compareNumbers(n1, n2) {
+  if( n1 < n2 ) return -1
+  if( n1 === n2 ) return 0;
+  if( n1 > n2 ) return 1
+}
+
+</script>
