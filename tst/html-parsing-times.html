@@ -1,135 +1,243 @@
 <!DOCTYPE html>
+<html lang="en">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta charset="utf-8">
-<title></title>
+<title>HTML parse time exploration</title>
 <style>
-  html {
-    background: dimgray;
-    color: snow;
-  }
+html {
+  background: dimgray;
+  color: snow;
+}
 </style>
+<body onerror="alert(error)">
 
-<p>
-
-<label for="el_template">Item template:</label>
+<form
+ onsubmit="run();return false"
+ style="float:left">
+<fieldset id="el_field">
+<label for="el_template"
+ >Item template:</label>
 <br>
-<textarea id="el_template" cols="30" rows="5">return (
-`<p>${text}</p>`)</textarea> 
+<textarea
+ id="el_template"
+ cols="30"
+ rows="5"
+ placeholder="`&lt;p>${text}, ${i}, ${l}`
+ or any JavaScript expression resolving to string."
+ >"<p>" + text + "</p>\n\n"</textarea>
+<br>
+<label for="el_itemsinsample"
+ >⁞ Items in sample:</label>
+<input
+ id="el_itemsinsample"
+ value="10"
+ type="number"
+ min="1">
+<br>
+<label for="el_repeats"
+ >↻ Repeats</label>
+<input
+ id="el_repeats"
+ value="10"
+ type="number"
+ min="1">
+<br>
+<button>Run</button>
+</fieldset>
+</form>
 
-<button onclick="rerun()" id="el_rerun" disabled>Run</button>
-
-<p>Median: <output id="el_median"></output>
-Average: <output id="el_average"></output>
-
+<p>Log:
+<br><output id="el_log" style="white-space:pre-wrap"></output>
+<p>Stats: <output id="el_stats"></output>
 <br>Times: <output id="el_times"></output>
 
 <p><iframe id="el_iframe" style="width: 80vw; height: 80vh;"></iframe>
 
-<p><a href="https://news.ycombinator.com/item?id=31696475">hn comment</a>
+<p><a href="https://news.ycombinator.com/item?id=31696475">Inspiration: hn comment</a>
 
 <script>
+// added IE11 compatibility (kinda)
+// that means: no `string template literals`
+// no Array.from nor ...spread
+// no requestIdleCallback
+// no proper valueAsNumber
+// no output.value
+// no iframe.srcdoc
+// wonky id="autoglobals"
+
 var durations = [];
 var startTime;
 var nextPayload = '';
-const itemsInSample = 100;
-const sampleCount = 100;
+var itemsInSample = 0;
+var sampleCount = 0;
 
-tick();
+var el_field = document.getElementById('el_field');
+var el_template = document.getElementById('el_template');
+var el_itemsinsample = document.getElementById('el_itemsinsample');
+var el_repeats = document.getElementById('el_repeats');
+var el_log = document.getElementById('el_log');
+var el_stats = document.getElementById('el_stats');
+var el_times = document.getElementById('el_times');
+var el_iframe = document.getElementById('el_iframe');
 
-function rerun() {
+// run();
+
+function run() {
   startTime = null;
   durations = [];
+  itemsInSample = Number(el_itemsinsample.value);
+  sampleCount = Number(el_repeats.value);
   tick();
 }
 
 function makeItem(index,total) {
-  const text = `${index+1} of ${total} … ${makeRandomText()}`;
-
-  const fn = new Function(
-    'text',
-    el_template.value
-  );
-  return fn(text);
+  const text = [
+    index+1,
+    'of',
+    total,
+    '…',
+    makeRandomText()
+    ].join(' ');
+  const fnBody = "return (" + el_template.value + ")";
+  const fn = new Function('text', 'i', 'l', fnBody);
+  return fn(text, index, total);
 }
 
-
 function makePayload() {
-  return `<!doctype html><body>${Array(itemsInSample)
-    .fill(0)
-    .map((e,i,a) => makeItem(i,a.length))
-    .join('')}</body>`;
+  return [
+    "<!doctype html><body>",
+    Array(itemsInSample)
+    .join(',')
+    .split(',')
+    .map(function(e,i,a){return makeItem(i,a.length)})
+    .join(''),
+    "</body>"
+    ].join('');
 }
 
 function makeRandomText() {
-  return Array(5).fill(0).map(()=>
-    String(Math.random())
-  ).join('').replace(/\.|0/g, " ");
+  return Array(12)
+  .join(',')
+  .split(',')
+  .map(function(){
+    return String(Math.random())
+  })
+  .join('')
+  .replace(/\.|0/g, " ");
 }
 
 function test(idleCallback) {
-  if(idleCallback.didTimeout) {
-    throw Error("Something's melting?");
+  if(idleCallback && idleCallback.didTimeout) {
+    throw Error("Idle timeout missed, bailing out. (Something's melting?)");
   }
-  setTimeout(
-    ()=>{
-      startTime = performance.now();
-      el_iframe.srcdoc = nextPayload;
-    },
-    250
-  )
+  // setTimeout(
+  //   function(){
+      if(idleCallback) {
+        startTime = performance.now();
+        el_iframe.srcdoc = nextPayload;
+      } else {
+        // IE11
+        startTime = performance.now();
+        el_iframe.contentDocument.write(
+          nextPayload 
+          // + "<script>window.parent.tick()</scr"+"ipt>"
+          // ↑ not necessary, document.close triggers onload, yay.
+        );
+        el_iframe.contentDocument.close();
+      }
+  //   },
+  //   250
+  // )
 }
 
 function tick() {
   if(startTime){
     let duration = performance.now() - startTime;
-    el_times.value = '(' + durations.length +' runs) '+ [...durations].sort(compareNumbers).join(', ');
     durations.push(duration);
-    el_average.value = average(durations);
-    el_median.value = median(durations);
+    el_times.textContent = '(' + durations.length +' runs) '+ [].slice.call(durations).sort(compareNumbers).join(', ');
+    el_stats.textContent = [
+      'Average: ',
+      average(durations),
+      '\tMedian: ',
+      median(durations)
+      ].join('')
   }
-  if(durations.length <= sampleCount) {
-    // el_iframe.srcdoc = "";
+  if(durations.length < sampleCount) {
+    // running tests
     el_iframe.onload = tick;
     nextPayload = makePayload();
-    requestIdleCallback(
-      test,
-      {timeout: 3000}
-    );
-    el_rerun.setAttribute('disabled','');
+    el_field.setAttribute('disabled','');
+    if(typeof requestIdleCallback == 'function'){
+      requestIdleCallback(
+        test,
+        {timeout: 3000}
+      )
+    } else {
+      // IE11
+      setTimeout(test, 100);
+    }
   } else {
-    el_rerun.removeAttribute('disabled');
+    // done
+    el_iframe.onload = "";
+    el_field.removeAttribute('disabled');
+    logResults();
   }
+}
+
+function logResults () {
+  el_log.textContent += ''
+  // + 'Items in sample: '
+  + el_itemsinsample.value
+  + '⁞'
+  + '\t'
+  // + 'Repeats: '
+  + el_repeats.value
+  + '↻' 
+  + '\t'
+  // + 'Item template: '
+  + el_template.value.replace(/\n/g,'\\n')
+  + '\t'
+  + el_stats.textContent
+  + '\n';
 }
 
 function median(arrr) {
   const l = arrr.length;
-  const arr = Array.from(arrr).sort(compareNumbers);
+  const arr = [].slice.call(arrr).sort(compareNumbers);
   if(l === 1) {
     return arr[0]
   }
   if(l === 2) {
     return (arr[0] + arr[1]) / 2
   }
-  let mid = arr.length / 2;
-  if(l % 2 !== 0) {
+  const mid = l / 2;
+  if(l % 2 == 0) {
     return median([
-      arr[Math.floor(mid)],
-      arr[Math.ceil(mid)],
+      arr[mid],
+      arr[mid-1],
     ]);
   } else {
-    return arr[mid]
+    return arr[Math.floor(mid)]
   }
 }
 
 function average(arr) {
-  return arr.reduce((acc,n)=>{return acc+n},0)
+  return arr
+  .reduce(function(acc,n){return acc+n},0)
   / arr.length
 }
 
 function compareNumbers(n1, n2) {
+  n1 = Number(n1);
+  n2 = Number(n2);
   if( n1 < n2 ) return -1
   if( n1 === n2 ) return 0;
   if( n1 > n2 ) return 1
+  if(Number.isNaN(n1) || Number.isNaN(n2)) {
+    throw Error("Sorting NaNs, seriously?")
+  } else {
+    throw Error("WAT?!")
+  }
 }
 
 </script>
