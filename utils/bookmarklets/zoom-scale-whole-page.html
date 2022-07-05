@@ -1,0 +1,27 @@
+<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>🔍➕➖ Zoom Scale Whole Page (bookmarklet)</title><style type="text/css">
+body{background-color:#333;color:#ccc;max-width:40em;margin:0 auto;}
+h1,h2,h3,em,strong,th,thead,label,dt,legend,caption{color:#fff; }
+a:link{color:#6ff}a:visited{color:#9f3}label:hover,a:hover{background-color:#000; }
+html *{font-family:"Courier New",monospace; }
+code,pre{tab-size:2;-moz-tab-size:2;background-color: #444; }
+a { background: canvas; color: buttonText; text-decoration: none; border: solid; font-family: system-ui; padding: .2em; }
+</style></head><body>
+
+<p>
+<a href="javascript:(()=>{
+const docStyle = document.documentElement.style;
+const currentScale = +(docStyle['transform'].match(/[.\d]+/) || '1')[0] ;
+docStyle['transformOrigin'] ='top left';
+docStyle['transform'] = `scale(${(1 * 1.5) * currentScale})`;
+})()" title="🔍➕ Scale up">🔍➕ Scale up</a> 
+
+<a href="javascript:(()=>{
+const docStyle = document.documentElement.style;
+const currentScale = +(docStyle['transform'].match(/[.\d]+/) || '1')[0] ;
+docStyle['transformOrigin'] ='top left';
+docStyle['transform'] = `scale(${(1 / 1.5) * currentScale})`; 
+})()" title="🔍➖ Scale down">🔍➖ Scale down</a>
+
+<p>Bookmarklets; bookmark via context menu or drag into bookmarks toolbar.
+<p>Click to try.
