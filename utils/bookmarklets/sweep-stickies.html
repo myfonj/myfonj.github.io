@@ -9,3 +9,7 @@ pre{tab-size:2;-moz-tab-size:2;background-color: #444}
 </style></head><body>
 
 <p><a href="javascript:((u,n,s,t,i,c,k)=>n.querySelectorAll('*').forEach(e=>{true&&(/fixed|sticky/.test((c=getComputedStyle(e))[s])||(/absolute/.test(c[s])&&Number(c.zIndex)>t))&&e!=n.documentElement&&e!=(k=n.body)&&k.contains(e)&&e.parentNode.removeChild(e)||/hidden/.test(c[u])&&e.style.setProperty(u,'auto','important')}))('overflow',document,'position',1111)" title="🧹 Sweep Stickies 🧹">🧹 Sweep Stickies 🧹</a> (bookmarklet)
+
+<hr>
+
+<p>This is slightly revamped version of <a href="https://alisdair.mcdiarmid.org/kill-sticky-headers/">alisdair.mcdiarmid.org/kill-sticky-headers/</a>; it removes fixed and sticky positioned elements, everything absolute positioned with suspiciously high z-index and it forces scroll where it was disabled - to re-enable unscrollable content under (removed) full-page overlays.
