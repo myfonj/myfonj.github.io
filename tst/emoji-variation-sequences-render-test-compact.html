@@ -1,0 +1,370 @@
+<!doctype html><html lang="en"><title>
+compact emoji variation sequences render test
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+p { display: inline; }
+p>span:first-child { display: inline-block; xwidth: 3rem; text-align: center;}
+
+[T]:not(:checked) ~ * p > span:first-child > span:first-child,
+[E]:not(:checked) ~ * p > span:first-child > span:last-child,
+[I]:not(:checked) ~ * p > span:last-child { display: none; }
+
+:checked + :checked ~ * p { outline: 1px solid; }
+</style>
+T<input T type="checkbox" checked> E<input E type="checkbox" checked> I<input I type="checkbox">
+<main>
+<p><span><span>&#x0023;&#xFE0E;</span><span>&#x0023;&#xFE0F;</span></span><span>(1.1)	NUMBER SIGN</span>
+<p><span><span>&#x002A;&#xFE0E;</span><span>&#x002A;&#xFE0F;</span></span><span>(1.1)	ASTERISK</span>
+<p><span><span>&#x0030;&#xFE0E;</span><span>&#x0030;&#xFE0F;</span></span><span>(1.1)	DIGIT ZERO</span>
+<p><span><span>&#x0031;&#xFE0E;</span><span>&#x0031;&#xFE0F;</span></span><span>(1.1)	DIGIT ONE</span>
+<p><span><span>&#x0032;&#xFE0E;</span><span>&#x0032;&#xFE0F;</span></span><span>(1.1)	DIGIT TWO</span>
+<p><span><span>&#x0033;&#xFE0E;</span><span>&#x0033;&#xFE0F;</span></span><span>(1.1)	DIGIT THREE</span>
+<p><span><span>&#x0034;&#xFE0E;</span><span>&#x0034;&#xFE0F;</span></span><span>(1.1)	DIGIT FOUR</span>
+<p><span><span>&#x0035;&#xFE0E;</span><span>&#x0035;&#xFE0F;</span></span><span>(1.1)	DIGIT FIVE</span>
+<p><span><span>&#x0036;&#xFE0E;</span><span>&#x0036;&#xFE0F;</span></span><span>(1.1)	DIGIT SIX</span>
+<p><span><span>&#x0037;&#xFE0E;</span><span>&#x0037;&#xFE0F;</span></span><span>(1.1)	DIGIT SEVEN</span>
+<p><span><span>&#x0038;&#xFE0E;</span><span>&#x0038;&#xFE0F;</span></span><span>(1.1)	DIGIT EIGHT</span>
+<p><span><span>&#x0039;&#xFE0E;</span><span>&#x0039;&#xFE0F;</span></span><span>(1.1)	DIGIT NINE</span>
+<p><span><span>&#x00A9;&#xFE0E;</span><span>&#x00A9;&#xFE0F;</span></span><span>(1.1)	COPYRIGHT SIGN</span>
+<p><span><span>&#x00AE;&#xFE0E;</span><span>&#x00AE;&#xFE0F;</span></span><span>(1.1)	REGISTERED SIGN</span>
+<p><span><span>&#x203C;&#xFE0E;</span><span>&#x203C;&#xFE0F;</span></span><span>(1.1)	DOUBLE EXCLAMATION MARK</span>
+<p><span><span>&#x2049;&#xFE0E;</span><span>&#x2049;&#xFE0F;</span></span><span>(3.0)	EXCLAMATION QUESTION MARK</span>
+<p><span><span>&#x2122;&#xFE0E;</span><span>&#x2122;&#xFE0F;</span></span><span>(1.1)	TRADE MARK SIGN</span>
+<p><span><span>&#x2139;&#xFE0E;</span><span>&#x2139;&#xFE0F;</span></span><span>(3.0)	INFORMATION SOURCE</span>
+<p><span><span>&#x2194;&#xFE0E;</span><span>&#x2194;&#xFE0F;</span></span><span>(1.1)	LEFT RIGHT ARROW</span>
+<p><span><span>&#x2195;&#xFE0E;</span><span>&#x2195;&#xFE0F;</span></span><span>(1.1)	UP DOWN ARROW</span>
+<p><span><span>&#x2196;&#xFE0E;</span><span>&#x2196;&#xFE0F;</span></span><span>(1.1)	NORTH WEST ARROW</span>
+<p><span><span>&#x2197;&#xFE0E;</span><span>&#x2197;&#xFE0F;</span></span><span>(1.1)	NORTH EAST ARROW</span>
+<p><span><span>&#x2198;&#xFE0E;</span><span>&#x2198;&#xFE0F;</span></span><span>(1.1)	SOUTH EAST ARROW</span>
+<p><span><span>&#x2199;&#xFE0E;</span><span>&#x2199;&#xFE0F;</span></span><span>(1.1)	SOUTH WEST ARROW</span>
+<p><span><span>&#x21A9;&#xFE0E;</span><span>&#x21A9;&#xFE0F;</span></span><span>(1.1)	LEFTWARDS ARROW WITH HOOK</span>
+<p><span><span>&#x21AA;&#xFE0E;</span><span>&#x21AA;&#xFE0F;</span></span><span>(1.1)	RIGHTWARDS ARROW WITH HOOK</span>
+<p><span><span>&#x231A;&#xFE0E;</span><span>&#x231A;&#xFE0F;</span></span><span>(1.1)	WATCH</span>
+<p><span><span>&#x231B;&#xFE0E;</span><span>&#x231B;&#xFE0F;</span></span><span>(1.1)	HOURGLASS</span>
+<p><span><span>&#x2328;&#xFE0E;</span><span>&#x2328;&#xFE0F;</span></span><span>(1.1)	KEYBOARD</span>
+<p><span><span>&#x23CF;&#xFE0E;</span><span>&#x23CF;&#xFE0F;</span></span><span>(4.0)	EJECT SYMBOL</span>
+<p><span><span>&#x23E9;&#xFE0E;</span><span>&#x23E9;&#xFE0F;</span></span><span>(6.0)	BLACK RIGHT-POINTING DOUBLE TRIANGLE</span>
+<p><span><span>&#x23EA;&#xFE0E;</span><span>&#x23EA;&#xFE0F;</span></span><span>(6.0)	BLACK LEFT-POINTING DOUBLE TRIANGLE</span>
+<p><span><span>&#x23ED;&#xFE0E;</span><span>&#x23ED;&#xFE0F;</span></span><span>(6.0)	BLACK RIGHT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR</span>
+<p><span><span>&#x23EE;&#xFE0E;</span><span>&#x23EE;&#xFE0F;</span></span><span>(6.0)	BLACK LEFT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR</span>
+<p><span><span>&#x23EF;&#xFE0E;</span><span>&#x23EF;&#xFE0F;</span></span><span>(6.0)	BLACK RIGHT-POINTING TRIANGLE WITH DOUBLE VERTICAL BAR</span>
+<p><span><span>&#x23F1;&#xFE0E;</span><span>&#x23F1;&#xFE0F;</span></span><span>(6.0)	STOPWATCH</span>
+<p><span><span>&#x23F2;&#xFE0E;</span><span>&#x23F2;&#xFE0F;</span></span><span>(6.0)	TIMER CLOCK</span>
+<p><span><span>&#x23F3;&#xFE0E;</span><span>&#x23F3;&#xFE0F;</span></span><span>(6.0)	HOURGLASS WITH FLOWING SAND</span>
+<p><span><span>&#x23F8;&#xFE0E;</span><span>&#x23F8;&#xFE0F;</span></span><span>(7.0)	DOUBLE VERTICAL BAR</span>
+<p><span><span>&#x23F9;&#xFE0E;</span><span>&#x23F9;&#xFE0F;</span></span><span>(7.0)	BLACK SQUARE FOR STOP</span>
+<p><span><span>&#x23FA;&#xFE0E;</span><span>&#x23FA;&#xFE0F;</span></span><span>(7.0)	BLACK CIRCLE FOR RECORD</span>
+<p><span><span>&#x24C2;&#xFE0E;</span><span>&#x24C2;&#xFE0F;</span></span><span>(1.1)	CIRCLED LATIN CAPITAL LETTER M</span>
+<p><span><span>&#x25AA;&#xFE0E;</span><span>&#x25AA;&#xFE0F;</span></span><span>(1.1)	BLACK SMALL SQUARE</span>
+<p><span><span>&#x25AB;&#xFE0E;</span><span>&#x25AB;&#xFE0F;</span></span><span>(1.1)	WHITE SMALL SQUARE</span>
+<p><span><span>&#x25B6;&#xFE0E;</span><span>&#x25B6;&#xFE0F;</span></span><span>(1.1)	BLACK RIGHT-POINTING TRIANGLE</span>
+<p><span><span>&#x25C0;&#xFE0E;</span><span>&#x25C0;&#xFE0F;</span></span><span>(1.1)	BLACK LEFT-POINTING TRIANGLE</span>
+<p><span><span>&#x25FB;&#xFE0E;</span><span>&#x25FB;&#xFE0F;</span></span><span>(3.2)	WHITE MEDIUM SQUARE</span>
+<p><span><span>&#x25FC;&#xFE0E;</span><span>&#x25FC;&#xFE0F;</span></span><span>(3.2)	BLACK MEDIUM SQUARE</span>
+<p><span><span>&#x25FD;&#xFE0E;</span><span>&#x25FD;&#xFE0F;</span></span><span>(3.2)	WHITE MEDIUM SMALL SQUARE</span>
+<p><span><span>&#x25FE;&#xFE0E;</span><span>&#x25FE;&#xFE0F;</span></span><span>(3.2)	BLACK MEDIUM SMALL SQUARE</span>
+<p><span><span>&#x2600;&#xFE0E;</span><span>&#x2600;&#xFE0F;</span></span><span>(1.1)	BLACK SUN WITH RAYS</span>
+<p><span><span>&#x2601;&#xFE0E;</span><span>&#x2601;&#xFE0F;</span></span><span>(1.1)	CLOUD</span>
+<p><span><span>&#x2602;&#xFE0E;</span><span>&#x2602;&#xFE0F;</span></span><span>(1.1)	UMBRELLA</span>
+<p><span><span>&#x2603;&#xFE0E;</span><span>&#x2603;&#xFE0F;</span></span><span>(1.1)	SNOWMAN</span>
+<p><span><span>&#x2604;&#xFE0E;</span><span>&#x2604;&#xFE0F;</span></span><span>(1.1)	COMET</span>
+<p><span><span>&#x260E;&#xFE0E;</span><span>&#x260E;&#xFE0F;</span></span><span>(1.1)	BLACK TELEPHONE</span>
+<p><span><span>&#x2611;&#xFE0E;</span><span>&#x2611;&#xFE0F;</span></span><span>(1.1)	BALLOT BOX WITH CHECK</span>
+<p><span><span>&#x2614;&#xFE0E;</span><span>&#x2614;&#xFE0F;</span></span><span>(4.0)	UMBRELLA WITH RAIN DROPS</span>
+<p><span><span>&#x2615;&#xFE0E;</span><span>&#x2615;&#xFE0F;</span></span><span>(4.0)	HOT BEVERAGE</span>
+<p><span><span>&#x2618;&#xFE0E;</span><span>&#x2618;&#xFE0F;</span></span><span>(4.1)	SHAMROCK</span>
+<p><span><span>&#x261D;&#xFE0E;</span><span>&#x261D;&#xFE0F;</span></span><span>(1.1)	WHITE UP POINTING INDEX</span>
+<p><span><span>&#x2620;&#xFE0E;</span><span>&#x2620;&#xFE0F;</span></span><span>(1.1)	SKULL AND CROSSBONES</span>
+<p><span><span>&#x2622;&#xFE0E;</span><span>&#x2622;&#xFE0F;</span></span><span>(1.1)	RADIOACTIVE SIGN</span>
+<p><span><span>&#x2623;&#xFE0E;</span><span>&#x2623;&#xFE0F;</span></span><span>(1.1)	BIOHAZARD SIGN</span>
+<p><span><span>&#x2626;&#xFE0E;</span><span>&#x2626;&#xFE0F;</span></span><span>(1.1)	ORTHODOX CROSS</span>
+<p><span><span>&#x262A;&#xFE0E;</span><span>&#x262A;&#xFE0F;</span></span><span>(1.1)	STAR AND CRESCENT</span>
+<p><span><span>&#x262E;&#xFE0E;</span><span>&#x262E;&#xFE0F;</span></span><span>(1.1)	PEACE SYMBOL</span>
+<p><span><span>&#x262F;&#xFE0E;</span><span>&#x262F;&#xFE0F;</span></span><span>(1.1)	YIN YANG</span>
+<p><span><span>&#x2638;&#xFE0E;</span><span>&#x2638;&#xFE0F;</span></span><span>(1.1)	WHEEL OF DHARMA</span>
+<p><span><span>&#x2639;&#xFE0E;</span><span>&#x2639;&#xFE0F;</span></span><span>(1.1)	WHITE FROWNING FACE</span>
+<p><span><span>&#x263A;&#xFE0E;</span><span>&#x263A;&#xFE0F;</span></span><span>(1.1)	WHITE SMILING FACE</span>
+<p><span><span>&#x2640;&#xFE0E;</span><span>&#x2640;&#xFE0F;</span></span><span>(1.1)	FEMALE SIGN</span>
+<p><span><span>&#x2642;&#xFE0E;</span><span>&#x2642;&#xFE0F;</span></span><span>(1.1)	MALE SIGN</span>
+<p><span><span>&#x2648;&#xFE0E;</span><span>&#x2648;&#xFE0F;</span></span><span>(1.1)	ARIES</span>
+<p><span><span>&#x2649;&#xFE0E;</span><span>&#x2649;&#xFE0F;</span></span><span>(1.1)	TAURUS</span>
+<p><span><span>&#x264A;&#xFE0E;</span><span>&#x264A;&#xFE0F;</span></span><span>(1.1)	GEMINI</span>
+<p><span><span>&#x264B;&#xFE0E;</span><span>&#x264B;&#xFE0F;</span></span><span>(1.1)	CANCER</span>
+<p><span><span>&#x264C;&#xFE0E;</span><span>&#x264C;&#xFE0F;</span></span><span>(1.1)	LEO</span>
+<p><span><span>&#x264D;&#xFE0E;</span><span>&#x264D;&#xFE0F;</span></span><span>(1.1)	VIRGO</span>
+<p><span><span>&#x264E;&#xFE0E;</span><span>&#x264E;&#xFE0F;</span></span><span>(1.1)	LIBRA</span>
+<p><span><span>&#x264F;&#xFE0E;</span><span>&#x264F;&#xFE0F;</span></span><span>(1.1)	SCORPIUS</span>
+<p><span><span>&#x2650;&#xFE0E;</span><span>&#x2650;&#xFE0F;</span></span><span>(1.1)	SAGITTARIUS</span>
+<p><span><span>&#x2651;&#xFE0E;</span><span>&#x2651;&#xFE0F;</span></span><span>(1.1)	CAPRICORN</span>
+<p><span><span>&#x2652;&#xFE0E;</span><span>&#x2652;&#xFE0F;</span></span><span>(1.1)	AQUARIUS</span>
+<p><span><span>&#x2653;&#xFE0E;</span><span>&#x2653;&#xFE0F;</span></span><span>(1.1)	PISCES</span>
+<p><span><span>&#x265F;&#xFE0E;</span><span>&#x265F;&#xFE0F;</span></span><span>(1.1)	BLACK CHESS PAWN</span>
+<p><span><span>&#x2660;&#xFE0E;</span><span>&#x2660;&#xFE0F;</span></span><span>(1.1)	BLACK SPADE SUIT</span>
+<p><span><span>&#x2663;&#xFE0E;</span><span>&#x2663;&#xFE0F;</span></span><span>(1.1)	BLACK CLUB SUIT</span>
+<p><span><span>&#x2665;&#xFE0E;</span><span>&#x2665;&#xFE0F;</span></span><span>(1.1)	BLACK HEART SUIT</span>
+<p><span><span>&#x2666;&#xFE0E;</span><span>&#x2666;&#xFE0F;</span></span><span>(1.1)	BLACK DIAMOND SUIT</span>
+<p><span><span>&#x2668;&#xFE0E;</span><span>&#x2668;&#xFE0F;</span></span><span>(1.1)	HOT SPRINGS</span>
+<p><span><span>&#x267B;&#xFE0E;</span><span>&#x267B;&#xFE0F;</span></span><span>(3.2)	BLACK UNIVERSAL RECYCLING SYMBOL</span>
+<p><span><span>&#x267E;&#xFE0E;</span><span>&#x267E;&#xFE0F;</span></span><span>(4.1)	PERMANENT PAPER SIGN</span>
+<p><span><span>&#x267F;&#xFE0E;</span><span>&#x267F;&#xFE0F;</span></span><span>(4.1)	WHEELCHAIR SYMBOL</span>
+<p><span><span>&#x2692;&#xFE0E;</span><span>&#x2692;&#xFE0F;</span></span><span>(4.1)	HAMMER AND PICK</span>
+<p><span><span>&#x2693;&#xFE0E;</span><span>&#x2693;&#xFE0F;</span></span><span>(4.1)	ANCHOR</span>
+<p><span><span>&#x2694;&#xFE0E;</span><span>&#x2694;&#xFE0F;</span></span><span>(4.1)	CROSSED SWORDS</span>
+<p><span><span>&#x2695;&#xFE0E;</span><span>&#x2695;&#xFE0F;</span></span><span>(4.1)	STAFF OF AESCULAPIUS</span>
+<p><span><span>&#x2696;&#xFE0E;</span><span>&#x2696;&#xFE0F;</span></span><span>(4.1)	SCALES</span>
+<p><span><span>&#x2697;&#xFE0E;</span><span>&#x2697;&#xFE0F;</span></span><span>(4.1)	ALEMBIC</span>
+<p><span><span>&#x2699;&#xFE0E;</span><span>&#x2699;&#xFE0F;</span></span><span>(4.1)	GEAR</span>
+<p><span><span>&#x269B;&#xFE0E;</span><span>&#x269B;&#xFE0F;</span></span><span>(4.1)	ATOM SYMBOL</span>
+<p><span><span>&#x269C;&#xFE0E;</span><span>&#x269C;&#xFE0F;</span></span><span>(4.1)	FLEUR-DE-LIS</span>
+<p><span><span>&#x26A0;&#xFE0E;</span><span>&#x26A0;&#xFE0F;</span></span><span>(4.0)	WARNING SIGN</span>
+<p><span><span>&#x26A1;&#xFE0E;</span><span>&#x26A1;&#xFE0F;</span></span><span>(4.0)	HIGH VOLTAGE SIGN</span>
+<p><span><span>&#x26A7;&#xFE0E;</span><span>&#x26A7;&#xFE0F;</span></span><span>(4.1)	MALE WITH STROKE AND MALE AND FEMALE SIGN</span>
+<p><span><span>&#x26AA;&#xFE0E;</span><span>&#x26AA;&#xFE0F;</span></span><span>(4.1)	MEDIUM WHITE CIRCLE</span>
+<p><span><span>&#x26AB;&#xFE0E;</span><span>&#x26AB;&#xFE0F;</span></span><span>(4.1)	MEDIUM BLACK CIRCLE</span>
+<p><span><span>&#x26B0;&#xFE0E;</span><span>&#x26B0;&#xFE0F;</span></span><span>(4.1)	COFFIN</span>
+<p><span><span>&#x26B1;&#xFE0E;</span><span>&#x26B1;&#xFE0F;</span></span><span>(4.1)	FUNERAL URN</span>
+<p><span><span>&#x26BD;&#xFE0E;</span><span>&#x26BD;&#xFE0F;</span></span><span>(5.2)	SOCCER BALL</span>
+<p><span><span>&#x26BE;&#xFE0E;</span><span>&#x26BE;&#xFE0F;</span></span><span>(5.2)	BASEBALL</span>
+<p><span><span>&#x26C4;&#xFE0E;</span><span>&#x26C4;&#xFE0F;</span></span><span>(5.2)	SNOWMAN WITHOUT SNOW</span>
+<p><span><span>&#x26C5;&#xFE0E;</span><span>&#x26C5;&#xFE0F;</span></span><span>(5.2)	SUN BEHIND CLOUD</span>
+<p><span><span>&#x26C8;&#xFE0E;</span><span>&#x26C8;&#xFE0F;</span></span><span>(5.2)	THUNDER CLOUD AND RAIN</span>
+<p><span><span>&#x26CF;&#xFE0E;</span><span>&#x26CF;&#xFE0F;</span></span><span>(5.2)	PICK</span>
+<p><span><span>&#x26D1;&#xFE0E;</span><span>&#x26D1;&#xFE0F;</span></span><span>(5.2)	HELMET WITH WHITE CROSS</span>
+<p><span><span>&#x26D3;&#xFE0E;</span><span>&#x26D3;&#xFE0F;</span></span><span>(5.2)	CHAINS</span>
+<p><span><span>&#x26D4;&#xFE0E;</span><span>&#x26D4;&#xFE0F;</span></span><span>(5.2)	NO ENTRY</span>
+<p><span><span>&#x26E9;&#xFE0E;</span><span>&#x26E9;&#xFE0F;</span></span><span>(5.2)	SHINTO SHRINE</span>
+<p><span><span>&#x26EA;&#xFE0E;</span><span>&#x26EA;&#xFE0F;</span></span><span>(5.2)	CHURCH</span>
+<p><span><span>&#x26F0;&#xFE0E;</span><span>&#x26F0;&#xFE0F;</span></span><span>(5.2)	MOUNTAIN</span>
+<p><span><span>&#x26F1;&#xFE0E;</span><span>&#x26F1;&#xFE0F;</span></span><span>(5.2)	UMBRELLA ON GROUND</span>
+<p><span><span>&#x26F2;&#xFE0E;</span><span>&#x26F2;&#xFE0F;</span></span><span>(5.2)	FOUNTAIN</span>
+<p><span><span>&#x26F3;&#xFE0E;</span><span>&#x26F3;&#xFE0F;</span></span><span>(5.2)	FLAG IN HOLE</span>
+<p><span><span>&#x26F4;&#xFE0E;</span><span>&#x26F4;&#xFE0F;</span></span><span>(5.2)	FERRY</span>
+<p><span><span>&#x26F5;&#xFE0E;</span><span>&#x26F5;&#xFE0F;</span></span><span>(5.2)	SAILBOAT</span>
+<p><span><span>&#x26F7;&#xFE0E;</span><span>&#x26F7;&#xFE0F;</span></span><span>(5.2)	SKIER</span>
+<p><span><span>&#x26F8;&#xFE0E;</span><span>&#x26F8;&#xFE0F;</span></span><span>(5.2)	ICE SKATE</span>
+<p><span><span>&#x26F9;&#xFE0E;</span><span>&#x26F9;&#xFE0F;</span></span><span>(5.2)	PERSON WITH BALL</span>
+<p><span><span>&#x26FA;&#xFE0E;</span><span>&#x26FA;&#xFE0F;</span></span><span>(5.2)	TENT</span>
+<p><span><span>&#x26FD;&#xFE0E;</span><span>&#x26FD;&#xFE0F;</span></span><span>(5.2)	FUEL PUMP</span>
+<p><span><span>&#x2702;&#xFE0E;</span><span>&#x2702;&#xFE0F;</span></span><span>(1.1)	BLACK SCISSORS</span>
+<p><span><span>&#x2708;&#xFE0E;</span><span>&#x2708;&#xFE0F;</span></span><span>(1.1)	AIRPLANE</span>
+<p><span><span>&#x2709;&#xFE0E;</span><span>&#x2709;&#xFE0F;</span></span><span>(1.1)	ENVELOPE</span>
+<p><span><span>&#x270C;&#xFE0E;</span><span>&#x270C;&#xFE0F;</span></span><span>(1.1)	VICTORY HAND</span>
+<p><span><span>&#x270D;&#xFE0E;</span><span>&#x270D;&#xFE0F;</span></span><span>(1.1)	WRITING HAND</span>
+<p><span><span>&#x270F;&#xFE0E;</span><span>&#x270F;&#xFE0F;</span></span><span>(1.1)	PENCIL</span>
+<p><span><span>&#x2712;&#xFE0E;</span><span>&#x2712;&#xFE0F;</span></span><span>(1.1)	BLACK NIB</span>
+<p><span><span>&#x2714;&#xFE0E;</span><span>&#x2714;&#xFE0F;</span></span><span>(1.1)	HEAVY CHECK MARK</span>
+<p><span><span>&#x2716;&#xFE0E;</span><span>&#x2716;&#xFE0F;</span></span><span>(1.1)	HEAVY MULTIPLICATION X</span>
+<p><span><span>&#x271D;&#xFE0E;</span><span>&#x271D;&#xFE0F;</span></span><span>(1.1)	LATIN CROSS</span>
+<p><span><span>&#x2721;&#xFE0E;</span><span>&#x2721;&#xFE0F;</span></span><span>(1.1)	STAR OF DAVID</span>
+<p><span><span>&#x2733;&#xFE0E;</span><span>&#x2733;&#xFE0F;</span></span><span>(1.1)	EIGHT SPOKED ASTERISK</span>
+<p><span><span>&#x2734;&#xFE0E;</span><span>&#x2734;&#xFE0F;</span></span><span>(1.1)	EIGHT POINTED BLACK STAR</span>
+<p><span><span>&#x2744;&#xFE0E;</span><span>&#x2744;&#xFE0F;</span></span><span>(1.1)	SNOWFLAKE</span>
+<p><span><span>&#x2747;&#xFE0E;</span><span>&#x2747;&#xFE0F;</span></span><span>(1.1)	SPARKLE</span>
+<p><span><span>&#x2753;&#xFE0E;</span><span>&#x2753;&#xFE0F;</span></span><span>(6.0)	BLACK QUESTION MARK ORNAMENT</span>
+<p><span><span>&#x2757;&#xFE0E;</span><span>&#x2757;&#xFE0F;</span></span><span>(5.2)	HEAVY EXCLAMATION MARK SYMBOL</span>
+<p><span><span>&#x2763;&#xFE0E;</span><span>&#x2763;&#xFE0F;</span></span><span>(1.1)	HEAVY HEART EXCLAMATION MARK ORNAMENT</span>
+<p><span><span>&#x2764;&#xFE0E;</span><span>&#x2764;&#xFE0F;</span></span><span>(1.1)	HEAVY BLACK HEART</span>
+<p><span><span>&#x27A1;&#xFE0E;</span><span>&#x27A1;&#xFE0F;</span></span><span>(1.1)	BLACK RIGHTWARDS ARROW</span>
+<p><span><span>&#x2934;&#xFE0E;</span><span>&#x2934;&#xFE0F;</span></span><span>(3.2)	ARROW POINTING RIGHTWARDS THEN CURVING UPWARDS</span>
+<p><span><span>&#x2935;&#xFE0E;</span><span>&#x2935;&#xFE0F;</span></span><span>(3.2)	ARROW POINTING RIGHTWARDS THEN CURVING DOWNWARDS</span>
+<p><span><span>&#x2B05;&#xFE0E;</span><span>&#x2B05;&#xFE0F;</span></span><span>(4.0)	LEFTWARDS BLACK ARROW</span>
+<p><span><span>&#x2B06;&#xFE0E;</span><span>&#x2B06;&#xFE0F;</span></span><span>(4.0)	UPWARDS BLACK ARROW</span>
+<p><span><span>&#x2B07;&#xFE0E;</span><span>&#x2B07;&#xFE0F;</span></span><span>(4.0)	DOWNWARDS BLACK ARROW</span>
+<p><span><span>&#x2B1B;&#xFE0E;</span><span>&#x2B1B;&#xFE0F;</span></span><span>(5.1)	BLACK LARGE SQUARE</span>
+<p><span><span>&#x2B1C;&#xFE0E;</span><span>&#x2B1C;&#xFE0F;</span></span><span>(5.1)	WHITE LARGE SQUARE</span>
+<p><span><span>&#x2B50;&#xFE0E;</span><span>&#x2B50;&#xFE0F;</span></span><span>(5.1)	WHITE MEDIUM STAR</span>
+<p><span><span>&#x2B55;&#xFE0E;</span><span>&#x2B55;&#xFE0F;</span></span><span>(5.2)	HEAVY LARGE CIRCLE</span>
+<p><span><span>&#x3030;&#xFE0E;</span><span>&#x3030;&#xFE0F;</span></span><span>(1.1)	WAVY DASH</span>
+<p><span><span>&#x303D;&#xFE0E;</span><span>&#x303D;&#xFE0F;</span></span><span>(3.2)	PART ALTERNATION MARK</span>
+<p><span><span>&#x3297;&#xFE0E;</span><span>&#x3297;&#xFE0F;</span></span><span>(1.1)	CIRCLED IDEOGRAPH CONGRATULATION</span>
+<p><span><span>&#x3299;&#xFE0E;</span><span>&#x3299;&#xFE0F;</span></span><span>(1.1)	CIRCLED IDEOGRAPH SECRET</span>
+<p><span><span>&#x1F004;&#xFE0E;</span><span>&#x1F004;&#xFE0F;</span></span><span>(5.1)	MAHJONG TILE RED DRAGON</span>
+<p><span><span>&#x1F170;&#xFE0E;</span><span>&#x1F170;&#xFE0F;</span></span><span>(6.0)	NEGATIVE SQUARED LATIN CAPITAL LETTER A</span>
+<p><span><span>&#x1F171;&#xFE0E;</span><span>&#x1F171;&#xFE0F;</span></span><span>(6.0)	NEGATIVE SQUARED LATIN CAPITAL LETTER B</span>
+<p><span><span>&#x1F17E;&#xFE0E;</span><span>&#x1F17E;&#xFE0F;</span></span><span>(6.0)	NEGATIVE SQUARED LATIN CAPITAL LETTER O</span>
+<p><span><span>&#x1F17F;&#xFE0E;</span><span>&#x1F17F;&#xFE0F;</span></span><span>(5.2)	NEGATIVE SQUARED LATIN CAPITAL LETTER P</span>
+<p><span><span>&#x1F202;&#xFE0E;</span><span>&#x1F202;&#xFE0F;</span></span><span>(6.0)	SQUARED KATAKANA SA</span>
+<p><span><span>&#x1F21A;&#xFE0E;</span><span>&#x1F21A;&#xFE0F;</span></span><span>(5.2)	SQUARED CJK UNIFIED IDEOGRAPH-7121</span>
+<p><span><span>&#x1F22F;&#xFE0E;</span><span>&#x1F22F;&#xFE0F;</span></span><span>(5.2)	SQUARED CJK UNIFIED IDEOGRAPH-6307</span>
+<p><span><span>&#x1F237;&#xFE0E;</span><span>&#x1F237;&#xFE0F;</span></span><span>(6.0)	SQUARED CJK UNIFIED IDEOGRAPH-6708</span>
+<p><span><span>&#x1F30D;&#xFE0E;</span><span>&#x1F30D;&#xFE0F;</span></span><span>(6.0)	EARTH GLOBE EUROPE-AFRICA</span>
+<p><span><span>&#x1F30E;&#xFE0E;</span><span>&#x1F30E;&#xFE0F;</span></span><span>(6.0)	EARTH GLOBE AMERICAS</span>
+<p><span><span>&#x1F30F;&#xFE0E;</span><span>&#x1F30F;&#xFE0F;</span></span><span>(6.0)	EARTH GLOBE ASIA-AUSTRALIA</span>
+<p><span><span>&#x1F315;&#xFE0E;</span><span>&#x1F315;&#xFE0F;</span></span><span>(6.0)	FULL MOON SYMBOL</span>
+<p><span><span>&#x1F31C;&#xFE0E;</span><span>&#x1F31C;&#xFE0F;</span></span><span>(6.0)	LAST QUARTER MOON WITH FACE</span>
+<p><span><span>&#x1F321;&#xFE0E;</span><span>&#x1F321;&#xFE0F;</span></span><span>(7.0)	THERMOMETER</span>
+<p><span><span>&#x1F324;&#xFE0E;</span><span>&#x1F324;&#xFE0F;</span></span><span>(7.0)	WHITE SUN WITH SMALL CLOUD</span>
+<p><span><span>&#x1F325;&#xFE0E;</span><span>&#x1F325;&#xFE0F;</span></span><span>(7.0)	WHITE SUN BEHIND CLOUD</span>
+<p><span><span>&#x1F326;&#xFE0E;</span><span>&#x1F326;&#xFE0F;</span></span><span>(7.0)	WHITE SUN BEHIND CLOUD WITH RAIN</span>
+<p><span><span>&#x1F327;&#xFE0E;</span><span>&#x1F327;&#xFE0F;</span></span><span>(7.0)	CLOUD WITH RAIN</span>
+<p><span><span>&#x1F328;&#xFE0E;</span><span>&#x1F328;&#xFE0F;</span></span><span>(7.0)	CLOUD WITH SNOW</span>
+<p><span><span>&#x1F329;&#xFE0E;</span><span>&#x1F329;&#xFE0F;</span></span><span>(7.0)	CLOUD WITH LIGHTNING</span>
+<p><span><span>&#x1F32A;&#xFE0E;</span><span>&#x1F32A;&#xFE0F;</span></span><span>(7.0)	CLOUD WITH TORNADO</span>
+<p><span><span>&#x1F32B;&#xFE0E;</span><span>&#x1F32B;&#xFE0F;</span></span><span>(7.0)	FOG</span>
+<p><span><span>&#x1F32C;&#xFE0E;</span><span>&#x1F32C;&#xFE0F;</span></span><span>(7.0)	WIND BLOWING FACE</span>
+<p><span><span>&#x1F336;&#xFE0E;</span><span>&#x1F336;&#xFE0F;</span></span><span>(7.0)	HOT PEPPER</span>
+<p><span><span>&#x1F378;&#xFE0E;</span><span>&#x1F378;&#xFE0F;</span></span><span>(6.0)	COCKTAIL GLASS</span>
+<p><span><span>&#x1F37D;&#xFE0E;</span><span>&#x1F37D;&#xFE0F;</span></span><span>(7.0)	FORK AND KNIFE WITH PLATE</span>
+<p><span><span>&#x1F393;&#xFE0E;</span><span>&#x1F393;&#xFE0F;</span></span><span>(6.0)	GRADUATION CAP</span>
+<p><span><span>&#x1F396;&#xFE0E;</span><span>&#x1F396;&#xFE0F;</span></span><span>(7.0)	MILITARY MEDAL</span>
+<p><span><span>&#x1F397;&#xFE0E;</span><span>&#x1F397;&#xFE0F;</span></span><span>(7.0)	REMINDER RIBBON</span>
+<p><span><span>&#x1F399;&#xFE0E;</span><span>&#x1F399;&#xFE0F;</span></span><span>(7.0)	STUDIO MICROPHONE</span>
+<p><span><span>&#x1F39A;&#xFE0E;</span><span>&#x1F39A;&#xFE0F;</span></span><span>(7.0)	LEVEL SLIDER</span>
+<p><span><span>&#x1F39B;&#xFE0E;</span><span>&#x1F39B;&#xFE0F;</span></span><span>(7.0)	CONTROL KNOBS</span>
+<p><span><span>&#x1F39E;&#xFE0E;</span><span>&#x1F39E;&#xFE0F;</span></span><span>(7.0)	FILM FRAMES</span>
+<p><span><span>&#x1F39F;&#xFE0E;</span><span>&#x1F39F;&#xFE0F;</span></span><span>(7.0)	ADMISSION TICKETS</span>
+<p><span><span>&#x1F3A7;&#xFE0E;</span><span>&#x1F3A7;&#xFE0F;</span></span><span>(6.0)	HEADPHONE</span>
+<p><span><span>&#x1F3AC;&#xFE0E;</span><span>&#x1F3AC;&#xFE0F;</span></span><span>(6.0)	CLAPPER BOARD</span>
+<p><span><span>&#x1F3AD;&#xFE0E;</span><span>&#x1F3AD;&#xFE0F;</span></span><span>(6.0)	PERFORMING ARTS</span>
+<p><span><span>&#x1F3AE;&#xFE0E;</span><span>&#x1F3AE;&#xFE0F;</span></span><span>(6.0)	VIDEO GAME</span>
+<p><span><span>&#x1F3C2;&#xFE0E;</span><span>&#x1F3C2;&#xFE0F;</span></span><span>(6.0)	SNOWBOARDER</span>
+<p><span><span>&#x1F3C4;&#xFE0E;</span><span>&#x1F3C4;&#xFE0F;</span></span><span>(6.0)	SURFER</span>
+<p><span><span>&#x1F3C6;&#xFE0E;</span><span>&#x1F3C6;&#xFE0F;</span></span><span>(6.0)	TROPHY</span>
+<p><span><span>&#x1F3CA;&#xFE0E;</span><span>&#x1F3CA;&#xFE0F;</span></span><span>(6.0)	SWIMMER</span>
+<p><span><span>&#x1F3CB;&#xFE0E;</span><span>&#x1F3CB;&#xFE0F;</span></span><span>(7.0)	WEIGHT LIFTER</span>
+<p><span><span>&#x1F3CC;&#xFE0E;</span><span>&#x1F3CC;&#xFE0F;</span></span><span>(7.0)	GOLFER</span>
+<p><span><span>&#x1F3CD;&#xFE0E;</span><span>&#x1F3CD;&#xFE0F;</span></span><span>(7.0)	RACING MOTORCYCLE</span>
+<p><span><span>&#x1F3CE;&#xFE0E;</span><span>&#x1F3CE;&#xFE0F;</span></span><span>(7.0)	RACING CAR</span>
+<p><span><span>&#x1F3D4;&#xFE0E;</span><span>&#x1F3D4;&#xFE0F;</span></span><span>(7.0)	SNOW CAPPED MOUNTAIN</span>
+<p><span><span>&#x1F3D5;&#xFE0E;</span><span>&#x1F3D5;&#xFE0F;</span></span><span>(7.0)	CAMPING</span>
+<p><span><span>&#x1F3D6;&#xFE0E;</span><span>&#x1F3D6;&#xFE0F;</span></span><span>(7.0)	BEACH WITH UMBRELLA</span>
+<p><span><span>&#x1F3D7;&#xFE0E;</span><span>&#x1F3D7;&#xFE0F;</span></span><span>(7.0)	BUILDING CONSTRUCTION</span>
+<p><span><span>&#x1F3D8;&#xFE0E;</span><span>&#x1F3D8;&#xFE0F;</span></span><span>(7.0)	HOUSE BUILDINGS</span>
+<p><span><span>&#x1F3D9;&#xFE0E;</span><span>&#x1F3D9;&#xFE0F;</span></span><span>(7.0)	CITYSCAPE</span>
+<p><span><span>&#x1F3DA;&#xFE0E;</span><span>&#x1F3DA;&#xFE0F;</span></span><span>(7.0)	DERELICT HOUSE BUILDING</span>
+<p><span><span>&#x1F3DB;&#xFE0E;</span><span>&#x1F3DB;&#xFE0F;</span></span><span>(7.0)	CLASSICAL BUILDING</span>
+<p><span><span>&#x1F3DC;&#xFE0E;</span><span>&#x1F3DC;&#xFE0F;</span></span><span>(7.0)	DESERT</span>
+<p><span><span>&#x1F3DD;&#xFE0E;</span><span>&#x1F3DD;&#xFE0F;</span></span><span>(7.0)	DESERT ISLAND</span>
+<p><span><span>&#x1F3DE;&#xFE0E;</span><span>&#x1F3DE;&#xFE0F;</span></span><span>(7.0)	NATIONAL PARK</span>
+<p><span><span>&#x1F3DF;&#xFE0E;</span><span>&#x1F3DF;&#xFE0F;</span></span><span>(7.0)	STADIUM</span>
+<p><span><span>&#x1F3E0;&#xFE0E;</span><span>&#x1F3E0;&#xFE0F;</span></span><span>(6.0)	HOUSE BUILDING</span>
+<p><span><span>&#x1F3ED;&#xFE0E;</span><span>&#x1F3ED;&#xFE0F;</span></span><span>(6.0)	FACTORY</span>
+<p><span><span>&#x1F3F3;&#xFE0E;</span><span>&#x1F3F3;&#xFE0F;</span></span><span>(7.0)	WAVING WHITE FLAG</span>
+<p><span><span>&#x1F3F5;&#xFE0E;</span><span>&#x1F3F5;&#xFE0F;</span></span><span>(7.0)	ROSETTE</span>
+<p><span><span>&#x1F3F7;&#xFE0E;</span><span>&#x1F3F7;&#xFE0F;</span></span><span>(7.0)	LABEL</span>
+<p><span><span>&#x1F408;&#xFE0E;</span><span>&#x1F408;&#xFE0F;</span></span><span>(6.0)	CAT</span>
+<p><span><span>&#x1F415;&#xFE0E;</span><span>&#x1F415;&#xFE0F;</span></span><span>(6.0)	DOG</span>
+<p><span><span>&#x1F41F;&#xFE0E;</span><span>&#x1F41F;&#xFE0F;</span></span><span>(6.0)	FISH</span>
+<p><span><span>&#x1F426;&#xFE0E;</span><span>&#x1F426;&#xFE0F;</span></span><span>(6.0)	BIRD</span>
+<p><span><span>&#x1F43F;&#xFE0E;</span><span>&#x1F43F;&#xFE0F;</span></span><span>(7.0)	CHIPMUNK</span>
+<p><span><span>&#x1F441;&#xFE0E;</span><span>&#x1F441;&#xFE0F;</span></span><span>(7.0)	EYE</span>
+<p><span><span>&#x1F442;&#xFE0E;</span><span>&#x1F442;&#xFE0F;</span></span><span>(6.0)	EAR</span>
+<p><span><span>&#x1F446;&#xFE0E;</span><span>&#x1F446;&#xFE0F;</span></span><span>(6.0)	WHITE UP POINTING BACKHAND INDEX</span>
+<p><span><span>&#x1F447;&#xFE0E;</span><span>&#x1F447;&#xFE0F;</span></span><span>(6.0)	WHITE DOWN POINTING BACKHAND INDEX</span>
+<p><span><span>&#x1F448;&#xFE0E;</span><span>&#x1F448;&#xFE0F;</span></span><span>(6.0)	WHITE LEFT POINTING BACKHAND INDEX</span>
+<p><span><span>&#x1F449;&#xFE0E;</span><span>&#x1F449;&#xFE0F;</span></span><span>(6.0)	WHITE RIGHT POINTING BACKHAND INDEX</span>
+<p><span><span>&#x1F44D;&#xFE0E;</span><span>&#x1F44D;&#xFE0F;</span></span><span>(6.0)	THUMBS UP SIGN</span>
+<p><span><span>&#x1F44E;&#xFE0E;</span><span>&#x1F44E;&#xFE0F;</span></span><span>(6.0)	THUMBS DOWN SIGN</span>
+<p><span><span>&#x1F453;&#xFE0E;</span><span>&#x1F453;&#xFE0F;</span></span><span>(6.0)	EYEGLASSES</span>
+<p><span><span>&#x1F46A;&#xFE0E;</span><span>&#x1F46A;&#xFE0F;</span></span><span>(6.0)	FAMILY</span>
+<p><span><span>&#x1F47D;&#xFE0E;</span><span>&#x1F47D;&#xFE0F;</span></span><span>(6.0)	EXTRATERRESTRIAL ALIEN</span>
+<p><span><span>&#x1F4A3;&#xFE0E;</span><span>&#x1F4A3;&#xFE0F;</span></span><span>(6.0)	BOMB</span>
+<p><span><span>&#x1F4B0;&#xFE0E;</span><span>&#x1F4B0;&#xFE0F;</span></span><span>(6.0)	MONEY BAG</span>
+<p><span><span>&#x1F4B3;&#xFE0E;</span><span>&#x1F4B3;&#xFE0F;</span></span><span>(6.0)	CREDIT CARD</span>
+<p><span><span>&#x1F4BB;&#xFE0E;</span><span>&#x1F4BB;&#xFE0F;</span></span><span>(6.0)	PERSONAL COMPUTER</span>
+<p><span><span>&#x1F4BF;&#xFE0E;</span><span>&#x1F4BF;&#xFE0F;</span></span><span>(6.0)	OPTICAL DISC</span>
+<p><span><span>&#x1F4CB;&#xFE0E;</span><span>&#x1F4CB;&#xFE0F;</span></span><span>(6.0)	CLIPBOARD</span>
+<p><span><span>&#x1F4DA;&#xFE0E;</span><span>&#x1F4DA;&#xFE0F;</span></span><span>(6.0)	BOOKS</span>
+<p><span><span>&#x1F4DF;&#xFE0E;</span><span>&#x1F4DF;&#xFE0F;</span></span><span>(6.0)	PAGER</span>
+<p><span><span>&#x1F4E4;&#xFE0E;</span><span>&#x1F4E4;&#xFE0F;</span></span><span>(6.0)	OUTBOX TRAY</span>
+<p><span><span>&#x1F4E5;&#xFE0E;</span><span>&#x1F4E5;&#xFE0F;</span></span><span>(6.0)	INBOX TRAY</span>
+<p><span><span>&#x1F4E6;&#xFE0E;</span><span>&#x1F4E6;&#xFE0F;</span></span><span>(6.0)	PACKAGE</span>
+<p><span><span>&#x1F4EA;&#xFE0E;</span><span>&#x1F4EA;&#xFE0F;</span></span><span>(6.0)	CLOSED MAILBOX WITH LOWERED FLAG</span>
+<p><span><span>&#x1F4EB;&#xFE0E;</span><span>&#x1F4EB;&#xFE0F;</span></span><span>(6.0)	CLOSED MAILBOX WITH RAISED FLAG</span>
+<p><span><span>&#x1F4EC;&#xFE0E;</span><span>&#x1F4EC;&#xFE0F;</span></span><span>(6.0)	OPEN MAILBOX WITH RAISED FLAG</span>
+<p><span><span>&#x1F4ED;&#xFE0E;</span><span>&#x1F4ED;&#xFE0F;</span></span><span>(6.0)	OPEN MAILBOX WITH LOWERED FLAG</span>
+<p><span><span>&#x1F4F7;&#xFE0E;</span><span>&#x1F4F7;&#xFE0F;</span></span><span>(6.0)	CAMERA</span>
+<p><span><span>&#x1F4F9;&#xFE0E;</span><span>&#x1F4F9;&#xFE0F;</span></span><span>(6.0)	VIDEO CAMERA</span>
+<p><span><span>&#x1F4FA;&#xFE0E;</span><span>&#x1F4FA;&#xFE0F;</span></span><span>(6.0)	TELEVISION</span>
+<p><span><span>&#x1F4FB;&#xFE0E;</span><span>&#x1F4FB;&#xFE0F;</span></span><span>(6.0)	RADIO</span>
+<p><span><span>&#x1F4FD;&#xFE0E;</span><span>&#x1F4FD;&#xFE0F;</span></span><span>(7.0)	FILM PROJECTOR</span>
+<p><span><span>&#x1F508;&#xFE0E;</span><span>&#x1F508;&#xFE0F;</span></span><span>(6.0)	SPEAKER</span>
+<p><span><span>&#x1F50D;&#xFE0E;</span><span>&#x1F50D;&#xFE0F;</span></span><span>(6.0)	LEFT-POINTING MAGNIFYING GLASS</span>
+<p><span><span>&#x1F512;&#xFE0E;</span><span>&#x1F512;&#xFE0F;</span></span><span>(6.0)	LOCK</span>
+<p><span><span>&#x1F513;&#xFE0E;</span><span>&#x1F513;&#xFE0F;</span></span><span>(6.0)	OPEN LOCK</span>
+<p><span><span>&#x1F549;&#xFE0E;</span><span>&#x1F549;&#xFE0F;</span></span><span>(7.0)	OM SYMBOL</span>
+<p><span><span>&#x1F54A;&#xFE0E;</span><span>&#x1F54A;&#xFE0F;</span></span><span>(7.0)	DOVE OF PEACE</span>
+<p><span><span>&#x1F550;&#xFE0E;</span><span>&#x1F550;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE ONE OCLOCK</span>
+<p><span><span>&#x1F551;&#xFE0E;</span><span>&#x1F551;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE TWO OCLOCK</span>
+<p><span><span>&#x1F552;&#xFE0E;</span><span>&#x1F552;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE THREE OCLOCK</span>
+<p><span><span>&#x1F553;&#xFE0E;</span><span>&#x1F553;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE FOUR OCLOCK</span>
+<p><span><span>&#x1F554;&#xFE0E;</span><span>&#x1F554;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE FIVE OCLOCK</span>
+<p><span><span>&#x1F555;&#xFE0E;</span><span>&#x1F555;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE SIX OCLOCK</span>
+<p><span><span>&#x1F556;&#xFE0E;</span><span>&#x1F556;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE SEVEN OCLOCK</span>
+<p><span><span>&#x1F557;&#xFE0E;</span><span>&#x1F557;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE EIGHT OCLOCK</span>
+<p><span><span>&#x1F558;&#xFE0E;</span><span>&#x1F558;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE NINE OCLOCK</span>
+<p><span><span>&#x1F559;&#xFE0E;</span><span>&#x1F559;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE TEN OCLOCK</span>
+<p><span><span>&#x1F55A;&#xFE0E;</span><span>&#x1F55A;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE ELEVEN OCLOCK</span>
+<p><span><span>&#x1F55B;&#xFE0E;</span><span>&#x1F55B;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE TWELVE OCLOCK</span>
+<p><span><span>&#x1F55C;&#xFE0E;</span><span>&#x1F55C;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE ONE-THIRTY</span>
+<p><span><span>&#x1F55D;&#xFE0E;</span><span>&#x1F55D;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE TWO-THIRTY</span>
+<p><span><span>&#x1F55E;&#xFE0E;</span><span>&#x1F55E;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE THREE-THIRTY</span>
+<p><span><span>&#x1F55F;&#xFE0E;</span><span>&#x1F55F;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE FOUR-THIRTY</span>
+<p><span><span>&#x1F560;&#xFE0E;</span><span>&#x1F560;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE FIVE-THIRTY</span>
+<p><span><span>&#x1F561;&#xFE0E;</span><span>&#x1F561;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE SIX-THIRTY</span>
+<p><span><span>&#x1F562;&#xFE0E;</span><span>&#x1F562;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE SEVEN-THIRTY</span>
+<p><span><span>&#x1F563;&#xFE0E;</span><span>&#x1F563;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE EIGHT-THIRTY</span>
+<p><span><span>&#x1F564;&#xFE0E;</span><span>&#x1F564;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE NINE-THIRTY</span>
+<p><span><span>&#x1F565;&#xFE0E;</span><span>&#x1F565;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE TEN-THIRTY</span>
+<p><span><span>&#x1F566;&#xFE0E;</span><span>&#x1F566;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE ELEVEN-THIRTY</span>
+<p><span><span>&#x1F567;&#xFE0E;</span><span>&#x1F567;&#xFE0F;</span></span><span>(6.0)	CLOCK FACE TWELVE-THIRTY</span>
+<p><span><span>&#x1F56F;&#xFE0E;</span><span>&#x1F56F;&#xFE0F;</span></span><span>(7.0)	CANDLE</span>
+<p><span><span>&#x1F570;&#xFE0E;</span><span>&#x1F570;&#xFE0F;</span></span><span>(7.0)	MANTELPIECE CLOCK</span>
+<p><span><span>&#x1F573;&#xFE0E;</span><span>&#x1F573;&#xFE0F;</span></span><span>(7.0)	HOLE</span>
+<p><span><span>&#x1F574;&#xFE0E;</span><span>&#x1F574;&#xFE0F;</span></span><span>(7.0)	MAN IN BUSINESS SUIT LEVITATING</span>
+<p><span><span>&#x1F575;&#xFE0E;</span><span>&#x1F575;&#xFE0F;</span></span><span>(7.0)	SLEUTH OR SPY</span>
+<p><span><span>&#x1F576;&#xFE0E;</span><span>&#x1F576;&#xFE0F;</span></span><span>(7.0)	DARK SUNGLASSES</span>
+<p><span><span>&#x1F577;&#xFE0E;</span><span>&#x1F577;&#xFE0F;</span></span><span>(7.0)	SPIDER</span>
+<p><span><span>&#x1F578;&#xFE0E;</span><span>&#x1F578;&#xFE0F;</span></span><span>(7.0)	SPIDER WEB</span>
+<p><span><span>&#x1F579;&#xFE0E;</span><span>&#x1F579;&#xFE0F;</span></span><span>(7.0)	JOYSTICK</span>
+<p><span><span>&#x1F587;&#xFE0E;</span><span>&#x1F587;&#xFE0F;</span></span><span>(7.0)	LINKED PAPERCLIPS</span>
+<p><span><span>&#x1F58A;&#xFE0E;</span><span>&#x1F58A;&#xFE0F;</span></span><span>(7.0)	LOWER LEFT BALLPOINT PEN</span>
+<p><span><span>&#x1F58B;&#xFE0E;</span><span>&#x1F58B;&#xFE0F;</span></span><span>(7.0)	LOWER LEFT FOUNTAIN PEN</span>
+<p><span><span>&#x1F58C;&#xFE0E;</span><span>&#x1F58C;&#xFE0F;</span></span><span>(7.0)	LOWER LEFT PAINTBRUSH</span>
+<p><span><span>&#x1F58D;&#xFE0E;</span><span>&#x1F58D;&#xFE0F;</span></span><span>(7.0)	LOWER LEFT CRAYON</span>
+<p><span><span>&#x1F590;&#xFE0E;</span><span>&#x1F590;&#xFE0F;</span></span><span>(7.0)	RAISED HAND WITH FINGERS SPLAYED</span>
+<p><span><span>&#x1F5A5;&#xFE0E;</span><span>&#x1F5A5;&#xFE0F;</span></span><span>(7.0)	DESKTOP COMPUTER</span>
+<p><span><span>&#x1F5A8;&#xFE0E;</span><span>&#x1F5A8;&#xFE0F;</span></span><span>(7.0)	PRINTER</span>
+<p><span><span>&#x1F5B1;&#xFE0E;</span><span>&#x1F5B1;&#xFE0F;</span></span><span>(7.0)	THREE BUTTON MOUSE</span>
+<p><span><span>&#x1F5B2;&#xFE0E;</span><span>&#x1F5B2;&#xFE0F;</span></span><span>(7.0)	TRACKBALL</span>
+<p><span><span>&#x1F5BC;&#xFE0E;</span><span>&#x1F5BC;&#xFE0F;</span></span><span>(7.0)	FRAME WITH PICTURE</span>
+<p><span><span>&#x1F5C2;&#xFE0E;</span><span>&#x1F5C2;&#xFE0F;</span></span><span>(7.0)	CARD INDEX DIVIDERS</span>
+<p><span><span>&#x1F5C3;&#xFE0E;</span><span>&#x1F5C3;&#xFE0F;</span></span><span>(7.0)	CARD FILE BOX</span>
+<p><span><span>&#x1F5C4;&#xFE0E;</span><span>&#x1F5C4;&#xFE0F;</span></span><span>(7.0)	FILE CABINET</span>
+<p><span><span>&#x1F5D1;&#xFE0E;</span><span>&#x1F5D1;&#xFE0F;</span></span><span>(7.0)	WASTEBASKET</span>
+<p><span><span>&#x1F5D2;&#xFE0E;</span><span>&#x1F5D2;&#xFE0F;</span></span><span>(7.0)	SPIRAL NOTE PAD</span>
+<p><span><span>&#x1F5D3;&#xFE0E;</span><span>&#x1F5D3;&#xFE0F;</span></span><span>(7.0)	SPIRAL CALENDAR PAD</span>
+<p><span><span>&#x1F5DC;&#xFE0E;</span><span>&#x1F5DC;&#xFE0F;</span></span><span>(7.0)	COMPRESSION</span>
+<p><span><span>&#x1F5DD;&#xFE0E;</span><span>&#x1F5DD;&#xFE0F;</span></span><span>(7.0)	OLD KEY</span>
+<p><span><span>&#x1F5DE;&#xFE0E;</span><span>&#x1F5DE;&#xFE0F;</span></span><span>(7.0)	ROLLED-UP NEWSPAPER</span>
+<p><span><span>&#x1F5E1;&#xFE0E;</span><span>&#x1F5E1;&#xFE0F;</span></span><span>(7.0)	DAGGER KNIFE</span>
+<p><span><span>&#x1F5E3;&#xFE0E;</span><span>&#x1F5E3;&#xFE0F;</span></span><span>(7.0)	SPEAKING HEAD IN SILHOUETTE</span>
+<p><span><span>&#x1F5E8;&#xFE0E;</span><span>&#x1F5E8;&#xFE0F;</span></span><span>(7.0)	LEFT SPEECH BUBBLE</span>
+<p><span><span>&#x1F5EF;&#xFE0E;</span><span>&#x1F5EF;&#xFE0F;</span></span><span>(7.0)	RIGHT ANGER BUBBLE</span>
+<p><span><span>&#x1F5F3;&#xFE0E;</span><span>&#x1F5F3;&#xFE0F;</span></span><span>(7.0)	BALLOT BOX WITH BALLOT</span>
+<p><span><span>&#x1F5FA;&#xFE0E;</span><span>&#x1F5FA;&#xFE0F;</span></span><span>(7.0)	WORLD MAP</span>
+<p><span><span>&#x1F610;&#xFE0E;</span><span>&#x1F610;&#xFE0F;</span></span><span>(6.0)	NEUTRAL FACE</span>
+<p><span><span>&#x1F687;&#xFE0E;</span><span>&#x1F687;&#xFE0F;</span></span><span>(6.0)	METRO</span>
+<p><span><span>&#x1F68D;&#xFE0E;</span><span>&#x1F68D;&#xFE0F;</span></span><span>(6.0)	ONCOMING BUS</span>
+<p><span><span>&#x1F691;&#xFE0E;</span><span>&#x1F691;&#xFE0F;</span></span><span>(6.0)	AMBULANCE</span>
+<p><span><span>&#x1F694;&#xFE0E;</span><span>&#x1F694;&#xFE0F;</span></span><span>(6.0)	ONCOMING POLICE CAR</span>
+<p><span><span>&#x1F698;&#xFE0E;</span><span>&#x1F698;&#xFE0F;</span></span><span>(6.0)	ONCOMING AUTOMOBILE</span>
+<p><span><span>&#x1F6AD;&#xFE0E;</span><span>&#x1F6AD;&#xFE0F;</span></span><span>(6.0)	NO SMOKING SYMBOL</span>
+<p><span><span>&#x1F6B2;&#xFE0E;</span><span>&#x1F6B2;&#xFE0F;</span></span><span>(6.0)	BICYCLE</span>
+<p><span><span>&#x1F6B9;&#xFE0E;</span><span>&#x1F6B9;&#xFE0F;</span></span><span>(6.0)	MENS SYMBOL</span>
+<p><span><span>&#x1F6BA;&#xFE0E;</span><span>&#x1F6BA;&#xFE0F;</span></span><span>(6.0)	WOMENS SYMBOL</span>
+<p><span><span>&#x1F6BC;&#xFE0E;</span><span>&#x1F6BC;&#xFE0F;</span></span><span>(6.0)	BABY SYMBOL</span>
+<p><span><span>&#x1F6CB;&#xFE0E;</span><span>&#x1F6CB;&#xFE0F;</span></span><span>(7.0)	COUCH AND LAMP</span>
+<p><span><span>&#x1F6CD;&#xFE0E;</span><span>&#x1F6CD;&#xFE0F;</span></span><span>(7.0)	SHOPPING BAGS</span>
+<p><span><span>&#x1F6CE;&#xFE0E;</span><span>&#x1F6CE;&#xFE0F;</span></span><span>(7.0)	BELLHOP BELL</span>
+<p><span><span>&#x1F6CF;&#xFE0E;</span><span>&#x1F6CF;&#xFE0F;</span></span><span>(7.0)	BED</span>
+<p><span><span>&#x1F6E0;&#xFE0E;</span><span>&#x1F6E0;&#xFE0F;</span></span><span>(7.0)	HAMMER AND WRENCH</span>
+<p><span><span>&#x1F6E1;&#xFE0E;</span><span>&#x1F6E1;&#xFE0F;</span></span><span>(7.0)	SHIELD</span>
+<p><span><span>&#x1F6E2;&#xFE0E;</span><span>&#x1F6E2;&#xFE0F;</span></span><span>(7.0)	OIL DRUM</span>
+<p><span><span>&#x1F6E3;&#xFE0E;</span><span>&#x1F6E3;&#xFE0F;</span></span><span>(7.0)	MOTORWAY</span>
+<p><span><span>&#x1F6E4;&#xFE0E;</span><span>&#x1F6E4;&#xFE0F;</span></span><span>(7.0)	RAILWAY TRACK</span>
+<p><span><span>&#x1F6E5;&#xFE0E;</span><span>&#x1F6E5;&#xFE0F;</span></span><span>(7.0)	MOTOR BOAT</span>
+<p><span><span>&#x1F6E9;&#xFE0E;</span><span>&#x1F6E9;&#xFE0F;</span></span><span>(7.0)	SMALL AIRPLANE</span>
+<p><span><span>&#x1F6F0;&#xFE0E;</span><span>&#x1F6F0;&#xFE0F;</span></span><span>(7.0)	SATELLITE</span>
+<p><span><span>&#x1F6F3;&#xFE0E;</span><span>&#x1F6F3;&#xFE0F;</span></span><span>(7.0)	PASSENGER SHIP</span>
