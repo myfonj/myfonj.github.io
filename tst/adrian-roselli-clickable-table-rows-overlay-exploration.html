@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Non-Clickable Rows That Are Clickable — Adrian Roselli</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/wp-content/themes/AAR/favicon.png">
+  <style>
+    body {
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,  Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      line-height: 1.4;
+      background-color: #eee;
+      color: #333;
+      /*   line-height: 1.5; */
+      /*   letter-spacing: 0.12em; */
+      /*   word-spacing: 0.16em; */
+    }
+
+    h1 {
+      line-height: 1;
+    }
+
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      border: 0.1em solid rgba(0, 0, 0, 0.1);
+    }
+
+    caption {
+      text-align: left;
+      font-style: italic;
+      padding: 0.25em 0.5em 0.5em 0.5em;
+    }
+
+    th,
+    td {
+      padding: 0.25em 0.5em 0.25em 1em;
+      vertical-align: text-top;
+      text-align: left;
+      text-indent: -0.5em;
+    }
+
+    th {
+      vertical-align: bottom;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    th[scope=row] {
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    tr:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    th:nth-of-type(1):not(th:first-child) {
+      font-style: italic;
+    }
+
+    th:nth-of-type(4),
+    td:nth-of-type(4) {
+      text-align: right;
+    }
+
+    /* Hover effect for rows, not dependent on the "clickability" */
+    /* (Done in pseudo as well, as for not to bother with different shades) */
+    /* Depends on tr { position: relative; }! */
+    tbody tr::after {
+     content: '';
+     position: absolute;
+     inset: 0;
+     z-index: -1;
+     pointer-events: none; /* should not be necessary */
+    }
+    tr:hover::after {
+     background-color: #FF02;
+    }
+
+    /* Allow row clicking */
+
+    tr {
+      position: relative;
+    }
+
+    tr label::after {
+      content: "";
+      position: absolute;
+      inset: 0;  
+    }
+
+    tr:hover,
+    tr:focus-within {
+      /* outline moved to actual active element in order not to "lie" about the effect */
+    }
+
+    tr:focus-within label::after,
+    th label:hover::after,
+    th label:focus::after {
+      outline: .5em solid rgba(0,0,255,.25);
+    }
+
+    /* Width is here or else Safari honors nothing. */
+    th > label::after {
+      /* hopefully not needed */
+    }
+
+  </style>
+</head>
+<body>
+
+<p>Original version by Adrian Roselli: <a href="https://adrianroselli.com/demos/non-clickable-rows-that-are-clickable/index.html">https://adrianroselli.com/demos/non-clickable-rows-that-are-clickable/index.html</a>. Few adjustments made to test in various browsers.</p>
+
+<h1>Non-Clickable Rows That Are Clickable</h1>
+
+<table>
+  <caption>Available Books</caption>
+  <thead>
+  <tr>
+    <th id="ColFlag">Select</th>
+    <th id="ColTitle">Title</th>
+    <th id="ColAuthor">Author</th>
+    <th id="ColYear">Year</th>
+    <th id="ColISBN13">ISBN-13</th>
+  </tr>
+  </thead>
+  <!-- <tr>
+    <td><input type="checkbox" id="f00"></td>
+    <th scope="row"><label for="f00">The Tale of Genji<br>(<span lang="ja">源氏物語</span>, Genji monogatari)</label></th>
+    <td>Murasaki Shikibu<br>(<span lang="ja">紫 式部</span>, Lady Murasaki)</td>
+    <td>1021</td>
+    <td>9780142437148</td>
+  </tr> -->
+  <tr>
+    <td><input type="checkbox" id="f01"></td>
+    <th scope="row"><label for="f01">The Ingenious Gentleman Don Quixote of La Mancha</label></th>
+    <td>Miguel De Cervantes</td>
+    <td>1605</td>
+    <td>9783125798502</td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" id="f02"></td>
+    <th scope="row"><label for="f02">Frankenstein; or, The Modern Prometheus</label></th>
+    <td>Mary Shelley</td>
+    <td>1818</td>
+    <td>9781530278442</td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" id="f03"></td>
+    <th scope="row"><label for="f03">Moby-Dick; or, The Whale</label></th>
+    <td>Herman Melville</td>
+    <td>1851</td>
+    <td>9781530697908</td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" id="f04"></td>
+    <th scope="row"><label for="f04">The Hidden Hand</label></th>
+    <td>Emma Dorothy Eliza Nevitte Southworth</td>
+    <td>1888</td>
+    <td>9780813512969</td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" id="f05"></td>
+    <th scope="row"><label for="f05">The Great Gatsby</label></th>
+    <td>F. Scott Fitzgerald</td>
+    <td>1925</td>
+    <td>9780743273565</td>
+  </tr>
+  <tr>
+    <td><input type="checkbox" id="f06"></td>
+    <th scope="row"><label for="f06">Nineteen Eighty-Four</label></th>
+    <td>George Orwell</td>
+    <td>1948</td>
+    <td>9780451524935</td>
+  </tr>
+    <tr>
+      <td><input type="checkbox" id="f07"></td>
+      <th scope="row"><label for="f07">Who Fears Death</label></th>
+      <td>Nnedi Okorafor</td>
+      <td>2010</td>
+      <td>9780756406691</td>
+    </tr>
+</table>
+
+<p>
+  Used in my post <cite><a href="https://adrianroselli.com/2023/11/dont-turn-a-table-into-an-aria-grid-just-for-a-clickable-row.html" target="_top">Don’t Turn a Table into an ARIA Grid Just for a Clickable Row</a></cite>. <a href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fadrianroselli.com%2Fdemos%2Fnon-clickable-rows-that-are-clickable%2Findex.html" target="_top">Validate the HTML</a>.
+</p>
+
+</body>
+</html>
