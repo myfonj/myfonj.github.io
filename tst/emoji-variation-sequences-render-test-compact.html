@@ -9,10 +9,17 @@ p>span:first-child { display: inline-block; xwidth: 3rem; text-align: center;}
 [T]:not(:checked) ~ * p > span:first-child > span:first-child,
 [E]:not(:checked) ~ * p > span:first-child > span:last-child,
 [I]:not(:checked) ~ * p > span:last-child { display: none; }
+[SS]:checked ~ * p { font-family: Segoe UI Symbol; }
+[SE]:checked ~ * p { font-family: Segoe UI Emoji; }
 
-:checked + :checked ~ * p { outline: 1px solid; }
+input:not([name]):checked ~ :not([name]):checked ~ * p { outline: 1px solid; }
 </style>
-T<input T type="checkbox" checked> E<input E type="checkbox" checked> I<input I type="checkbox">
+T<input T type="checkbox" checked>
+E<input E type="checkbox">
+I<input I type="checkbox">
+Font default<input type="radio" name="f" checked>
+Symbol<input SS type="radio" name="f">
+Emoji<input SE type="radio" name="f">
 <main>
 <p><span><span>&#x0023;&#xFE0E;</span><span>&#x0023;&#xFE0F;</span></span><span>(1.1)	NUMBER SIGN</span>
 <p><span><span>&#x002A;&#xFE0E;</span><span>&#x002A;&#xFE0F;</span></span><span>(1.1)	ASTERISK</span>
