@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><title>
+pixel zoomer
+</title><meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+img {
+ image-rendering: pixelated;
+ image-rendering: crisp-edges;
+ width: calc(1/var(--dpr)*var(--w)*var(--s)*1px)
+}
+input { display: block;}
+</style>
+<body>
+
+<input type=number value=5 min=1 oninput=document.body.style.setProperty('--s',value) id=i>
+
+Paste image(s).
+
+<script>
+var lastRatio = devicePixelRatio;
+
+document.addEventListener('paste', onPaste);
+
+/** 
+ * @param {ClipboardEvent} event
+ */
+function onPaste (event) {
+ if( !event.clipboardData ) {
+  return
+ }
+
+ for (const item of event.clipboardData.items) {
+  if (item.kind === 'file' && item.type.split('/')[0] == 'image') {
+   var blob = item.getAsFile();
+   if( !blob ) {
+    return;
+   }
+   var img = new Image();
+   img.onload = function(){
+    img.style.setProperty('--w',String(img.width));
+    i.after(img);
+   }
+   img.src = URL.createObjectURL(blob);
+  }
+ }
+}
+
+function onresize() {
+ const dpr = devicePixelRatio;
+ document.body.style.setProperty('--dpr',dpr);
+ if(lastRatio == dpr) {
+  return;
+ }
+ if(lastRatio < dpr) {
+  i.valueAsNumber += 1;
+ } else {
+  if(i.valueAsNumber > 1) {
+   i.valueAsNumber -= 1;
+  }
+ }
+ i.oninput();
+ lastRatio = dpr;
+}
+
+onresize()
+window.addEventListener('resize', onresize, true);
+i.oninput();
+</script>
