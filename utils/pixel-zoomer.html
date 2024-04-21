@@ -11,7 +11,7 @@ content="View pixel art images aligned to physical pixels on any display."
 
 <!--
 Changelog
-v1.6.0 drop listener on entire document
+v1.6.0 drop listener on entire document added sample and +/-
 v1.5.0 load images from (single) URL from clipboard
 v1.4.0 polish the UI a bit
 v1.3.0 local files on file input (dragNdrop)
@@ -50,6 +50,7 @@ img {
  image-rendering: crisp-edges;
  width: calc( var(--dpx) * var(--naturalWidth) * var(--scale) );
  background-color: var(--background);
+ float: left;
 }
 
 label { white-space: nowrap; }
@@ -83,14 +84,26 @@ input[type="color"] {
 <label> Image size ×
  <input id=i type=number value=5 min=1 size=4
   oninput="document.body.style.setProperty('--scale', value)"
- >,
+ >
 </label>
+<button type="button"
+ onclick="i.valueAsNumber>1&&i.valueAsNumber--;i.oninput()"
+>-</button>
+<button type="button"
+ onclick="i.valueAsNumber++;i.oninput()"
+>+</button>,
 
 <label> background
  <input id=b type=color value="#666666"
   oninput="document.body.style.setProperty('--background', value)"
  >.
 </label>
+
+<a
+ title="open to new tab to see"
+ href="data:image/gif;base64,R0lGODlhCgAKAIAAAAAAAP///yH5BAEAAAAALAAAAAAKAAoAAAIRhB2ZhxoM3GMSykqd1VltzxQAOw=="
+ onclick="if(event.ctrlKey){return true}else{makePic(href);return false}"
+>Sample</a>
 
 <hr id=hr>
 
