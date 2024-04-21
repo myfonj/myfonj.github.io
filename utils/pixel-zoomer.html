@@ -2,7 +2,7 @@
 <html lang="en">
 
 <title>
-Pixel Zoomer v1.3.0
+Pixel Zoomer v1.6.0
 </title>
 
 <meta name="description"
@@ -11,39 +11,56 @@ content="View pixel art images aligned to physical pixels on any display."
 
 <!--
 Changelog
+v1.6.0 drop listener on entire document
+v1.5.0 load images from (single) URL from clipboard
+v1.4.0 polish the UI a bit
 v1.3.0 local files on file input (dragNdrop)
 v1.2.0 customizable background colour
 v1.1.0 UI is zoom - immune 
 v1.0.0 zoom it with number input
 v0.0.1 paste image and make it match device pixels × 5
+
 Todo
 read params - try to load from URL, prompt for copy on CORS fail
-persistence (settings)
+persistence - settings
+? persistence - image history in cache
+explore mixed clipboards
 -->
 
 <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+
 body {
  --dpx: calc( 1 / var(--dpr) * 1px );
  /*
-  this locks freezes zoom level to fixed stat
-  it is normally super evil
-  don't do that if you need to remain accessible
+  This locks ("freezes") zoom level to fixed state.
+  It is normally super evil!
+  ⚠ Don't do that if you need to remain accessible!
  */
- font-size: calc(var(--dpx) * 30);
+ font-size: calc(var(--dpx) * 20);
  margin: 1em;
  & * { font-size: inherit; }
+ font-family: system-ui;
 }
+
 img {
  image-rendering: pixelated;
  image-rendering: crisp-edges;
- width: calc( var(--dpx) * var(--width) * var(--scale));
- background-color:var(--background);
+ width: calc( var(--dpx) * var(--naturalWidth) * var(--scale) );
+ background-color: var(--background);
 }
+
+label { white-space: nowrap; }
 hr, input { border-width: var(--dpx); }
-input[type="color"] { height: 1em; width: 1em; padding: 0; border: none; }
+
+input[type="color"] {
+ height: 1em;
+ width: 1em;
+ padding: 0;
+ border: none;
+}
 </style>
 
 <body style="
@@ -52,36 +69,27 @@ input[type="color"] { height: 1em; width: 1em; padding: 0; border: none; }
  --dpr: /* here will be device pixel ratio */;
 ">
 
-<p>
-<label>
-Paste or drop images:
-<input
- type=file
- multiple
- accept="image/*"
- onchange="onPaste({files})"
-></label>
-</p>
-
-<label>
-Scale 1 pixel
-<input 
- type=number
- value=5
- min=1
- oninput="document.body.style.setProperty('--scale', value)"
- id=i>
-times.
+<label> Paste / drop images:
+ <input
+  type=file
+  multiple
+  accept="image/*"
+  onchange="onPasteOrDrop({files})"
+ >.
 </label>
 
-<label>
-Background
-<input 
- type=color
- value="#666666"
- oninput="document.body.style.setProperty('--background', value)"
- id=b
->.
+<br>
+
+<label> Image size ×
+ <input id=i type=number value=5 min=1 size=4
+  oninput="document.body.style.setProperty('--scale', value)"
+ >,
+</label>
+
+<label> background
+ <input id=b type=color value="#666666"
+  oninput="document.body.style.setProperty('--background', value)"
+ >.
 </label>
 
 <hr id=hr>
@@ -89,29 +97,47 @@ Background
 <script>
 var lastRatio = devicePixelRatio;
 
-document.addEventListener('paste', onPaste);
+window.addEventListener('paste', onPasteOrDrop, true);
+window.addEventListener('drop', onPasteOrDrop, true);
+window.addEventListener('dragover', halt, true);
+function halt (e) { e?.preventDefault?.(); }
 
-/** 
- * @param {ClipboardEvent} event
- */
-function onPaste (event) {
- console.log(event)
- const files = event?.clipboardData?.items || event?.files;
- if( !files ) {
-  return
- }
- for (const file of files) { 
-  if (file?.type?.split('/')[0] == 'image') {
-   const blob = file.getAsFile ? file.getAsFile() : file;
-   const img = new Image();
-   img.onload = function(){
-    img.style.setProperty( '--width', String(img.width) );
-    hr.after(img);
-    delete img.onload;
-   }
-   img.src = URL.createObjectURL(blob);
+function onPasteOrDrop (event) {
+ halt (event);
+ const items = event?.files
+  || event?.dataTransfer?.files
+  || event?.clipboardData?.items;
+ for (const item of items) {
+  // console.log(item)
+  if (item?.type?.split('/')[0] == 'image') {
+   const blobOrFile = item.getAsFile?.() || item;
+   const url = URL.createObjectURL(blobOrFile);
+   makePic(url);
+  } else {
+   item?.getAsString?.(makePic);
   }
  }
+}
+
+function makePic(url) {
+ // clipboard paste of copied pic usually also contains HTML fragment
+ if(!url.match(/^(https?|blob|data):/)) {
+  return;
+ }
+ const img = new Image();
+ img.onload = function(){
+  img.style.setProperty( '--naturalWidth', String(img.width) );
+  hr.after(img);
+  delete img.onload;
+  delete img.onerror;
+ }
+ img.onerror = function(e){
+  prompt('Rendering failed:', url);
+  delete img.onload;
+  delete img.onerror;
+  img.remove();
+ }
+ img.src = url;
 }
 
 function onresize() {
