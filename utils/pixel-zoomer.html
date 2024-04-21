@@ -1,20 +1,90 @@
-<!doctype html><html lang="en"><title>
-pixel zoomer
-</title><meta name="color-scheme" content="dark">
+<!doctype html>
+<html lang="en">
+
+<title>
+Pixel Zoomer v1.3.0
+</title>
+
+<meta name="description"
+content="View pixel art images aligned to physical pixels on any display."
+>
+
+<!--
+Changelog
+v1.3.0 local files on file input (dragNdrop)
+v1.2.0 customizable background colour
+v1.1.0 UI is zoom - immune 
+v1.0.0 zoom it with number input
+v0.0.1 paste image and make it match device pixels × 5
+Todo
+read params - try to load from URL, prompt for copy on CORS fail
+persistence (settings)
+-->
+
+<meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
+body {
+ --dpx: calc( 1 / var(--dpr) * 1px );
+ /*
+  this locks freezes zoom level to fixed stat
+  it is normally super evil
+  don't do that if you need to remain accessible
+ */
+ font-size: calc(var(--dpx) * 30);
+ margin: 1em;
+ & * { font-size: inherit; }
+}
 img {
  image-rendering: pixelated;
  image-rendering: crisp-edges;
- width: calc(1/var(--dpr)*var(--w)*var(--s)*1px)
+ width: calc( var(--dpx) * var(--width) * var(--scale));
+ background-color:var(--background);
 }
-input { display: block;}
+hr, input { border-width: var(--dpx); }
+input[type="color"] { height: 1em; width: 1em; padding: 0; border: none; }
 </style>
-<body>
 
-<input type=number value=5 min=1 oninput=document.body.style.setProperty('--s',value) id=i>
+<body style="
+ --background: /* here will be background colour */;
+ --scale: /* here will be picture scale */;
+ --dpr: /* here will be device pixel ratio */;
+">
 
-Paste image(s).
+<p>
+<label>
+Paste or drop images:
+<input
+ type=file
+ multiple
+ accept="image/*"
+ onchange="onPaste({files})"
+></label>
+</p>
+
+<label>
+Scale 1 pixel
+<input 
+ type=number
+ value=5
+ min=1
+ oninput="document.body.style.setProperty('--scale', value)"
+ id=i>
+times.
+</label>
+
+<label>
+Background
+<input 
+ type=color
+ value="#666666"
+ oninput="document.body.style.setProperty('--background', value)"
+ id=b
+>.
+</label>
+
+<hr id=hr>
 
 <script>
 var lastRatio = devicePixelRatio;
@@ -25,20 +95,19 @@ document.addEventListener('paste', onPaste);
  * @param {ClipboardEvent} event
  */
 function onPaste (event) {
- if( !event.clipboardData ) {
+ console.log(event)
+ const files = event?.clipboardData?.items || event?.files;
+ if( !files ) {
   return
  }
-
- for (const item of event.clipboardData.items) {
-  if (item.kind === 'file' && item.type.split('/')[0] == 'image') {
-   var blob = item.getAsFile();
-   if( !blob ) {
-    return;
-   }
-   var img = new Image();
+ for (const file of files) { 
+  if (file?.type?.split('/')[0] == 'image') {
+   const blob = file.getAsFile ? file.getAsFile() : file;
+   const img = new Image();
    img.onload = function(){
-    img.style.setProperty('--w',String(img.width));
-    i.after(img);
+    img.style.setProperty( '--width', String(img.width) );
+    hr.after(img);
+    delete img.onload;
    }
    img.src = URL.createObjectURL(blob);
   }
@@ -47,7 +116,7 @@ function onPaste (event) {
 
 function onresize() {
  const dpr = devicePixelRatio;
- document.body.style.setProperty('--dpr',dpr);
+ document.body.style.setProperty('--dpr', dpr);
  if(lastRatio == dpr) {
   return;
  }
@@ -60,9 +129,10 @@ function onresize() {
  }
  i.oninput();
  lastRatio = dpr;
-}
-
-onresize()
+} 
+ 
+onresize();
 window.addEventListener('resize', onresize, true);
 i.oninput();
+b.oninput();
 </script>
