@@ -24,7 +24,7 @@ if(n < -9 && !confirm('This may freeze your browser.\n\nProceed?')) {
 const exp = `${n>0?'':'+'}${-n}`;
 
 let code = `<svg xmlns="http://www.w3.org/2000/svg" 
- viewBox="-1.0e${exp},-1.0e${exp} 2.0e${exp} 2.0e${exp}">
+ viewBox="-1e${exp},-1e${exp} 2e${exp} 2e${exp}">
  <circle r="0.5e${exp}" stroke-width="1e${exp}"
   pathlength="2" stroke-dasharray="1,2"
   fill="none" stroke="currentcolor"></circle>
@@ -36,7 +36,7 @@ let code = `<svg xmlns="http://www.w3.org/2000/svg"
 </style>`;
 for_svg.innerHTML = code;
 for_code.innerHTML = code 
- + '\n\n// ' + `1.0e${exp} == ${Number(`1.0e${exp}`).toFixed(n>0?n:0)}`
+ + '\n\n// ' + `1e${exp} == ${Number(`1e${exp}`).toFixed(n>0?n:0)}`
  + '\n\n// UA: ' + navigator.userAgent;
 }
 render()
