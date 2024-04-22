@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><title>
+SVG circle arc decimal precision test
+</title><meta name="color-scheme" content="dark light">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body>
+
+<div id="y"></div>
+
+<label>Decimals
+ <input id="in_d" type="number" min="-100" value="0" max="100"
+ oninput="in_r.value=value;render()">
+</label>
+<input type="range" min="-9" max="9" id="in_r" oninput="in_d.value=value;render()">
+
+<xmp id="x" style="white-space: pre-wrap"></xmp>
+
+<script>
+function render () {
+const d = in_d.valueAsNumber;
+let pre = '';
+let post = '';
+let pre2 = '.';
+let post2 = '';
+if (d > 0) {
+ pre = '.' + '0'.repeat(d);
+ post = '';
+ pre2 = '.' + '0'.repeat(d+1);
+ post2 = '';
+} else if (d < 0) {
+ pre = '';
+ post = '0'.repeat(Math.abs(d));
+ pre2 = '';
+ post2 = '0'.repeat(Math.abs(d)-1);
+}
+
+let code = `<svg xmlns="http://www.w3.org/2000/svg" 
+ viewBox="-${pre}1${post},-${pre}1${post} ${pre}2${post} ${pre}2${post}">
+ <circle r="${pre2}5${post2}" stroke-width="${pre}1${post}"
+  pathlength="100" stroke-dasharray="50,100"
+  fill="none" stroke="currentcolor"></circle>
+</svg>
+<style>
+ circle:hover { color: highlight; }
+ circle:active { color: mark; }
+ svg { outline: #0FF6 solid; max-width: 50vw; float: right }
+</style>`;
+y.innerHTML = x.innerHTML = code;
+x.innerHTML += '\n' + navigator.userAgent
+}
+render()
+</script>
