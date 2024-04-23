@@ -6,13 +6,34 @@
 <div id="for_svg" style="outline: #0FF6 solid; width: 50vw; float: right">
 </div>
 
+<pre id="for_info" style="float: right; clear: right; width: 50vw; white-space: pre-wrap"></pre>
+
 <label>Decimals <input id="in_d" type="number" value="0" min="-64" max="64"
  oninput="in_r.value=value;render()">
 </label>
 <input id="in_r" type="range" min="-9" max="9"
  oninput="in_d.value=value;render()">
 
-<xmp id="for_code" style="white-space: pre-wrap"></xmp>
+<details><summary>Template</summary>
+<textarea id="in_template" style="white-space: pre-wrap; width: 42vw; height: 30em" oninput="render()">
+<svg xmlns="http://www.w3.org/2000/svg" 
+ viewBox="-1e${exp},-1e${exp} 2e${exp} 2e${exp}">
+ <circle r=".5e${exp}" stroke-width="1e${exp}"
+  pathlength="2" stroke-dasharray="1,2"
+  fill="none" stroke="currentcolor"></circle>
+</svg>
+<style>
+ circle { pointer-events: stroke; }
+ circle:hover { color: highlight; }
+ circle:active { color: mark; }
+</style>
+</textarea>
+</details>
+
+<details open><summary>Code</summary>
+<textarea id="for_code" style="white-space: pre-wrap; width: 42vw; height: 30em" oninput="for_svg.innerHTML=value"></textarea>
+</details>
+
 
 <script>
 function render () {
@@ -23,21 +44,11 @@ if(n < -9 && !confirm('This may freeze your browser.\n\nProceed?')) {
 }
 const exp = `${n>0?'':'+'}${-n}`;
 
-let code = `<svg xmlns="http://www.w3.org/2000/svg" 
- viewBox="-1e${exp},-1e${exp} 2e${exp} 2e${exp}">
- <circle r="0.5e${exp}" stroke-width="1e${exp}"
-  pathlength="2" stroke-dasharray="1,2"
-  fill="none" stroke="currentcolor"></circle>
-</svg>
-<style>
- circle { pointer-events: stroke; }
- circle:hover { color: highlight; }
- circle:active { color: mark; }
-</style>`;
-for_svg.innerHTML = code;
-for_code.innerHTML = code 
- + '\n\n// ' + `1e${exp} == ${Number(`1e${exp}`).toFixed(n>0?n:0)}`
- + '\n\n// UA: ' + navigator.userAgent;
+let html = eval('`' + in_template.value + '`');
+for_svg.innerHTML = html;
+for_code.value = html; 
+for_info.innerHTML = `1e${exp} == ${Number(`1e${exp}`).toFixed(n>0?n:0)}`
+ + '\n\n UA: ' + navigator.userAgent;
 }
 render()
 </script>
