@@ -1,29 +1,78 @@
 <!doctype html><html lang="en">
-<title>SVG circle stroke dash precision test</title>
+<title>SVG circle stroke dash precision test v4</title>
 <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html {
+ scrollbar-gutter: stable;
+}
+textarea {
+ width: 100%;
+ min-width: 30ch;
+ height: 40ch;
+ white-space: pre-wrap;
+}
+body {
+ display: flex;
+ flex-direction: row-reverse;
+ gap: 1em;
+ @media (max-width: 40ch) {
+  flex-direction: column-reverse;
+ }
+ & > .inputs {
+  flex-grow: 1;
+  flex-shrink: 0; 
+ }
+ & > .outputs {
+  flex-basis: 50vw;
+  flex-shrink: 1;
+  resizable: both;
+ }
+}
+input[type="number"] {
+ width: 8ch
+}
 
-<div id="for_svg" style="outline: #0FF6 solid; width: 50vw; float: right">
-</div>
+input[type="button"] {
+ padding-inline: 1ch;
+}
 
-<pre id="for_info" style="float: right; clear: right; width: 50vw; white-space: pre-wrap"></pre>
+#in_paint { display: none; }
+label:has(#in_hitbox:checked) + #in_paint { display: block}
+body:has(#in_hitbox:not(:checked)) #el_dots { opacity: 0 !important; }
+</style>
+<section class="outputs">
+ <div id="for_svg" style="outline: #0FF6 solid; "></div>
+ <pre id="for_info" style="white-space: pre-wrap; word-break: break-word;"></pre>
+</section>
 
-<label>Decimals <input id="in_d" type="number" value="0" min="-64" max="64"
- oninput="in_r.value=value;render()">
+<section class="inputs">
+<label>
+ Dec. places
+ <input id="in_d" type="number" value="0" min="-99" max="99"
+  oninput="in_r.value=value;render()">
 </label>
+<input type="button" onclick="in_d.value--;in_d.oninput()" value="-">
+<input type="button" onclick="in_d.value++;in_d.oninput()" value="+">
+<br>
 <input id="in_r" type="range" min="-9" max="9"
  oninput="in_d.value=value;render()">
+<br>
+<label><input id="in_hitbox" type="checkbox" checked>Show hitbox</label>
+<input id="in_paint" type="button" onclick="paint()" value="paint">
 
-<details><summary>Template</summary>
-<textarea id="in_template" style="white-space: pre-wrap; width: 42vw; height: 30em" oninput="render()">
+<details><summary>Template (<code>${exp}</code> = '<span id="out_exp"></span>')</summary>
+<textarea id="in_template" oninput="render()">
 <svg xmlns="http://www.w3.org/2000/svg" 
- viewBox="-1e${exp},-1e${exp} 2e${exp} 2e${exp}">
- <circle r=".5e${exp}" stroke-width="1e${exp}"
-  pathlength="2" stroke-dasharray="1,2"
-  fill="none" stroke="currentcolor"></circle>
+ viewBox="-1${exp},-1${exp} 2${exp} 2${exp}">
+ <circle r=".5${exp}"
+  stroke-width="1${exp}"
+  pathlength="4"
+  stroke-dasharray="1,1"
+  stroke="currentcolor"
+  fill="none"></circle>
 </svg>
 <style>
- circle { pointer-events: stroke; }
  circle:hover { color: highlight; }
  circle:active { color: mark; }
 </style>
@@ -31,24 +80,93 @@
 </details>
 
 <details open><summary>Code</summary>
-<textarea id="for_code" style="white-space: pre-wrap; width: 42vw; height: 30em" oninput="for_svg.innerHTML=value"></textarea>
+<textarea id="for_code" oninput="for_svg.innerHTML=value"></textarea>
 </details>
 
-
+</section>
+<div id="el_dots"></div>
 <script>
+const ua = navigator.userAgent;
+const isFx = !!ua.match(/\) Gecko/);
+const FxFreezesBeyond = -9;
+let allowFreeze = false;
+let dotsPerLine = 10;
+let halt = false;
 function render () {
-const n = in_d.valueAsNumber;
-if(n < -9 && !confirm('This may freeze your browser.\n\nProceed?')) {
- in_r.value = in_d.value = -9;
- return
-}
-const exp = `${n>0?'':'+'}${-n}`;
-
-let html = eval('`' + in_template.value + '`');
-for_svg.innerHTML = html;
-for_code.value = html; 
-for_info.innerHTML = `1e${exp} == ${Number(`1e${exp}`).toFixed(n>0?n:0)}`
- + '\n\n UA: ' + navigator.userAgent;
+ clearDots();
+ dotsPerLine = 10;
+ const n = in_d.valueAsNumber;
+ if(isFx && !allowFreeze && n < FxFreezesBeyond) {
+  if(confirm('This may freeze your browser.\n\nReally proceed?')) {
+   allowFreeze = true;
+  } else {
+   in_r.value = in_d.value = FxFreezesBeyond;
+   return
+  }
+ }
+ const exp = `e${n>0?'':'+'}${-n}`;
+ out_exp.textContent = exp;
+ let html = eval('`' + in_template.value + '`');
+ for_svg.innerHTML = html;
+ for_code.value = html; 
+ const numDecimalDisplay = n > 0
+  ? Number(`1${exp}`).toFixed(n)
+  : `1${'0'.repeat(-n)}`;
+ for_info.innerHTML = `
+  1${exp} == ${numDecimalDisplay}
+  UA: ${ua}
+ `;
+ paint()
 }
 render()
+document.body.addEventListener('mousemove', 
+function(event){
+ el_dots.insertAdjacentHTML('beforeend',makeDot(event));
+}
+);
+function makeDot(e, size=1) {
+ const t = e.target.tagName;
+ let colour = 'black';
+ if(t == 'circle') colour = 'lime';
+ if(t == 'svg') colour = 'black';
+ if( colour == 'black') return '';
+ return `<span style="
+  position: absolute;
+  width: ${size}px;
+  height: ${size}px;
+  top: ${e.clientY-size/2}px;
+  left: ${e.clientX-size/2}px;
+  pointer-events: none;
+  opacity: 0.5;
+  background-color: ${colour};"></span>`;
+}
+
+function clearDots(){
+ halt = true;
+ el_dots.innerHTML = '';
+}
+onresize = clearDots;
+function paint(){
+ clearDots();
+ const s = document.querySelector('svg');
+ const bb = s.getBoundingClientRect();
+ const size = (bb.width-1) / dotsPerLine;
+ if(size < 1) size = 1;
+ let buff = '';
+ let line = 0;
+ for( let y = bb.top; y <= bb.bottom ; y += size) {
+  for( let  x = bb.left; x <= bb.right; x += size) {
+   buff += makeDot(
+    {target:document.elementFromPoint(x,y),clientX:x,clientY:y},
+    size
+   );
+  }
+  el_dots.insertAdjacentHTML('beforeend',buff);
+  buff = '';
+ } 
+ dotsPerLine *= 2;
+ if(dotsPerLine > (bb.width + size)/1) dotsPerLine = 10;
+ in_paint.value = `raster ${dotsPerLine}^2`
+}
+
 </script>
