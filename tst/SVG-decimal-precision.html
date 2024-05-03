@@ -1,5 +1,5 @@
 <!doctype html><html lang="en">
-<title>SVG circle stroke dash precision test v4</title>
+<title>SVG circle stroke dash precision test v6</title>
 <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -37,32 +37,39 @@ input[type="button"] {
  padding-inline: 1ch;
 }
 
-#in_paint { display: none; }
-label:has(#in_hitbox:checked) + #in_paint { display: block}
-body:has(#in_hitbox:not(:checked)) #el_dots { opacity: 0 !important; }
+#in_paint {
+ display: none;
+}
+label:has(#in_hitbox:checked) + #in_paint {
+ display: block;
+}
+body:has(#in_hitbox:not(:checked)) #el_dots {
+ opacity: 0;
+}
 </style>
+
 <section class="outputs">
  <div id="for_svg" style="outline: #0FF6 solid; "></div>
  <pre id="for_info" style="white-space: pre-wrap; word-break: break-word;"></pre>
 </section>
 
 <section class="inputs">
-<label>
- Dec. places
- <input id="in_d" type="number" value="0" min="-99" max="99"
-  oninput="in_r.value=value;render()">
-</label>
-<input type="button" onclick="in_d.value--;in_d.oninput()" value="-">
-<input type="button" onclick="in_d.value++;in_d.oninput()" value="+">
-<br>
-<input id="in_r" type="range" min="-9" max="9"
- oninput="in_d.value=value;render()">
-<br>
-<label><input id="in_hitbox" type="checkbox" checked>Show hitbox</label>
-<input id="in_paint" type="button" onclick="paint()" value="paint">
+ <label>
+  Dec. places
+  <input id="in_d" type="number" value="0" min="-99" max="99"
+   oninput="in_r.value=value;render()">
+ </label>
+ <input type="button" onclick="in_d.value--;in_d.oninput()" value="-">
+ <input type="button" onclick="in_d.value++;in_d.oninput()" value="+">
+ <br>
+ <input id="in_r" type="range" min="-9" max="9"
+  oninput="in_d.value=value;render()">
+ <br>
+ <label><input id="in_hitbox" type="checkbox" checked>Show hitbox</label>
+ <input id="in_paint" type="button" onclick="paint()" value="paint">
 
-<details><summary>Template (<code>${exp}</code> = '<span id="out_exp"></span>')</summary>
-<textarea id="in_template" oninput="render()">
+ <details><summary>Template (<code>${exp}</code> = '<span id="out_exp"></span>')</summary>
+  <textarea id="in_template" oninput="render()">
 <svg xmlns="http://www.w3.org/2000/svg" 
  viewBox="-1${exp},-1${exp} 2${exp} 2${exp}">
  <circle r=".5${exp}"
@@ -71,20 +78,23 @@ body:has(#in_hitbox:not(:checked)) #el_dots { opacity: 0 !important; }
   stroke-dasharray="1,1"
   stroke="currentcolor"
   fill="none"></circle>
-</svg>
-<style>
- circle:hover { color: highlight; }
- circle:active { color: mark; }
-</style>
+ </svg>
+ <style>
+  circle:hover { color: highlight; }
+  circle:active { color: mark; }
+ </style>
 </textarea>
-</details>
+ 
+ </details>
 
-<details open><summary>Code</summary>
-<textarea id="for_code" oninput="for_svg.innerHTML=value"></textarea>
-</details>
+ <details open><summary>Code</summary>
+  <textarea id="for_code" oninput="for_svg.innerHTML=value"></textarea>
+ </details>
 
 </section>
+
 <div id="el_dots"></div>
+
 <script>
 const ua = navigator.userAgent;
 const isFx = !!ua.match(/\) Gecko/);
@@ -142,7 +152,6 @@ function makeDot(e, size=1) {
 }
 
 function clearDots(){
- halt = true;
  el_dots.innerHTML = '';
 }
 onresize = clearDots;
@@ -153,7 +162,6 @@ function paint(){
  const size = (bb.width-1) / dotsPerLine;
  if(size < 1) size = 1;
  let buff = '';
- let line = 0;
  for( let y = bb.top; y <= bb.bottom ; y += size) {
   for( let  x = bb.left; x <= bb.right; x += size) {
    buff += makeDot(
@@ -161,9 +169,8 @@ function paint(){
     size
    );
   }
-  el_dots.insertAdjacentHTML('beforeend',buff);
-  buff = '';
  } 
+ el_dots.insertAdjacentHTML('beforeend',buff); 
  dotsPerLine *= 2;
  if(dotsPerLine > (bb.width + size)/1) dotsPerLine = 10;
  in_paint.value = `raster ${dotsPerLine}^2`
