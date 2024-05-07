@@ -1,8 +1,9 @@
 <!doctype html>
+<meta charset="utf-8">
 <html lang="en">
 
 <title>
-Pixel Zoomer v1.6.0
+Pixel Zoomer v1.7.0
 </title>
 
 <meta name="description"
@@ -21,10 +22,12 @@ v1.0.0 zoom it with number input
 v0.0.1 paste image and make it match device pixels × 5
 
 Todo
-read params - try to load from URL, prompt for copy on CORS fail
-persistence - settings
-? persistence - image history in cache
-explore mixed clipboards
+[ ] better navigation, floating disappearing toolbar
+[ ] read params - try to load from URL (hash), prompt for copy on CORS fail
+[ ] shareability - allow public URL, + settings, + position to be linkified
+[ ] persistence - settings
+[ ] ? persistence - image history in cache
+[ ] explore mixed clipboards
 -->
 
 <meta name="color-scheme" content="dark light">
@@ -54,6 +57,8 @@ img {
 }
 
 label { white-space: nowrap; }
+p { float: left;}
+hr { clear: both; }
 hr, input { border-width: var(--dpx); }
 
 input[type="color"] {
@@ -61,6 +66,10 @@ input[type="color"] {
  width: 1em;
  padding: 0;
  border: none;
+}
+button {
+ padding: 0 1em;
+ font-size: monospace
 }
 </style>
 
@@ -70,6 +79,7 @@ input[type="color"] {
  --dpr: /* here will be device pixel ratio */;
 ">
 
+<p>
 <label> Paste / drop images:
  <input
   type=file
@@ -79,10 +89,11 @@ input[type="color"] {
  >.
 </label>
 
-<br>
+</p>
+<p>
 
 <label> Image size ×
- <input id=i type=number value=5 min=1 size=4
+ <input id=i type=number value=5 min=1
   oninput="document.body.style.setProperty('--scale', value)"
  >
 </label>
@@ -104,6 +115,8 @@ input[type="color"] {
  href="data:image/gif;base64,R0lGODlhCgAKAIAAAAAAAP///yH5BAEAAAAALAAAAAAKAAoAAAIRhB2ZhxoM3GMSykqd1VltzxQAOw=="
  onclick="if(event.ctrlKey){return true}else{makePic(href);return false}"
 >Sample</a>
+
+</p>
 
 <hr id=hr>
 
@@ -134,6 +147,7 @@ function onPasteOrDrop (event) {
 
 function makePic(url) {
  // clipboard paste of copied pic usually also contains HTML fragment
+ // so it will be discarded here
  if(!url.match(/^(https?|blob|data):/)) {
   return;
  }
@@ -169,9 +183,24 @@ function onresize() {
  i.oninput();
  lastRatio = dpr;
 } 
- 
+
+
+
 onresize();
 window.addEventListener('resize', onresize, true);
 i.oninput();
 b.oninput();
+const hash = decodeURIComponent(document.location.hash.slice(1));
+if(hash) {
+ let chunks = [];
+ try {
+  chunks = JSON.parse(hash);
+ } catch (err) {
+  chunks = [hash];
+ }
+ // I don't think it could be XSS:
+ // - only "safe" protocols are allowed
+ // - there is no concatenation
+ chunks.forEach(makePic);
+}
 </script>
