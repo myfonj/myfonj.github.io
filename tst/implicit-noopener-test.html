@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Implicit noopener test</title>
+</head>
+<body>
+	<p><a href="" target="_blank" rel="opener">explicit rel="opener"</a>
+	<p><a href="" target="_blank">no extra attr</a>
+	<p><a href="" target="_blank" rel="noopener">explicit rel="noopener"</a>
+	<p>Opener: <script>
+		document.write(opener)
+	</script>
+</body>
+</html>
