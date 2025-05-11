@@ -1,0 +1,172 @@
+<!doctype html><html lang="en" style="color-scheme: dark light;">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>
+Exploring "coin flip" randomess
+</title>
+<style>
+output {
+ font-weight: 800;
+ &::before { content: attr(id) ': '; font-weight: 100;}
+}
+</style>
+<body>
+<pre>
+<button onclick="!(paused=!paused)&&tick()"> ⏯ </button
+><button onclick="megatick()"> ⏩︎ </button
+><button onclick="reset()"> 🔄︎ </button
+><label> PRNG: <input
+ type="radio" name="kind" value="math" checked
+ onchange="random_provider = value">Math</label
+> <label><input type="radio" name="kind" value="crypto"
+ onchange="random_provider = value">crypto</label
+><form id="f">
+<output id="tosses">0</output>
+<output id="heads">0</output>
+<output id="tails">0</output>
+<output id="deviation">0</output> = heads - tails
+<output id="max_heads_deviation">0</output>
+<output id="max_tails_deviation">0</output>
+<output id="longest_heads_series">0</output> 
+<output id="longest_tails_series">0</output> 
+<output id="longest_alternating_series">0</output> 
+<output id="average">0</output> = (heads - tails) / tosses
+</form>
+</pre>
+<script>
+function reset() {
+ paused = true;
+ tosses_count = 0;
+ heads_count = 0;
+ tails_count = 0;
+ max_pos_dev = 0;
+ max_neg_dev = 0;
+ was_toss_heads = null;
+ same_series = 0;
+ alt_series = 0;
+ max_heads_series = 0;
+ max_tails_series = 0;
+ max_alt_series = 0;
+ f.reset();
+}
+let random_provider = 'math';
+let paused = false;
+let tosses_count = 0;
+let heads_count = 0;
+let tails_count = 0;
+let max_pos_dev = 0;
+let max_neg_dev = 0;
+let was_toss_heads = null;
+let same_series = 0;
+let alt_series = 0;
+let max_heads_series = 0;
+let max_tails_series = 0;
+let max_alt_series = 0;
+const max_crypto_random_8 = 65536;
+let sample_size = max_crypto_random_8;
+// sample_size = 1;
+const random_pool = new Int8Array(sample_size);
+const fate = []
+function refresh_fate(){
+ crypto.getRandomValues(random_pool);
+ random_pool.forEach(val=>{
+  if(val){
+   fate.push(val > 0);
+  } else {
+   // console.info('discarding 0');
+  }
+ });
+ //console.log('new fate, length:', fate.length);
+}
+function toss_crypto(){
+ if(!fate.length) {
+  refresh_fate();
+ }
+ let f = fate.pop();
+ return f
+}
+function toss_math(){
+ return Math.random() > 0.5
+}
+function toss(){
+ if(random_provider == 'crypto') {
+  return toss_crypto();
+ }
+ return toss_math()
+}
+
+refresh_fate();
+
+function tick(paint = true){
+ if(paused && paint) return;
+ tosses_count += 1;
+ if(paint) {
+  tosses.value = tosses_count;
+ }
+ const is_toss_heads = toss();
+ if( is_toss_heads ) {
+  heads_count += 1;
+ } else {
+  tails_count += 1;
+ }
+ if(paint) {
+  heads.value = heads_count; 
+  tails.value = tails_count;
+ }
+ let _dev = heads_count - tails_count;
+ if(paint) {
+  deviation.value = (_dev >= 0 && '+') + _dev;
+ }
+ if(max_pos_dev < _dev) {
+  max_pos_dev = _dev;
+  max_heads_deviation.value = _dev;
+ }
+ if(max_neg_dev > _dev) {
+  max_neg_dev = _dev;
+  max_tails_deviation.value = Math.abs(_dev);
+ }
+ let _avg = (heads_count - tails_count) / tosses_count;
+ if(paint) {
+  average.value = (_avg >= 0 ? '+' : '') + _avg.toFixed(10);
+ }
+ if(was_toss_heads != null) {
+  if(was_toss_heads && is_toss_heads) {
+   same_series += 1;
+   alt_series = 0;
+  } else if(!was_toss_heads && !is_toss_heads) {
+   same_series += 1;
+   alt_series = 0;
+  } else {
+   same_series = 1;
+   alt_series += 1;
+   if(max_alt_series < alt_series) {
+    max_alt_series = alt_series;
+    longest_alternating_series.value = alt_series
+   }
+  }
+  if(is_toss_heads && max_heads_series < same_series) {
+   max_heads_series = same_series;
+   longest_heads_series.value = same_series;
+  }
+  if(!is_toss_heads && max_heads_series < same_series) {
+   max_tails_series = same_series;
+   longest_tails_series.value = same_series;
+  }
+ }
+ was_toss_heads = is_toss_heads;
+ if(paint) {
+  requestAnimationFrame(tick)
+ }
+}
+tick()
+
+function megatick() {
+ let was_paused = paused;
+ paused = true;
+ let cnt = 1e7;
+ while(--cnt) { tick(false); }
+ paused = false;
+ tick();
+ paused = was_paused;
+}
+</script>
