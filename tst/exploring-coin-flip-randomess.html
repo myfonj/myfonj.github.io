@@ -70,13 +70,10 @@ const fate = []
 function refresh_fate(){
  crypto.getRandomValues(random_pool);
  random_pool.forEach(val=>{
-  if(val){
-   fate.push(val > 0);
-  } else {
-   // console.info('discarding 0');
-  }
+  // Int8 is from -128 to +127,
+  // so 0 also belongs to the positive half
+  fate.push(val >= 0);
  });
- //console.log('new fate, length:', fate.length);
 }
 function toss_crypto(){
  if(!fate.length) {
@@ -86,7 +83,9 @@ function toss_crypto(){
  return f
 }
 function toss_math(){
- return Math.random() > 0.5
+ // Math.random() gives [0,1)
+ // so 0.5 really belongs to the positive half
+ return Math.random() >= 0.5
 }
 function toss(){
  if(random_provider == 'crypto') {
@@ -158,7 +157,8 @@ function tick(paint = true){
   requestAnimationFrame(tick)
  }
 }
-tick()
+
+tick();
 
 function megatick() {
  let was_paused = paused;
