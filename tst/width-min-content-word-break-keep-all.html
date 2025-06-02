@@ -1,0 +1,39 @@
+<!doctype html><html lang="en" style="color-scheme: dark light;">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>
+test width: min-content; word-break: keep-all;
+</title>
+<body>
+
+<style style="
+ display: block;
+ white-space: pre;
+ font-family: monospace;"
+>mark {
+ display: block;
+ width: min-content;
+ font-size: xx-large;
+}
+</style>
+<code>word-break</code>: …
+
+<figure><figcaption><code>keep-all</code>:</figcaption>
+ <mark style="word-break: keep-all;">
+  user-friendly cross-platform
+ </mark>
+</figure>
+
+<figure><figcaption><code>normal</code>:</figcaption>
+ <mark style="word-break: normal;">
+  user-friendly cross-platform
+ </mark>
+</figure>
+
+<script>
+document.write(navigator.userAgent)
+</script>
+
+<hr>
+
+<a href="https://issues.chromium.org/issues/415076052">crbug 415076052</a>
+<a href="https://github.com/w3c/csswg-drafts/issues/3434">csswg-drafts issue 3434</a>
