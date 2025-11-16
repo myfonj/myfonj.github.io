@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Text Flow</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #textContainer {
+            border: 1px solid #ccc;
+            padding: 20px;
+            line-height: 1.5;
+            font-size: 16px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .text-line {
+            display: block;
+            white-space: nowrap;
+        }
+
+        .text-line.mirrored {
+            transform: rotateY(180deg);
+            direction: rtl;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Snake Text Flow</h1>
+    <div class="controls">
+        <button onclick="applySnakeFlow()">Apply Snake Flow</button>
+        <button onclick="resetText()">Reset</button>
+    </div>
+
+    <div id="textContainer">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
+
+    <script src="snake-text-flow.js"></script>
+</body>
+</html>
