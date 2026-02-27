@@ -1,0 +1,67 @@
+<!doctype html><html lang="en">
+<title>
+ Keyboard ghosting test - simultaneously pressed keys counter logger parallel
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root { background: dimgray; color: snow; font-family: monospace, monospace; }
+:link { color: aqua; } :visited { color: lime; }
+b {background-color: #222; display: inline-block; padding: 0 .1em; }
+</style>
+Press and hold as many keys as you can.
+<script>"use strict";
+var pressed = new Set();
+var max = 0;
+
+function dn(e){
+ deeplog(e);
+ var c = id(e);
+ if(e.repeat){
+  return
+ }
+ if(pressed.has(c)) {
+  log('↓_ again', c)
+  return;
+ }
+ pressed.add(c);
+ log('↓_', c);
+}
+function up(e){
+ deeplog(e);
+ var c = id(e);
+ if(!pressed.has(c)) {
+  log('_↑ again', c)
+  return
+ }
+ pressed.delete(c);
+ log('_↑', c);
+}
+function id(e) {
+ return e.code || (['key','charCode','keyCode'].map(_=>`${_}:${e[_]}`).join(', '));
+}
+function wipe(){
+ pressed.clear();
+ log('blur: wipe', null);
+}
+function deeplog(keyEvent){
+ console.log(keyEvent);
+ keyEvent.preventDefault()
+}
+function log(pmsg, ch){
+ var l = pressed.size;
+ if( l > max ) max = l; 
+ let it = pressed.values();
+ let ks = [];
+ for (const key of it) { ks.push(key) }
+ var msg = (pmsg||'') + ' ' + (ch || '')
+  + ' (max:' + max +') ' + l + ':: '
+  + ks.sort().map(_=>_[(ch==_?'italics':'bold')]()).join('+')
+  + '<br>';
+ document.body.insertAdjacentHTML('afterbegin', msg);
+}
+ 
+window.addEventListener('keydown', dn, true);
+window.addEventListener('keyup', up, true);
+window.addEventListener('blur', wipe, true); 
+
+</script>
