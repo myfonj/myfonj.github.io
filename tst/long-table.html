@@ -1,0 +1,28 @@
+<!doctype html><html lang="en" style="color-scheme: dark light;">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>
+Test print long table
+</title>
+<table border>
+ <caption>Caption</caption>
+ <thead>
+  <tr>
+   <th>Header A</th>
+   <th>Header B</th>
+  </tr>
+ </thead>
+ <tbody>
+  <script>
+   for( var i = 1; i < 500; i++ ) {
+    document.write(
+     `<tr><td>row ${i} cell A
+          <td>row ${i} cell B`
+    )
+   }
+  </script>
+ </tbody>
+</table>
+
+<hr>
+
+<a href="https://stackoverflow.com/questions/75854236/">https://stackoverflow.com/questions/75854236/</a>
