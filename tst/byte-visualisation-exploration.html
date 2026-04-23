@@ -1,0 +1,445 @@
+<!doctype html><html lang="en" style="color-scheme: dark light;">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>
+Byte visualisation exploration
+</title>
+<style>
+html
+{ --dimbg: color-mix(in srgb, canvas, canvastext 10%)
+; --dimfg: color-mix(in srgb, canvas, canvastext 40%)
+}
+th, td
+{ font-family: Cascadia Mono
+; font-weight: 300
+; border-color: var(--dimbg)
+; text-align: right
+}
+.byte__css
+{ font-size: 0
+; &[value*="1"]  {--c1: canvastext}
+; &[value*="2"]  {--c2: canvastext}
+; &[value*="3"]  {--c3: canvastext}
+; &[value*="4"]  {--c4: canvastext}
+; &[value*="5"]  {--c5: canvastext}
+; &[value*="6"]  {--c6: canvastext}
+; &[value*="7"]  {--c7: canvastext}
+; &[value*="8"]  {--c8: canvastext}
+}
+th {
+  writing-mode: vertical-lr;
+  direction: rtl;
+}
+.byte__css::after
+{ content: ''
+; display: inline-block
+; font-size: 1.3rem
+; height: 2em
+; width: 1em
+; background-color: var(--dimbg)
+; border: 2px solid var(--dimbg)
+; margin: .1em .5em -.1em
+; background-repeat: no-repeat
+; background-size: 50% 25%
+; background-position
+  :   0% 0%
+  , 100% 0%
+  ,   0% 33%
+  , 100% 33%
+  ,   0% 66%
+  , 100% 66%
+  ,   0% 100%
+  , 100% 100%
+; background-image
+  : radial-gradient(var(--c1, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c2, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c3, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c4, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c5, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c6, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c7, canvas) 0 calc(50% - 1px), transparent 50%)
+  , radial-gradient(var(--c8, canvas) 0 calc(50% - 1px), transparent 50%)
+}
+.byte__braille
+{ font-size: 2.5em
+; position: relative
+; display: inline-block
+; &::before
+  { content: '⣿'
+  ; position: absolute
+  ; color: canvas
+  ; inset: 0
+  ; background-color: var(--dimbg)
+  ; z-index: -1
+  }
+}
+
+.byte__octants
+{ background-color: var(--dimbg)
+; font-size: 2.4em
+; white-space: pre
+}
+</style>
+<body>
+<table id="t" border>
+<thead><tr id="h"></thead>
+
+</table>
+
+<script>
+const knownOctants = `
+𜴀	BLOCK OCTANT-3
+𜴁	BLOCK OCTANT-23
+𜴂	BLOCK OCTANT-123
+𜴃	BLOCK OCTANT-4
+𜴄	BLOCK OCTANT-14
+𜴅	BLOCK OCTANT-124
+𜴆	BLOCK OCTANT-34
+𜴇	BLOCK OCTANT-134
+𜴈	BLOCK OCTANT-234
+𜴉	BLOCK OCTANT-5
+𜴊	BLOCK OCTANT-15
+𜴋	BLOCK OCTANT-25
+𜴌	BLOCK OCTANT-125
+𜴍	BLOCK OCTANT-135
+𜴎	BLOCK OCTANT-235
+𜴏	BLOCK OCTANT-1235
+𜴐	BLOCK OCTANT-45
+𜴑	BLOCK OCTANT-145
+𜴒	BLOCK OCTANT-245
+𜴓	BLOCK OCTANT-1245
+𜴔	BLOCK OCTANT-345
+𜴕	BLOCK OCTANT-1345
+𜴖	BLOCK OCTANT-2345
+𜴗	BLOCK OCTANT-12345
+𜴘	BLOCK OCTANT-6
+𜴙	BLOCK OCTANT-16
+𜴚	BLOCK OCTANT-26
+𜴛	BLOCK OCTANT-126
+𜴜	BLOCK OCTANT-36
+𜴝	BLOCK OCTANT-136
+𜴞	BLOCK OCTANT-236
+𜴟	BLOCK OCTANT-1236
+𜴠	BLOCK OCTANT-146
+𜴡	BLOCK OCTANT-246
+𜴢	BLOCK OCTANT-1246
+𜴣	BLOCK OCTANT-346
+𜴤	BLOCK OCTANT-1346
+𜴥	BLOCK OCTANT-2346
+𜴦	BLOCK OCTANT-12346
+𜴧	BLOCK OCTANT-56
+𜴨	BLOCK OCTANT-156
+𜴩	BLOCK OCTANT-256
+𜴪	BLOCK OCTANT-1256
+𜴫	BLOCK OCTANT-356
+𜴬	BLOCK OCTANT-1356
+𜴭	BLOCK OCTANT-2356
+𜴮	BLOCK OCTANT-12356
+𜴯	BLOCK OCTANT-456
+𜴰	BLOCK OCTANT-1456
+𜴱	BLOCK OCTANT-2456
+𜴲	BLOCK OCTANT-12456
+𜴳	BLOCK OCTANT-3456
+𜴴	BLOCK OCTANT-13456
+𜴵	BLOCK OCTANT-23456
+𜴶	BLOCK OCTANT-17
+𜴷	BLOCK OCTANT-27
+𜴸	BLOCK OCTANT-127
+𜴹	BLOCK OCTANT-37
+𜴺	BLOCK OCTANT-137
+𜴻	BLOCK OCTANT-237
+𜴼	BLOCK OCTANT-1237
+𜴽	BLOCK OCTANT-47
+𜴾	BLOCK OCTANT-147
+𜴿	BLOCK OCTANT-247
+𜵀	BLOCK OCTANT-1247
+𜵁	BLOCK OCTANT-347
+𜵂	BLOCK OCTANT-1347
+𜵃	BLOCK OCTANT-2347
+𜵄	BLOCK OCTANT-12347
+𜵅	BLOCK OCTANT-157
+𜵆	BLOCK OCTANT-257
+𜵇	BLOCK OCTANT-1257
+𜵈	BLOCK OCTANT-357
+𜵉	BLOCK OCTANT-2357
+𜵊	BLOCK OCTANT-12357
+𜵋	BLOCK OCTANT-457
+𜵌	BLOCK OCTANT-1457
+𜵍	BLOCK OCTANT-12457
+𜵎	BLOCK OCTANT-3457
+𜵏	BLOCK OCTANT-13457
+𜵐	BLOCK OCTANT-23457
+𜵑	BLOCK OCTANT-67
+𜵒	BLOCK OCTANT-167
+𜵓	BLOCK OCTANT-267
+𜵔	BLOCK OCTANT-1267
+𜵕	BLOCK OCTANT-367
+𜵖	BLOCK OCTANT-1367
+𜵗	BLOCK OCTANT-2367
+𜵘	BLOCK OCTANT-12367
+𜵙	BLOCK OCTANT-467
+𜵚	BLOCK OCTANT-1467
+𜵛	BLOCK OCTANT-2467
+𜵜	BLOCK OCTANT-12467
+𜵝	BLOCK OCTANT-3467
+𜵞	BLOCK OCTANT-13467
+𜵟	BLOCK OCTANT-23467
+𜵠	BLOCK OCTANT-123467
+𜵡	BLOCK OCTANT-567
+𜵢	BLOCK OCTANT-1567
+𜵣	BLOCK OCTANT-2567
+𜵤	BLOCK OCTANT-12567
+𜵥	BLOCK OCTANT-3567
+𜵦	BLOCK OCTANT-13567
+𜵧	BLOCK OCTANT-23567
+𜵨	BLOCK OCTANT-123567
+𜵩	BLOCK OCTANT-4567
+𜵪	BLOCK OCTANT-14567
+𜵫	BLOCK OCTANT-24567
+𜵬	BLOCK OCTANT-124567
+𜵭	BLOCK OCTANT-34567
+𜵮	BLOCK OCTANT-134567
+𜵯	BLOCK OCTANT-234567
+𜵰	BLOCK OCTANT-1234567
+𜵱	BLOCK OCTANT-18
+𜵲	BLOCK OCTANT-28
+𜵳	BLOCK OCTANT-128
+𜵴	BLOCK OCTANT-38
+𜵵	BLOCK OCTANT-138
+𜵶	BLOCK OCTANT-238
+𜵷	BLOCK OCTANT-1238
+𜵸	BLOCK OCTANT-48
+𜵹	BLOCK OCTANT-148
+𜵺	BLOCK OCTANT-248
+𜵻	BLOCK OCTANT-1248
+𜵼	BLOCK OCTANT-348
+𜵽	BLOCK OCTANT-1348
+𜵾	BLOCK OCTANT-2348
+𜵿	BLOCK OCTANT-12348
+𜶀	BLOCK OCTANT-58
+𜶁	BLOCK OCTANT-158
+𜶂	BLOCK OCTANT-258
+𜶃	BLOCK OCTANT-1258
+𜶄	BLOCK OCTANT-358
+𜶅	BLOCK OCTANT-1358
+𜶆	BLOCK OCTANT-2358
+𜶇	BLOCK OCTANT-12358
+𜶈	BLOCK OCTANT-458
+𜶉	BLOCK OCTANT-1458
+𜶊	BLOCK OCTANT-2458
+𜶋	BLOCK OCTANT-12458
+𜶌	BLOCK OCTANT-3458
+𜶍	BLOCK OCTANT-13458
+𜶎	BLOCK OCTANT-23458
+𜶏	BLOCK OCTANT-123458
+𜶐	BLOCK OCTANT-168
+𜶑	BLOCK OCTANT-268
+𜶒	BLOCK OCTANT-1268
+𜶓	BLOCK OCTANT-368
+𜶔	BLOCK OCTANT-2368
+𜶕	BLOCK OCTANT-12368
+𜶖	BLOCK OCTANT-468
+𜶗	BLOCK OCTANT-1468
+𜶘	BLOCK OCTANT-12468
+𜶙	BLOCK OCTANT-3468
+𜶚	BLOCK OCTANT-13468
+𜶛	BLOCK OCTANT-23468
+𜶜	BLOCK OCTANT-568
+𜶝	BLOCK OCTANT-1568
+𜶞	BLOCK OCTANT-2568
+𜶟	BLOCK OCTANT-12568
+𜶠	BLOCK OCTANT-3568
+𜶡	BLOCK OCTANT-13568
+𜶢	BLOCK OCTANT-23568
+𜶣	BLOCK OCTANT-123568
+𜶤	BLOCK OCTANT-4568
+𜶥	BLOCK OCTANT-14568
+𜶦	BLOCK OCTANT-24568
+𜶧	BLOCK OCTANT-124568
+𜶨	BLOCK OCTANT-34568
+𜶩	BLOCK OCTANT-134568
+𜶪	BLOCK OCTANT-234568
+𜶫	BLOCK OCTANT-1234568
+𜶬	BLOCK OCTANT-178
+𜶭	BLOCK OCTANT-278
+𜶮	BLOCK OCTANT-1278
+𜶯	BLOCK OCTANT-378
+𜶰	BLOCK OCTANT-1378
+𜶱	BLOCK OCTANT-2378
+𜶲	BLOCK OCTANT-12378
+𜶳	BLOCK OCTANT-478
+𜶴	BLOCK OCTANT-1478
+𜶵	BLOCK OCTANT-2478
+𜶶	BLOCK OCTANT-12478
+𜶷	BLOCK OCTANT-3478
+𜶸	BLOCK OCTANT-13478
+𜶹	BLOCK OCTANT-23478
+𜶺	BLOCK OCTANT-123478
+𜶻	BLOCK OCTANT-578
+𜶼	BLOCK OCTANT-1578
+𜶽	BLOCK OCTANT-2578
+𜶾	BLOCK OCTANT-12578
+𜶿	BLOCK OCTANT-3578
+𜷀	BLOCK OCTANT-13578
+𜷁	BLOCK OCTANT-23578
+𜷂	BLOCK OCTANT-123578
+𜷃	BLOCK OCTANT-4578
+𜷄	BLOCK OCTANT-14578
+𜷅	BLOCK OCTANT-24578
+𜷆	BLOCK OCTANT-124578
+𜷇	BLOCK OCTANT-34578
+𜷈	BLOCK OCTANT-134578
+𜷉	BLOCK OCTANT-234578
+𜷊	BLOCK OCTANT-1234578
+𜷋	BLOCK OCTANT-678
+𜷌	BLOCK OCTANT-1678
+𜷍	BLOCK OCTANT-2678
+𜷎	BLOCK OCTANT-12678
+𜷏	BLOCK OCTANT-3678
+𜷐	BLOCK OCTANT-13678
+𜷑	BLOCK OCTANT-23678
+𜷒	BLOCK OCTANT-123678
+𜷓	BLOCK OCTANT-4678
+𜷔	BLOCK OCTANT-14678
+𜷕	BLOCK OCTANT-24678
+𜷖	BLOCK OCTANT-124678
+𜷗	BLOCK OCTANT-34678
+𜷘	BLOCK OCTANT-134678
+𜷙	BLOCK OCTANT-234678
+𜷚	BLOCK OCTANT-1234678
+𜷛	BLOCK OCTANT-15678
+𜷜	BLOCK OCTANT-25678
+𜷝	BLOCK OCTANT-125678
+𜷞	BLOCK OCTANT-35678
+𜷟	BLOCK OCTANT-235678
+𜷠	BLOCK OCTANT-1235678
+𜷡	BLOCK OCTANT-45678
+𜷢	BLOCK OCTANT-145678
+𜷣	BLOCK OCTANT-1245678
+𜷤	BLOCK OCTANT-1345678
+𜷥	BLOCK OCTANT-2345678
+`.trim()
+.split('\n')
+.map(_=>_.split('\t'))
+.reduce((acc,chnm)=>{
+ const poss = chnm[1].split('-')[1];
+ const byte = positionsToByte(poss);
+ acc[byte] = chnm 
+ return acc
+},[]);
+
+const missingOctants = `
+000	00000000	⠀	 
+001	00000001	⢀	𜺠
+002	00000010	⡀	𜺣
+003	00000011	⣀	▂
+005	00000101	⢠	▗
+010	00001010	⡄	▖
+015	00001111	⣤	▄
+020	00010100	⠰	🯧
+040	00101000	⠆	🯦
+063	00111111	⣶	▆
+064	01000000	⠈	𜺫
+080	01010000	⠘	▝
+085	01010101	⢸	▐
+090	01011010	⡜	▞
+095	01011111	⣼	▟
+128	10000000	⠁	𜺨
+160	10100000	⠃	▘
+165	10100101	⢣	▚
+170	10101010	⡇	▌
+175	10101111	⣧	▙
+192	11000000	⠉	🮂
+240	11110000	⠛	▀
+245	11110101	⢻	▜
+250	11111010	⡟	▛
+252	11111100	⠿	🮅
+255	11111111	⣿	█
+`.trim().split('\n').reduce((acc,row)=>
+{ const cells = row.split('\t')
+; acc[Number(cells[0])] = cells[3]
+; return acc 
+}
+,
+[]
+)
+
+
+const THs = new Map();
+let i = -1
+let r
+while( ++i < 256 )
+{ r = t.insertRow()
+; TH('#','Decadical')
+; TD(i)
+; TH('X','Hexadecimal')
+; const hex = i.toString(16).padStart(2,'0')
+; TD(hex)
+; TH('Binary')
+; const binstr = i.toString(2).padStart(8,'0')
+; TD(binstr)
+; TH('Bin 1s @', 'Positions of "1"s in the binary word')
+; let posstr = [...binstr].reduce((acc, v, i) => v == '1' ? acc+(i+1) : acc, '')
+; TD(posstr)
+; TH('CSS','Visual emulation with CSS')
+; TD(`<data class="byte byte__css" value="${posstr}">${binstr}</data>`)
+; TH('Br','Braille')
+; TD(`<data class="byte byte__braille" value="${binstr}">${byteToBraille(i)}</data>`)
+; TH('Oc','Octant')
+; if(knownOctants[i])
+  { TD(`<data class="byte byte__octants" value="${i}">${knownOctants[i][0]}</data>`)
+  } else
+  { TD(`<data class="byte byte__octants" value="${i}">${missingOctants[i]}</data>`)
+  }
+; 
+}
+
+
+function TH(content,title)
+{ if( THs.has(content) ) return
+; const th = document.createElement('th')
+; th.append(content)
+; th.title = title || ''
+; h.append(th)
+; THs.set(content, th)
+}
+function TD(content)
+{ const c = r.insertCell()
+; c.innerHTML = content
+}
+function byteToBraille(num)
+{ if( isNaN(num) || num < 0 || num > 255 )
+  { throw Error(num + " not within 0..255")
+  }
+; const brailleBitOrder = [ 7, 4, 6, 3, 5, 2, 1, 0 ]
+; const rowsBits = num.toString(2).padStart(8,'0')
+; const brailleBits = Array(8)
+; for ( let i = 0; i < 8; i++ )
+  { let bit = rowsBits.charAt(i)
+  ; brailleBits[brailleBitOrder[i]] = bit
+  }
+; const uninum = parseInt(brailleBits.join(''),2)
+; return String.fromCodePoint(10240 + uninum)
+}
+
+function byteToOctant(num)
+{ var octantsMap = [...(
+`
+- 𜺠 𜺣 ▂ 𜴘 ▗ 𜵑 \u{1CDCB} \u{1CD09} \u{1CD80} \u{2596}
+`.replace(/\s/g,''))];
+; return octantsMap[num] || '?'
+}
+function positionsToByte(str) {
+ let result = [...'00000000'];
+ [...str].forEach(_=>{result[Number(_)-1]='1'})
+ return parseInt(result.join(''),2)
+}
+function byteToPositions(num)
+{return num.toString(2).padStart(8,'0').split('').reduce
+ ((acc
+  ,bit
+  ,index)=>{if(bit=='1'){acc+=String(index+1)};return acc}
+ ,''
+ )
+}
+
+</script>
