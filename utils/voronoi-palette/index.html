@@ -8,24 +8,57 @@
 :root{
   color-scheme: light dark;
   --bg:#fafafa; --fg:#1a1a1a; --muted:#666; --line:#ddd; --accent:#0b6e6e;
-  --panel:#fff;
+  --panel:#fff; --map-max-h:70vh;
 }
 @media (prefers-color-scheme: dark){
   :root{--bg:#161616; --fg:#e8e8e8; --muted:#9a9a9a; --line:#333; --accent:#4dc3c3; --panel:#1e1e1e;}
 }
 *{box-sizing:border-box}
 body{margin:0;font:15px/1.45 system-ui,sans-serif;background:var(--bg);color:var(--fg)}
-header{padding:.8rem 1.2rem;border-bottom:1px solid var(--line)}
-header h1{margin:0;font-size:1.15rem}
-header p{margin:.15rem 0 0;color:var(--muted);font-size:.85rem}
-main{display:grid;grid-template-columns:minmax(320px,26rem) 1fr;gap:1.2rem;padding:1.2rem;align-items:start}
-@media (max-width:900px){main{grid-template-columns:1fr}}
-fieldset{border:1px solid var(--line);border-radius:6px;margin:0 0 1rem;padding:.7rem .9rem}
-legend{font-size:.8rem;color:var(--muted);padding:0 .3rem}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ── responsive app shell: hamburger overlay (default) / sidebar / stacked ── */
+.app{position:relative}
+#nav-toggle{position:fixed;top:.6rem;left:.6rem;z-index:30;width:2.5rem;height:2.5rem;
+  border-radius:6px;font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+#nav-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;
+  transition:opacity .2s;z-index:15}
+body.nav-open #nav-backdrop{opacity:1;pointer-events:auto}
+#outputs{padding:1.2rem;border:1px solid var(--line);border-radius:6px;background:var(--panel);overflow:hidden}
+#controls{position:fixed;top:0;left:0;bottom:0;width:min(26rem,88vw);background:var(--panel);
+  overflow-y:auto;z-index:20;padding:3.4rem 1.2rem 1.2rem;box-shadow:2px 0 16px rgba(0,0,0,.3);
+  transform:translateX(-100%);transition:transform .25s ease}
+body.nav-open #controls{transform:translateX(0)}
+/* wide & short: settings as a static left sidebar, own scrollbox, no overlay */
+@media (min-aspect-ratio: 7/5){
+  .app{display:flex;flex-direction:row;height:100vh}
+  #nav-toggle,#nav-backdrop{display:none}
+  #controls{position:static;transform:none;box-shadow:none;width:min(26rem,34vw);flex:0 0 auto;
+    height:100vh;overflow-y:auto;padding:1.2rem;order:-1;border-right:1px solid var(--line)}
+  #outputs{flex:1 1 auto;height:100vh;overflow:hidden;margin:0}
+  :root{--map-max-h:calc(100vh - 3rem)}
+}
+/* tall & narrow: map always visible on top, settings below in their own scrollbox */
+@media (max-aspect-ratio: 4/5){
+  .app{display:flex;flex-direction:column;height:100vh}
+  #nav-toggle,#nav-backdrop{display:none}
+  #outputs{flex:0 0 auto;order:1;border-radius:0;border-left:none;border-right:none;border-top:none}
+  #controls{position:static;transform:none;box-shadow:none;width:auto;flex:1 1 auto;
+    overflow-y:auto;padding:1.2rem;order:2}
+  :root{--map-max-h:46vh}
+}
+
+#controls h1{margin:0 0 .6rem;font-size:1.05rem}
+.info-btn{width:100%;margin-bottom:.8rem;text-align:left}
+details{border:1px solid var(--line);border-radius:6px;margin:0 0 .8rem;padding:.5rem .8rem .7rem}
+details>summary{font-size:.85rem;font-weight:600;cursor:pointer;padding:.35rem .1rem;user-select:none}
+details[open]>summary{margin-bottom:.3rem;border-bottom:1px solid var(--line);padding-bottom:.45rem}
+details p.desc{margin:.1rem 0 .4rem;font-size:.78rem;color:var(--muted)}
 textarea{width:100%;min-height:12rem;font:12px/1.5 ui-monospace,Consolas,monospace;
   background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:.5rem;resize:vertical}
-label{display:block;margin:.45rem 0;font-size:.88rem}
-label.inline{display:inline-block;margin-right:.9rem}
+label{display:block;margin:.4rem 0;font-size:.88rem}
+label small{color:var(--muted)}
 label span.val{color:var(--accent);font-variant-numeric:tabular-nums}
 input[type=range]{width:100%;vertical-align:middle}
 input[type=number]{width:5.5rem;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:.15rem .3rem}
@@ -34,36 +67,77 @@ select{background:var(--panel);color:var(--fg);border:1px solid var(--line);bord
 button, a.uri-link{background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:4px;
   padding:.3rem .7rem;cursor:pointer;font-size:.85rem;text-decoration:none;display:inline-block;line-height:normal}
 button:hover, a.uri-link:hover{border-color:var(--accent);color:var(--accent)}
+button.chip{padding:.05rem .45rem;font-size:.78rem;margin-left:.25rem}
 #status{font-size:.82rem;color:var(--muted);white-space:pre-wrap;margin-top:.5rem}
 #status .err{color:#c33}
-article{border:1px solid var(--line);border-radius:6px;margin-bottom:1.2rem;background:var(--panel);overflow:hidden}
-article h2{margin:0;padding:.5rem .8rem;font-size:.95rem;border-bottom:1px solid var(--line);
-  display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
-article h2 small{font-weight:normal;color:var(--muted);font-size:.75rem}
-article .bar{margin-left:auto;display:flex;gap:.4rem}
-.svgbox{padding:0;line-height:0}
-.svgbox svg{width:100%;height:auto;display:block}
-.svgbox path{cursor:pointer}
-.svgbox path.lowc{opacity:.12;stroke:#c33;stroke-width:3px;stroke-dasharray:4 3}
-.svgbox path.canchor{stroke:#fff;stroke-width:4px;stroke-dasharray:none;opacity:1}
+#cnote{font-size:.78rem;color:var(--muted);margin-top:.3rem}
+#cinfo{font-size:.82rem;color:var(--muted);margin-top:.3rem}
+.svgbox{padding:0;line-height:0;text-align:center;height:100%}
+.svgbox svg{width:100%;height:auto;max-height:var(--map-max-h);display:inline-block}
+.svgbox path, .svgbox rect[fill]:not(:first-of-type){cursor:pointer}
+.svgbox path.lowc, .svgbox rect.lowc{opacity:.12;stroke:#c33;stroke-width:3px;stroke-dasharray:4 3}
+.svgbox path.canchor, .svgbox rect.canchor{stroke:#fff;stroke-width:4px;stroke-dasharray:none;opacity:1}
+#cpanel{font-size:.8rem;color:var(--muted);line-height:1.5;min-height:3.4rem}
+#cpanel .sw{display:inline-block;width:.95em;height:.95em;border:1px solid var(--line);border-radius:2px;
+  vertical-align:-.12em;margin-right:.35em}
+#cpanel strong{color:var(--fg)}
+.toolbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding-top:.5rem;margin-top:.5rem;
+  border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
+.toolbar .bar{margin-left:auto;display:flex;gap:.4rem;flex-wrap:wrap}
 .hint{color:var(--muted);font-size:.85rem;padding:1rem}
-footer{padding:.8rem 1.2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem;max-width:70rem}
-footer a{color:var(--accent)}
+#v-info{line-height:1.6;font-size:.85rem;color:var(--fg);overflow-y:auto;max-height:100%}
+#v-info p{margin:0 0 .9rem}
+#v-info a{color:var(--accent)}
+#btn-back{margin-bottom:1rem}
 #toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--fg);color:var(--bg);
-  padding:.5rem 1rem;border-radius:6px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .25s;max-width:80vw}
+  padding:.5rem 1rem;border-radius:6px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .25s;
+  max-width:80vw;z-index:40}
 #toast.show{opacity:.92}
 </style>
 </head>
 <body>
-<header>
+<div class="app">
+<button id="nav-toggle" type="button" aria-expanded="false" aria-controls="controls">☰<span class="sr-only"> Toggle settings</span></button>
+<div id="nav-backdrop"></div>
+<main id="outputs">
+  <div class="svgbox" id="v-map"><div class="hint">Waiting for a palette…</div></div>
+  <div id="v-info" hidden>
+    <button id="btn-back" type="button">← Back to picker</button>
+    <p><strong>Palette Voronoi Visualiser</strong> — paste a colour list in any common notation
+    (optionally named) to get deterministic SVG maps: same input ⇒ identical SVG bytes. Everything
+    is inlined in this single file; it works offline, straight from <code>file://</code>, and the
+    address bar always holds a share link of the current state. Project:
+    <a href="https://github.com/myfonj/voronoi-palette">github.com/myfonj/voronoi-palette</a> ·
+    public version:
+    <a href="https://myfonj.github.io/utils/voronoi-palette/">myfonj.github.io/utils/voronoi-palette</a>.</p>
+    <p><strong>Credits.</strong> Colour parsing and conversion by
+    <a href="https://github.com/Evercoder/culori">culori</a> v4.0.2 (MIT © 2018 Dan Burzo).
+    Voronoi tessellation by <a href="https://github.com/d3/d3-delaunay">d3-delaunay</a> v6.0.4
+    (ISC © 2018–2021 Observable, Inc., © 2021 Mapbox), which bundles
+    <a href="https://github.com/mapbox/delaunator">delaunator</a> (ISC © 2021 Mapbox) and
+    <a href="https://github.com/mourner/robust-predicates">robust-predicates</a> (public domain /
+    Unlicense; Vladimir Agafonkin’s port of Jonathan Shewchuk’s robust geometric predicates).
+    Contrast metrics are an independent implementation of the published
+    <a href="https://github.com/Myndex/SAPC-APCA">APCA</a> 0.98G formula (APCA™ is a trademark of
+    Myndex Perception Research; not an endorsement), plus the WCAG&nbsp;2.x relative-luminance
+    ratio and the legacy WCAG&nbsp;1 brightness/colour-difference heuristic.</p>
+    <p><strong>Preset palettes.</strong>
+    <a href="https://tailwindcss.com/">Tailwind CSS</a> v4.1.11 (MIT © Tailwind Labs, Inc.),
+    <a href="https://getbootstrap.com/">Bootstrap</a> v5.3.3 (MIT © 2011–2024 The Bootstrap
+    Authors; the 100–900 shades are computed with sass’s exact tint/shade mixes),
+    Material Design 2014 palette via
+    <a href="https://github.com/shuhei/material-colors">material-colors</a> v1.2.6 (ISC © Shuhei
+    Kagawa), the CSS named colours (CSS Color Module, W3C), the legacy web-safe cube, and the
+    #RGB shorthand cube.</p>
+    <p>All third-party components are MIT, ISC, or public domain — commercial use is permitted.
+    Full licence texts: <a href="NOTICE.md">NOTICE.md</a>.</p>
+  </div>
+</main>
+<aside id="controls">
   <h1>Palette Voronoi Visualiser</h1>
-  <p>Paste a colour list in any common notation (optionally named) — get deterministic SVG maps.
-     Same palette&nbsp;⇒&nbsp;identical bytes.</p>
-</header>
-<main>
-<section id="controls">
-  <fieldset>
-    <legend>Palette input — one colour per line, or CSV; optional names</legend>
+  <button id="btn-info" type="button" class="info-btn">Info &amp; credits</button>
+  <details id="d-input" open>
+    <summary>Palette input — one colour per line, or CSV; optional names</summary>
     <textarea id="input" spellcheck="false" placeholder="#0b6e6e
 Brand blue: #224488
 rgb(255 99 71) warning
@@ -73,107 +147,110 @@ navy"></textarea>
       <input type="text" id="ptitle" placeholder="untitled palette" style="width:70%">
     </label>
     <div style="display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap;align-items:center">
+      <label for="preset">Load a preset:</label>
       <select id="preset">
-        <option value="">Load a preset…</option>
         <option value="css">CSS named colours</option>
+        <option value="websafe">Web-safe colours (216)</option>
+        <option value="rgb4">#RGB cube (4,096)</option>
       </select>
       <button id="clear">Clear</button>
       <button id="dl-json">Download palette JSON</button>
-      <button id="share">Copy share link</button>
     </div>
     <div id="status"></div>
-  </fieldset>
-  <fieldset>
-    <legend>Views</legend>
-    <label class="inline"><input type="radio" name="view" value="picker" checked> Ergonomic picker</label>
-    <label class="inline"><input type="radio" name="view" value="mosaic"> Mosaic</label>
-    <label><input type="checkbox" id="strict-on"> Strict map (α = 0, no Lloyd’s — geometrically diffable)</label>
-    <label style="margin-left:1.4rem"><input type="checkbox" id="bw" disabled> B/W outline (boundaries only, for comparing palettes)</label>
-    <label><input type="checkbox" id="dots"> Seed dots (true data positions)</label>
-  </fieldset>
-  <fieldset>
-    <legend>Parameters</legend>
-    <label>Ergonomics α (picker/mosaic): <span class="val" id="alpha-val">0.70</span>
-      <input type="range" id="alpha" min="0" max="1" step="0.01" value="0.7">
-      <small style="color:var(--muted)">0 = faithful layout, 1 = fully equalised. Note: even at 0 the
-      picker still runs Lloyd’s relaxation — only the strict map is untouched geometry.</small>
-    </label>
-    <label>Hue seam shift°: <span class="val" id="shift-val">195</span>
-      <button id="auto-seam" style="float:right" title="Bin hues (36 bins), weight by mean chroma, put the seam in the lowest-weighted bin">Auto-seam</button>
-      <input type="range" id="shift" min="0" max="360" step="1" value="195">
-    </label>
-    <label>Neutral threshold (× max chroma): <span class="val" id="neutral-val">0.00</span>
-      <input type="range" id="neutral" min="0" max="0.3" step="0.01" value="0">
-      <small style="color:var(--muted)">0 = only exact greys (ok_C = 0) form the left column.</small>
-    </label>
-    <label>Y axis:
-      <select id="yaxis">
-        <option value="okl">OKLCH lightness (default)</option>
-        <option value="apcab">APCA |Lc| as text on black</option>
-        <option value="apcaw">APCA |Lc| as text on white</option>
-      </select>
-      <small style="color:var(--muted)">APCA variants are honest but cram dark (resp. light) colours
-      together — contrast utility, not visual distinctiveness.</small>
-    </label>
-  </fieldset>
-  <fieldset>
-    <legend>Contrast filter — click a cell to dim colours that don’t contrast with it</legend>
-    <label class="inline">Algorithm:
-      <select id="calgo">
-        <option value="apca">APCA |Lc|</option>
-        <option value="wcag2">WCAG 2.x ratio</option>
-        <option value="wcag1">WCAG 1 brightness/colour diff</option>
-      </select>
-    </label>
-    <label class="inline">Threshold: <input type="number" id="cthr" value="45" step="1"></label>
-    <button id="creset">Show all</button>
-    <div id="cinfo" style="font-size:.82rem;color:var(--muted);margin-top:.3rem">
-      No filter active. Double-click a cell to copy its name.</div>
-  </fieldset>
-</section>
-<section id="outputs">
-  <article id="a-picker">
-    <h2>Ergonomic picker <small id="m-picker"></small>
-      <span class="bar"><button data-copy="picker">Copy SVG</button><a class="uri-link" data-uri="picker" href="#" title="Click to copy the data: URI; drag to a bookmark bar or a new tab to keep it">data:URI</a><button data-dl="picker">Download</button></span></h2>
-    <div class="svgbox" id="v-picker"><div class="hint">Waiting for a palette…</div></div>
-  </article>
-  <article id="a-mosaic" hidden>
-    <h2>Mosaic <small id="m-mosaic"></small>
-      <span class="bar"><button data-copy="mosaic">Copy SVG</button><a class="uri-link" data-uri="mosaic" href="#" title="Click to copy the data: URI; drag to a bookmark bar or a new tab to keep it">data:URI</a><button data-dl="mosaic">Download</button></span></h2>
-    <div class="svgbox" id="v-mosaic"></div>
-  </article>
-  <article id="a-strict" hidden>
-    <h2>Strict map <small id="m-strict"></small>
-      <span class="bar"><button data-copy="strict">Copy SVG</button><a class="uri-link" data-uri="strict" href="#" title="Click to copy the data: URI; drag to a bookmark bar or a new tab to keep it">data:URI</a><button data-dl="strict">Download</button></span></h2>
-    <div class="svgbox" id="v-strict"></div>
-  </article>
-</section>
-</main>
-<footer>
-  <p><strong>Palette Voronoi Visualiser</strong> — deterministic palette maps: same input ⇒ identical
-  SVG bytes. Everything is inlined in this single file; it works offline, straight from
-  <code>file://</code>.</p>
-  <p><strong>Credits.</strong> Colour parsing and conversion by
-  <a href="https://github.com/Evercoder/culori">culori</a> v4.0.2 (MIT © 2018 Dan Burzo).
-  Voronoi tessellation by <a href="https://github.com/d3/d3-delaunay">d3-delaunay</a> v6.0.4
-  (ISC © 2018–2021 Observable, Inc., © 2021 Mapbox), which bundles
-  <a href="https://github.com/mapbox/delaunator">delaunator</a> (ISC © 2021 Mapbox) and
-  <a href="https://github.com/mourner/robust-predicates">robust-predicates</a> (public domain /
-  Unlicense; Vladimir Agafonkin’s port of Jonathan Shewchuk’s robust geometric predicates).
-  Contrast metrics are an independent implementation of the published
-  <a href="https://github.com/Myndex/SAPC-APCA">APCA</a> 0.98G formula (APCA™ is a trademark of
-  Myndex Perception Research; not an endorsement), plus the WCAG&nbsp;2.x relative-luminance ratio
-  and the legacy WCAG&nbsp;1 brightness/colour-difference heuristic.</p>
-  <p><strong>Preset palettes.</strong>
-  <a href="https://tailwindcss.com/">Tailwind CSS</a> v4.1.11 (MIT © Tailwind Labs, Inc.),
-  <a href="https://getbootstrap.com/">Bootstrap</a> v5.3.3 (MIT © 2011–2024 The Bootstrap Authors;
-  the 100–900 shades are computed with sass’s exact tint/shade mixes),
-  Material Design 2014 palette via
-  <a href="https://github.com/shuhei/material-colors">material-colors</a> v1.2.6 (ISC © Shuhei
-  Kagawa), and the CSS named colours (CSS Color Module, W3C).</p>
-  <p>All third-party components are MIT, ISC, or public domain — commercial use is permitted.
-  Full licence texts: <a href="NOTICE.md">NOTICE.md</a>.</p>
-</footer>
+  </details>
+  <details id="d-view" open>
+    <summary>View</summary>
+    <label><input type="radio" name="view" value="picker" checked> <strong>Ergonomic picker</strong><br>
+      <small>Cell areas relaxed to roughly uniform; vertical lightness order kept strictly.</small></label>
+    <label><input type="radio" name="view" value="mosaic"> <strong>Mosaic</strong><br>
+      <small>Fully relaxed mosaic, greys mixed into the hue field; order only loosely kept.</small></label>
+    <label><input type="radio" name="view" value="strict"> <strong>Strict map</strong><br>
+      <small>Faithful geometry: α = 0, exact greys only, no relaxation. Any change to the palette
+      changes the tessellation shape.</small></label>
+    <label><input type="radio" name="view" value="grid"> <strong>Grid</strong><br>
+      <small>Plain swatch tiles, no tessellation — instant at any size; made for contrast
+      fiddling over large sweeps.</small></label>
+    <label id="bw-row"><input type="checkbox" id="bw"> B/W outline<br>
+      <small>Boundaries only, for comparing palettes; neutral cells inverted (black fill, white
+      strokes).</small></label>
+    <label id="dots-row"><input type="checkbox" id="dots"> Seed dots<br>
+      <small>True data positions of each colour.</small></label>
+  </details>
+  <details id="d-colour" open>
+    <summary>Colour info &amp; export</summary>
+    <div id="cpanel">Hover a cell for colour details; click to pin (and filter by contrast).</div>
+    <div class="toolbar">
+      <small id="m-map"></small>
+      <span class="bar"><button id="b-copy">Copy SVG</button><a class="uri-link" id="b-uri" href="#" title="Click to copy the data: URI; drag to a bookmark bar or a new tab to keep it">data:URI</a><button id="b-dl">Download</button></span>
+    </div>
+  </details>
+  <details id="d-gridorder" hidden open>
+    <summary>Grid order</summary>
+    <label><input type="radio" name="gorder" value="light" checked> Lightness-major<br>
+      <small>Rows sweep dark → light (bottom → top); within a row, neutrals first, then a hue
+      sweep — each row is a mini-spectrum of its lightness band.</small></label>
+    <label><input type="radio" name="gorder" value="hue"> Hue-major<br>
+      <small>Columns per hue family (neutrals first), shades dark → light within a column.</small></label>
+  </details>
+  <details id="d-alpha" open>
+    <summary>Ergonomics α</summary>
+    <p class="desc">Rank-blend strength of the seed layout: 0 = faithful positions, 1 = fully
+    equalised. Even at 0 the picker and mosaic still run Lloyd’s relaxation — only the strict map
+    is untouched geometry.</p>
+    <label><span class="val" id="alpha-val">0.70</span>
+      <input type="range" id="alpha" min="0" max="1" step="0.01" value="0.7"></label>
+  </details>
+  <details id="d-seam" open>
+    <summary>Hue seam shift</summary>
+    <p class="desc">Hue is circular but the X axis is linear, so a seam must land somewhere.
+    Auto-seam bins the hues (36 bins), weights each bin by mean chroma, and hides the seam in the
+    lowest-weighted bin.</p>
+    <label><span class="val" id="shift-val">195</span>°
+      <button id="auto-seam" style="float:right">Auto-seam</button>
+      <input type="range" id="shift" min="0" max="360" step="1" value="195"></label>
+  </details>
+  <details id="d-neutral" open>
+    <summary>Neutral threshold</summary>
+    <p class="desc">Colours with chroma ≤ t × the palette’s maximum chroma count as neutral and
+    form the grey column at the left edge. 0 = only exact greys (ok_C = 0). The strict map always
+    uses 0.</p>
+    <label><span class="val" id="neutral-val">0.00</span> × max chroma
+      <input type="range" id="neutral" min="0" max="0.3" step="0.01" value="0"></label>
+  </details>
+  <details id="d-yaxis" open>
+    <summary>Y axis — vertical order</summary>
+    <p class="desc">HSL lightness and mean RGB are deliberately naive (sRGB-gamma arithmetic) —
+    useful for showing why the perceptual spaces exist. APCA variants are honest but cram dark
+    (resp. light) colours together: contrast utility, not visual distinctiveness.</p>
+    <label><input type="radio" name="yaxis" value="okl" checked> OKLCH lightness (default)</label>
+    <label><input type="radio" name="yaxis" value="hsll"> HSL lightness (naive)</label>
+    <label><input type="radio" name="yaxis" value="rgbmean"> Mean RGB (naivest)</label>
+    <label><input type="radio" name="yaxis" value="rely"> WCAG relative luminance (linear-light Y)</label>
+    <label><input type="radio" name="yaxis" value="apcab"> APCA |Lc| as text on black</label>
+    <label><input type="radio" name="yaxis" value="apcaw"> APCA |Lc| as text on white</label>
+  </details>
+  <details id="d-xaxis" open>
+    <summary>X axis — hue wheel</summary>
+    <p class="desc">Neutrals always sit on a fake-hue diagonal in a quiet corridor of the chosen
+    wheel (OKLCH ≈ 192–228°, HSL ≈ 180–216°) when they mix into the field (mosaic).</p>
+    <label><input type="radio" name="xaxis" value="okh" checked> OKLCH hue (default)</label>
+    <label><input type="radio" name="xaxis" value="hslh"> HSL hue (sRGB wheel)</label>
+  </details>
+  <details id="d-contrast" open>
+    <summary>Contrast filter</summary>
+    <label><input type="radio" name="calgo" value="apca" checked> APCA |Lc|<br>
+      <small>Perceptual, asymmetric; the better of both text/background role assignments.</small></label>
+    <label><input type="radio" name="calgo" value="wcag2"> WCAG 2.x ratio<br>
+      <small>Relative-luminance contrast ratio, 1–21.</small></label>
+    <label><input type="radio" name="calgo" value="wcag1"> WCAG 1 brightness/colour diff<br>
+      <small>Legacy heuristic: brightness difference 0–255, plus colour difference ≥ 500.</small></label>
+    <label>Threshold: <input type="number" id="cthr" value="45" step="1"><span id="cchips"></span></label>
+    <div id="cnote"></div>
+    <div id="cinfo">No filter active. Click a cell to dim colours that don’t contrast with it;
+      double-click a cell to copy its name.</div>
+  </details>
+</aside>
+</div>
 <div id="toast" role="status"></div>
 
 <script>/*! culori v4.0.2 | MIT License | Copyright (c) 2018 Dan Burzo | https://github.com/Evercoder/culori — full text in NOTICE.md */
@@ -199,6 +276,7 @@ const W = 1000, H = 720, PAD = 20;
 const CHROM_X_MIN = 80, GREY_MARGIN = 30;
 const PLOT_X0 = PAD, PLOT_X1 = W - PAD, PLOT_Y0 = PAD, PLOT_Y1 = H - PAD;
 const PLOT_W = PLOT_X1 - PLOT_X0, PLOT_HT = PLOT_Y1 - PLOT_Y0;
+const VOR_CAP = 1500;   // Voronoi views refuse larger palettes (Grid takes any size)
 
 const round2 = x => Math.round(x * 100) / 100;
 const round4 = x => Math.round(x * 1e4) / 1e4;
@@ -217,7 +295,7 @@ function rgbToOklch(r8, g8, b8){
   const l_ = Math.cbrt(l), m_ = Math.cbrt(m), s_ = Math.cbrt(s);
   const L  =  0.2104542553*l_ + 0.7936177850*m_ - 0.0040720468*s_;
   const a  =  1.9779984951*l_ - 2.4285922050*m_ + 0.4505937099*s_;
-  const bv =  0.0259040371*l_ + 0.4072384516*m_ - 0.4331466548*s_;
+  const bv =  0.0259040371*l_ + 0.7827717662*m_ - 0.8086757660*s_;
   const C = Math.sqrt(a*a + bv*bv);
   const Hdeg = ((Math.atan2(bv, a) * 180 / Math.PI) % 360 + 360) % 360;
   return { L: round4(L), C: round4(C), H: round2(Hdeg) };
@@ -246,6 +324,7 @@ function apcaLc(txtY, bgY){
 
 /* ── input parsing (culori does the notation work) ── */
 const toRgbConv = culori.converter('rgb');
+const toHslConv = culori.converter('hsl');
 function tryColour(s){
   s = s.trim();
   if (!s) return null;
@@ -308,7 +387,7 @@ function parseInput(text){
   return { entries, errors };
 }
 
-/* ── records (schema identical to data/css_colours.json) ── */
+/* ── records (data/css_colours.json schema + page-only hsl_* fields) ── */
 function buildRecords(entries){
   const byHex = new Map();
   for (const e of entries){
@@ -320,6 +399,7 @@ function buildRecords(entries){
   const records = [...byHex.values()].map(x => {
     const { L, C, H } = rgbToOklch(x.r, x.g, x.b);
     const Y = relY(x.r, x.g, x.b);
+    const hsl = toHslConv({ mode: 'rgb', r: x.r / 255, g: x.g / 255, b: x.b / 255 });
     const rec = {
       names: [...x.names].sort(), hex: x.hex, r: x.r, g: x.g, b: x.b,
       ok_L: L, ok_C: C, ok_H: H,
@@ -327,6 +407,8 @@ function buildRecords(entries){
       rel_luminance: round6(Y),
       lc_fg_on_white: round2(apcaLc(Y, 1)), lc_fg_on_black: round2(apcaLc(Y, 0)),
       lc_white_on_bg: round2(apcaLc(1, Y)), lc_black_on_bg: round2(apcaLc(0, Y)),
+      hsl_h: round2((((hsl.h ?? 0) % 360) + 360) % 360),
+      hsl_s: round4(hsl.s ?? 0), hsl_l: round4(hsl.l),
     };
     rec.dot = Math.abs(rec.lc_white_on_bg) >= Math.abs(rec.lc_black_on_bg) ? 'white' : 'black';
     return rec;
@@ -339,19 +421,23 @@ function buildRecords(entries){
 function classifyNeutrals(records, tNeutral){
   const maxC = records.reduce((m, r) => Math.max(m, r.ok_C), 0);
   const thr = tNeutral * maxC;
-  for (const r of records){
-    r.neutral = r.ok_C <= thr;
-    r.layout_H = r.neutral ? round2(192 + r.ok_L * 36) : r.ok_H;
-  }
+  for (const r of records) r.neutral = r.ok_C <= thr;
 }
 
-/* ── Y-axis variants: OKLCH L (default) or APCA-geometry (kept as toggle;
-      honest but crams dark resp. light colours together) ── */
-function setYValues(records, mode){
+/* ── pluggable axes: any monotone lightness-like scalar for Y, any hue wheel
+      for X. Rank-blend and Lloyd's don't care. Neutrals ride a fake-hue
+      diagonal in a quiet corridor of the active wheel (used when mixed in). ── */
+function setAxes(records, yMode, hMode){
+  const diagBase = hMode === 'hslh' ? 180 : 192;   // OKLCH: darkcyan↔steelblue corridor
   for (const r of records){
-    r.y_val = mode === 'apcab' ? Math.min(1, Math.abs(r.lc_fg_on_black) / 110)
-            : mode === 'apcaw' ? 1 - Math.min(1, Math.abs(r.lc_fg_on_white) / 110)
+    r.y_val = yMode === 'hsll' ? r.hsl_l
+            : yMode === 'rgbmean' ? round4((r.r + r.g + r.b) / 765)
+            : yMode === 'rely' ? r.rel_luminance
+            : yMode === 'apcab' ? Math.min(1, Math.abs(r.lc_fg_on_black) / 110)
+            : yMode === 'apcaw' ? 1 - Math.min(1, Math.abs(r.lc_fg_on_white) / 110)
             : r.ok_L;
+    r.layout_H = r.neutral ? round2(diagBase + r.ok_L * 36)
+               : hMode === 'hslh' ? r.hsl_h : r.ok_H;
   }
 }
 
@@ -494,24 +580,37 @@ function toRelPath(ring){
 function buildSvg(all, pts, { dots, bw, docTitle }){
   const vor = makeVoronoi(pts, [0, 0, W, H]);
   const idx = all.map((_, i) => i);
-  const order = dots
+  const order = dots && !bw
     ? idx.sort((a, b) => (all[a].dot === 'white' ? 0 : 1) - (all[b].dot === 'white' ? 0 : 1)
                          || all[a].plot_L - all[b].plot_L || a - b)
     : idx.sort((a, b) => all[a].plot_L - all[b].plot_L || a - b);
   const out = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">`];
   if (docTitle) out.push(`<title>${escXml(docTitle)}</title>`);
+  const dropped = [];   // colours whose seed coincides with another at grid resolution
+  const pathOf = i => {
+    const poly = vor.cellPolygon(i);
+    const d = poly && toRelPath(poly);
+    if (!d){ dropped.push(all[i].names[0] ?? all[i].hex); return null; }
+    return { d, label: escXml(all[i].names[0] ?? all[i].hex) };
+  };
   if (bw){
-    // B/W outline: empty cells, thick boundaries — for geometric palette diffing.
-    out.push('<style>path{fill:none;stroke:#000;stroke-width:3px;stroke-linejoin:round}</style>');
+    // B/W outline: empty cells, thick black boundaries — for geometric palette
+    // diffing. Neutral cells are inverted (black fill, white strokes) so they
+    // can't be confused with chromatics; they are emitted LAST as a contiguous
+    // run so one structural nth-of-type rule covers them (white strokes also
+    // paint over shared edges, staying crisp on the black fills).
+    const chromPaths = [], neutPaths = [];
     for (const i of order){
-      const poly = vor.cellPolygon(i);
-      if (!poly) continue;
-      const d = toRelPath(poly);
-      if (!d) continue;
-      out.push(`<path d="${d}"><title>${escXml(all[i].names[0] ?? all[i].hex)}</title></path>`);
+      const p = pathOf(i);
+      if (!p) continue;
+      (all[i].neutral ? neutPaths : chromPaths)
+        .push(`<path d="${p.d}"><title>${p.label}</title></path>`);
     }
-    out.push('</svg>');
-    return out.join('\n');
+    let style = '<style>path{fill:none;stroke:#000;stroke-width:3px;stroke-linejoin:round}';
+    if (neutPaths.length)
+      style += `\npath:nth-of-type(n+${chromPaths.length + 1}){fill:#000;stroke:#fff}`;
+    out.push(style + '</style>', ...chromPaths, ...neutPaths, '</svg>');
+    return { svg: out.join('\n'), dropped };
   }
   if (dots){
     // Sentinel: the FIRST black-dot element flips its own circle and every
@@ -528,25 +627,21 @@ function buildSvg(all, pts, { dots, bw, docTitle }){
   }
   out.push('<rect width="100%" height="100%" fill="#888"/>');
   for (const i of order){
-    const poly = vor.cellPolygon(i);
-    if (!poly) continue;
-    const d = toRelPath(poly);
-    if (!d) continue;
-    const c = all[i];
-    const fill = fillOf(c), label = escXml(c.names[0] ?? c.hex);
-    out.push(`<path d="${d}" fill="${fill}"><title>${label}</title></path>`);
+    const p = pathOf(i);
+    if (!p) continue;
+    out.push(`<path d="${p.d}" fill="${fillOf(all[i])}"><title>${p.label}</title></path>`);
     if (dots) out.push(`<circle cx="${Math.round(pts[i][0])}" cy="${Math.round(pts[i][1])}"/>`);
   }
   out.push('</svg>');
-  return out.join('\n');
+  return { svg: out.join('\n'), dropped };
 }
 
-/* ── the three pipelines ── */
+/* ── the pipelines ── */
 function pipelineStrict(records, shift, opts){
   // Strict map: α = 0, no Lloyd's — faithful, geometrically diffable.
   const { all } = layout(records, 0, shift);
   const pts = all.map(c => [Math.round(c.plot_x), Math.round(ly(c.plot_L))]);
-  return { svg: buildSvg(all, pts, opts), steps: 0 };
+  return { ...buildSvg(all, pts, opts), steps: 0 };
 }
 function pipelinePicker(records, alpha, shift, opts){
   const { all, nGrey } = layout(records, alpha, shift);
@@ -565,7 +660,7 @@ function pipelinePicker(records, alpha, shift, opts){
     }
   }
   pts = pts.map(p => [Math.round(p[0]), Math.round(p[1])]);
-  return { svg: buildSvg(all, pts, opts), steps };
+  return { ...buildSvg(all, pts, opts), steps };
 }
 function pipelineMosaic(records, alpha, shift, opts){
   const { all } = layoutMixed(records, alpha, shift);
@@ -574,15 +669,53 @@ function pipelineMosaic(records, alpha, shift, opts){
   ({ pts, steps } = lloydFull(pts));
   pts = pts.map(p => [Math.round(p[0]), Math.round(p[1])]);
   // Dots are meaningless after full relaxation — never emitted here.
-  return { svg: buildSvg(all, pts, { ...opts, dots: false }), steps };
+  return { ...buildSvg(all, pts, { ...opts, dots: false }), steps };
+}
+function pipelineGrid(records, shift, orderMode, { docTitle }){
+  // Plain swatch tiles — no Voronoi, no Lloyd's; instant at any palette size.
+  const all = [...records];
+  all.forEach(c => { c.shifted_H = (((c.layout_H - shift) % 360) + 360) % 360; });
+  const cmpHex = (a, b) => a.hex < b.hex ? -1 : a.hex > b.hex ? 1 : 0;
+  const n = all.length;
+  const cols = Math.ceil(Math.sqrt(n * W / H)), rows = Math.ceil(n / cols);
+  const rowSort = (a, b) => (a.neutral ? 0 : 1) - (b.neutral ? 0 : 1)
+    || (a.neutral && b.neutral ? 0 : a.shifted_H - b.shifted_H)
+    || a.y_val - b.y_val || cmpHex(a, b);
+  if (orderMode === 'hue')
+    all.sort(rowSort);
+  else {
+    // band-sort: global lightness order chunked into rows, then each row
+    // (one lightness band) re-ordered neutrals-first + hue sweep — every row
+    // is a mini-spectrum, echoing the maps' grey-column contract
+    all.sort((a, b) => a.y_val - b.y_val || a.shifted_H - b.shifted_H || cmpHex(a, b));
+    for (let s = 0; s < n; s += cols){
+      const band = all.slice(s, s + cols).sort(rowSort);
+      all.splice(s, band.length, ...band);
+    }
+  }
+  const xs = Array.from({ length: cols + 1 }, (_, c) => Math.round(c * W / cols));
+  const ys = Array.from({ length: rows + 1 }, (_, r) => Math.round(r * H / rows));
+  const out = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">`];
+  if (docTitle) out.push(`<title>${escXml(docTitle)}</title>`);
+  out.push('<rect width="100%" height="100%" fill="#888"/>');
+  all.forEach((c, i) => {
+    // fill bottom-up: dark → light rises, matching the maps' Y contract
+    const col = orderMode === 'hue' ? Math.floor(i / rows) : i % cols;
+    const row = orderMode === 'hue' ? i % rows : Math.floor(i / cols);
+    const x0 = xs[col], x1 = xs[col + 1];
+    const y0 = ys[rows - 1 - row], y1 = ys[rows - row];
+    out.push(`<rect x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}" fill="${fillOf(c)}"><title>${escXml(c.names[0] ?? c.hex)}</title></rect>`);
+  });
+  out.push('</svg>');
+  return { svg: out.join('\n'), dropped: [], gridInfo: `${cols} × ${rows} tiles` };
 }
 
-/* ── auto-seam: 36 hue bins weighted by mean chroma; seam → lowest bin ── */
+/* ── auto-seam: 36 hue bins (active wheel) weighted by mean chroma; seam → lowest bin ── */
 function autoSeam(records){
   const sum = new Array(36).fill(0), cnt = new Array(36).fill(0);
   for (const c of records){
     if (c.neutral) continue;
-    const b = Math.floor((((c.ok_H % 360) + 360) % 360) / 10) % 36;
+    const b = Math.floor((((c.layout_H % 360) + 360) % 360) / 10) % 36;
     sum[b] += c.ok_C; cnt[b]++;
   }
   let best = 0, bw = Infinity;
@@ -615,7 +748,8 @@ function contrastPass(a, b, algo, thr){
 
 /* ═══════════════ UI wiring ═══════════════ */
 const $ = id => document.getElementById(id);
-const svgCache = { strict: '', picker: '', mosaic: '' };
+const DETAIL_IDS = ['d-input', 'd-view', 'd-colour', 'd-gridorder', 'd-alpha', 'd-seam', 'd-neutral', 'd-yaxis', 'd-xaxis', 'd-contrast'];
+let current = { kind: 'picker', svg: '' };
 let lastRecords = [];
 let labelMap = new Map();
 let anchorLabel = null;        // active contrast-filter anchor (title text)
@@ -632,111 +766,204 @@ function toast(msg){
 const looseDataUri = svg => 'data:image/svg+xml,' + svg
   .replace(/%/g, '%25').replace(/#/g, '%23').replace(/\r?\n/g, '%0A').replace(/ /g, '%20');
 
-async function meta(el, svg, extra){
-  const raw = new TextEncoder().encode(svg).length;
-  el.textContent = `${raw.toLocaleString('en-GB')} B raw${extra ? ' · ' + extra : ''}`;
-  try {
-    const gz = await new Response(new Blob([svg]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
-    el.textContent = `${raw.toLocaleString('en-GB')} B raw · ${gz.byteLength.toLocaleString('en-GB')} B gzip${extra ? ' · ' + extra : ''}`;
-  } catch {}
-}
-
-const viewVal = () => document.querySelector('input[name="view"]:checked').value;
+const radioVal = name => document.querySelector(`input[name="${name}"]:checked`).value;
+const viewVal = () => radioVal('view');
 const slug = s => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'palette';
+const effectiveBw = () => $('bw').checked && viewVal() !== 'grid';
 
-function renderInto(kind, svg, metaExtra){
-  svgCache[kind] = svg;
-  $('v-' + kind).innerHTML = svg;
-  meta($('m-' + kind), svg, metaExtra);
-  const a = document.querySelector(`a[data-uri="${kind}"]`);
-  if (a) a.href = looseDataUri(svg);
+function syncVisibility(){
+  const view = viewVal(), bw = effectiveBw();
+  $('d-alpha').hidden = view === 'strict' || view === 'grid';
+  $('d-neutral').hidden = view === 'strict';
+  $('d-gridorder').hidden = view !== 'grid';
+  $('dots-row').hidden = view === 'mosaic' || view === 'grid';
+  $('bw-row').hidden = view === 'grid';
+  $('dots').disabled = bw;
+  $('d-contrast').hidden = bw;
 }
 
 function generate(){
   const { entries, errors } = parseInput($('input').value);
   const records = buildRecords(entries);
   lastRecords = records;
-  const alpha = +$('alpha').value, shift = +$('shift').value, tN = +$('neutral').value;
+  const view = viewVal(), bw = effectiveBw();
+  const dots = $('dots').checked && !bw;
+  const alpha = +$('alpha').value, shift = +$('shift').value;
+  const tN = view === 'strict' ? 0 : +$('neutral').value;   // strict contract: exact greys only
+  const docTitle = $('ptitle').value.trim();
   classifyNeutrals(records, tN);
-  setYValues(records, $('yaxis').value);
+  setAxes(records, radioVal('yaxis'), radioVal('xaxis'));
   labelMap = new Map(records.map(r => [r.names[0] ?? r.hex, r]));
   const nNeutral = records.filter(r => r.neutral).length;
 
-  let status = `${records.length} unique colour${records.length === 1 ? '' : 's'}`
-    + ` (${nNeutral} neutral, ${records.length - nNeutral} chromatic)`;
-  if (errors.length) status += `\nignored: ${errors.map(e => JSON.stringify(e)).join(', ')}`;
-  $('status').innerHTML = escXml(status).replace(/\nignored:([^]*)/, '\n<span class="err">ignored:$1</span>');
+  const setStatus = extraLine => {
+    const lines = [escXml(`${records.length} unique colour${records.length === 1 ? '' : 's'}`
+      + ` (${nNeutral} neutral, ${records.length - nNeutral} chromatic)`)];
+    if (errors.length)
+      lines.push(`<span class="err">${escXml('ignored: ' + errors.map(e => JSON.stringify(e)).join(', '))}</span>`);
+    if (extraLine) lines.push(escXml(extraLine));
+    $('status').innerHTML = lines.join('\n');
+  };
+  setStatus('');
 
-  const view = viewVal(), strictOn = $('strict-on').checked;
-  const dots = $('dots').checked, bw = $('bw').checked;
-  const docTitle = $('ptitle').value.trim();
-  $('bw').disabled = !strictOn;
-  $('a-picker').hidden = view !== 'picker';
-  $('a-mosaic').hidden = view !== 'mosaic';
-  $('a-strict').hidden = !strictOn;
+  syncVisibility();
 
-  const hint = msg => `<div class="hint">${msg}</div>`;
   if (records.length < 2){
-    for (const k of ['strict', 'picker', 'mosaic']){
-      $('v-' + k).innerHTML = hint(records.length ? 'Need at least two colours.' : 'Waiting for a palette…');
-      $('m-' + k).textContent = '';
-      svgCache[k] = '';
-    }
+    $('v-map').innerHTML = `<div class="hint">${records.length ? 'Need at least two colours.' : 'Waiting for a palette…'}</div>`;
+    $('m-map').textContent = '';
+    current = { kind: view, svg: '' };
+    applyFilter();
+    scheduleHash();
     return;
   }
-  if (view === 'picker'){
-    const r = pipelinePicker(records, alpha, shift, { dots, docTitle });
-    renderInto('picker', r.svg, `α = ${alpha} · Lloyd’s ×${r.steps}`);
+  if (view !== 'grid' && records.length > VOR_CAP){
+    $('v-map').innerHTML = `<div class="hint">${records.length.toLocaleString('en-GB')} colours is too
+      many for the Voronoi views (cap ${VOR_CAP.toLocaleString('en-GB')}) — switch to the Grid view.</div>`;
+    $('m-map').textContent = '';
+    current = { kind: view, svg: '' };
+    applyFilter();
+    scheduleHash();
+    return;
+  }
+  let r, extra;
+  if (view === 'grid'){
+    r = pipelineGrid(records, shift, radioVal('gorder'), { docTitle });
+    extra = r.gridInfo;
+  } else if (view === 'strict'){
+    r = pipelineStrict(records, shift, { dots, bw, docTitle });
+    extra = 'α = 0';
+  } else if (view === 'mosaic'){
+    r = pipelineMosaic(records, alpha, shift, { bw, docTitle });
+    extra = `α = ${alpha} · Lloyd’s ×${r.steps}`;
   } else {
-    const r = pipelineMosaic(records, alpha, shift, { docTitle });
-    renderInto('mosaic', r.svg, `α = ${alpha} · Lloyd’s ×${r.steps}`);
+    r = pipelinePicker(records, alpha, shift, { dots, bw, docTitle });
+    extra = `α = ${alpha} · Lloyd’s ×${r.steps}`;
   }
-  if (strictOn){
-    const r = pipelineStrict(records, shift, { dots: dots && !bw, bw, docTitle });
-    renderInto('strict', r.svg, bw ? 'α = 0 · B/W outline' : 'α = 0');
+  current = { kind: view, svg: r.svg };
+  if (r.dropped.length){
+    const list = r.dropped.length > 6
+      ? r.dropped.slice(0, 5).join(', ') + `, +${r.dropped.length - 5} more`
+      : r.dropped.join(', ');
+    setStatus(`no cell (coincident in this projection at grid resolution): ${list}`);
   }
+  $('v-map').innerHTML = r.svg;
+  $('m-map').textContent = extra;
+  $('b-uri').href = looseDataUri(r.svg);
   applyFilter();   // re-apply contrast filter to fresh DOM, if active
+  scheduleHash();
 }
 
-/* ── contrast filter over the rendered previews (page-only; SVG artefacts stay clean) ── */
+/* ── colour info panel (in the sidebar): hover = transient, click/anchor = pinned ── */
+function infoHtml(rec, pinned){
+  const hsl = `hsl(${rec.hsl_h} ${round2(rec.hsl_s * 100)}% ${round2(rec.hsl_l * 100)}%)`;
+  const name = rec.names.length ? rec.names.join(', ') : rec.hex;
+  return `<span class="sw" style="background:${rec.hex}"></span><strong>${escXml(name)}</strong>`
+    + (pinned ? ' <em>(pinned — click the cell again to release)</em>' : '')
+    + `<br>${rec.hex.toLowerCase()} · rgb(${rec.r} ${rec.g} ${rec.b}) · ${hsl}`
+    + ` · oklch(${rec.ok_L} ${rec.ok_C} ${rec.ok_H}) · Y ${rec.rel_luminance}`
+    + `<br>APCA Lc — as text on white ${rec.lc_fg_on_white}, on black ${rec.lc_fg_on_black};`
+    + ` white text on it ${rec.lc_white_on_bg}, black text ${rec.lc_black_on_bg}`
+    + ` · best dot: ${rec.dot}`;
+}
+function refreshPanel(hoverRec){
+  const anchorRec = anchorLabel !== null ? labelMap.get(anchorLabel) : undefined;
+  const rec = hoverRec ?? anchorRec;
+  $('cpanel').innerHTML = rec
+    ? infoHtml(rec, !hoverRec && !!anchorRec)
+    : 'Hover a cell for colour details; click to pin (and filter by contrast).';
+}
+
+/* ── contrast filter over the rendered preview (page-only; SVG artefacts stay clean) ── */
+const CHIPS = { apca: [45, 60, 75, 90], wcag2: [3, 4.5, 7], wcag1: [125] };
+function updateContrastNote(){
+  const algo = radioVal('calgo'), thr = +$('cthr').value;
+  $('cchips').innerHTML = CHIPS[algo].map(v => `<button class="chip" data-thr="${v}">${v}</button>`).join('');
+  let note;
+  if (algo === 'wcag2')
+    note = thr >= 7 ? '≥ 7:1 — meets WCAG 2.x AAA body text (and every lower level)'
+         : thr >= 4.5 ? '≥ 4.5:1 — meets AA body text, and AAA large text'
+         : thr >= 3 ? '≥ 3:1 — meets AA large text and UI components only'
+         : 'below 3:1 — no WCAG 2.x conformance level';
+  else if (algo === 'wcag1')
+    note = 'Historical WCAG 1 recommendation: brightness difference ≥ 125 (this threshold) '
+         + 'AND colour difference ≥ 500 (always applied).';
+  else
+    note = 'APCA draft guidance (not a standard): '
+         + (thr >= 90 ? '≥ 90 — preferred body text'
+          : thr >= 75 ? '≥ 75 — body-text minimum'
+          : thr >= 60 ? '≥ 60 — minimum for fluent text'
+          : thr >= 45 ? '≥ 45 — minimum for large/bold text'
+          : 'below 45 — spot/decorative text only') + '.';
+  $('cnote').textContent = note;
+}
 function applyFilter(){
-  const anchor = anchorLabel !== null ? labelMap.get(anchorLabel) : null;
-  const algo = $('calgo').value, thr = +$('cthr').value;
+  const bw = effectiveBw();
+  if (anchorLabel !== null && !labelMap.has(anchorLabel)) anchorLabel = null;  // colour left the palette
+  const anchor = !bw && anchorLabel !== null ? labelMap.get(anchorLabel) : null;
+  const algo = radioVal('calgo'), thr = +$('cthr').value;
   if (!anchor){
-    if (anchorLabel !== null){ anchorLabel = null; }
-    $('cinfo').textContent = 'No filter active. Double-click a cell to copy its name.';
+    $('cinfo').textContent = 'No filter active. Click a cell to dim colours that don’t contrast with it; double-click a cell to copy its name.';
   } else {
     const unit = algo === 'wcag2' ? ':1' : algo === 'wcag1' ? ' brightness diff (+ colour diff ≥ 500)' : ' Lc';
-    $('cinfo').textContent = `Dimming colours below ${thr}${unit} against “${anchorLabel}”.`;
+    $('cinfo').textContent = `Dimming colours below ${thr}${unit} against “${anchorLabel}”. Click the same cell again to show all.`;
   }
-  for (const path of document.querySelectorAll('#outputs .svgbox path')){
-    const label = path.querySelector('title')?.textContent;
+  for (const cell of document.querySelectorAll('#outputs .svgbox path, #outputs .svgbox rect')){
+    const label = cell.querySelector('title')?.textContent;
     const rec = label !== undefined ? labelMap.get(label) : undefined;
-    path.classList.remove('lowc', 'canchor');
+    cell.classList.remove('lowc', 'canchor');
     if (!anchor || !rec) continue;
-    if (rec === anchor) path.classList.add('canchor');
-    else if (!contrastPass(anchor, rec, algo, thr)) path.classList.add('lowc');
+    if (rec === anchor) cell.classList.add('canchor');
+    else if (!contrastPass(anchor, rec, algo, thr)) cell.classList.add('lowc');
   }
+  updateContrastNote();
+  refreshPanel();
 }
 
-/* ── share-link state in the location hash (gzip + base64url) ── */
+/* ── info & credits page (replaces the map as main content — not shared via URL) ── */
+function setInfoMode(on){
+  $('v-map').hidden = on;
+  $('v-info').hidden = !on;
+  $('btn-info').textContent = on ? '← Back to picker' : 'Info & credits';
+  $('btn-info').setAttribute('aria-pressed', String(on));
+  setNavOpen(false);
+}
+$('btn-info').addEventListener('click', () => setInfoMode($('v-info').hidden));
+$('btn-back').addEventListener('click', () => setInfoMode(false));
+
+/* ── share state: auto-anchored in the location hash (gzip + base64url) ── */
+function collectOpenMask(){
+  let mask = 0;
+  DETAIL_IDS.forEach((id, i) => { if ($(id).open) mask |= (1 << i); });
+  return mask;
+}
+function applyOpenMask(mask){
+  if (!Number.isFinite(mask)) return;
+  DETAIL_IDS.forEach((id, i) => { $(id).open = !!(mask & (1 << i)); });
+}
 function collectState(){
-  return { v: 1, t: $('input').value, ti: $('ptitle').value,
+  return { v: 2, t: $('input').value, ti: $('ptitle').value,
     a: +$('alpha').value, s: +$('shift').value, n: +$('neutral').value,
-    view: viewVal(), so: $('strict-on').checked, bw: $('bw').checked,
-    d: $('dots').checked, y: $('yaxis').value, ca: $('calgo').value, ct: +$('cthr').value };
+    view: viewVal(), bw: $('bw').checked, d: $('dots').checked,
+    y: radioVal('yaxis'), x: radioVal('xaxis'), go: radioVal('gorder'),
+    ca: radioVal('calgo'), ct: +$('cthr').value, op: collectOpenMask(),
+    ...(anchorLabel !== null ? { al: anchorLabel } : {}) };
 }
 function applyState(st){
-  if (!st || st.v !== 1) return false;
+  if (!st || (st.v !== 1 && st.v !== 2)) return false;
+  const setRadio = (name, val, allowed, fallback) =>
+    document.querySelector(`input[name="${name}"][value="${allowed.includes(val) ? val : fallback}"]`).checked = true;
   $('input').value = st.t ?? '';
   $('ptitle').value = st.ti ?? '';
   $('alpha').value = st.a ?? 0.7; $('shift').value = st.s ?? 195; $('neutral').value = st.n ?? 0;
-  const vr = document.querySelector(`input[name="view"][value="${st.view === 'mosaic' ? 'mosaic' : 'picker'}"]`);
-  if (vr) vr.checked = true;
-  $('strict-on').checked = !!st.so; $('bw').checked = !!st.bw; $('dots').checked = !!st.d;
-  if (['okl', 'apcab', 'apcaw'].includes(st.y)) $('yaxis').value = st.y;
-  if (['apca', 'wcag2', 'wcag1'].includes(st.ca)) $('calgo').value = st.ca;
+  setRadio('view', st.view, ['picker', 'mosaic', 'strict', 'grid'], 'picker');
+  $('bw').checked = !!st.bw; $('dots').checked = !!st.d;
+  setRadio('yaxis', st.y, ['okl', 'hsll', 'rgbmean', 'rely', 'apcab', 'apcaw'], 'okl');
+  setRadio('xaxis', st.x, ['okh', 'hslh'], 'okh');
+  setRadio('gorder', st.go, ['light', 'hue'], 'light');
+  setRadio('calgo', st.ca, ['apca', 'wcag2', 'wcag1'], 'apca');
   if (Number.isFinite(st.ct)) $('cthr').value = st.ct;
+  if (Number.isFinite(st.op)) applyOpenMask(st.op);   // else: leave the authored (all-open) defaults
+  anchorLabel = typeof st.al === 'string' ? st.al : null;
   syncValueLabels();
   return true;
 }
@@ -755,6 +982,14 @@ async function decodeState(hash){
     return JSON.parse(json);
   } catch { return null; }
 }
+let hashTimer = null;
+function scheduleHash(){
+  clearTimeout(hashTimer);
+  hashTimer = setTimeout(async () => {
+    const payload = await encodeState();
+    history.replaceState(null, '', '#' + payload);   // no history pollution
+  }, 300);
+}
 
 /* ── event wiring ── */
 function syncValueLabels(){
@@ -767,18 +1002,28 @@ const regenerate = () => { clearTimeout(timer); timer = setTimeout(generate, 250
 
 $('input').addEventListener('input', () => { anchorLabel = null; regenerate(); });
 $('ptitle').addEventListener('input', regenerate);
-for (const id of ['alpha', 'shift', 'neutral', 'strict-on', 'bw', 'dots', 'yaxis'])
+for (const id of ['alpha', 'shift', 'neutral', 'bw', 'dots'])
   $(id).addEventListener('input', () => { syncValueLabels(); regenerate(); });
-for (const r of document.querySelectorAll('input[name="view"]'))
+for (const r of document.querySelectorAll('input[name="view"], input[name="yaxis"], input[name="xaxis"], input[name="gorder"]'))
   r.addEventListener('input', regenerate);
+for (const id of DETAIL_IDS)
+  $(id).addEventListener('toggle', scheduleHash);
 
-$('calgo').addEventListener('input', () => {
-  $('cthr').value = { apca: 45, wcag2: 4.5, wcag1: 125 }[$('calgo').value];
-  $('cthr').step = $('calgo').value === 'wcag2' ? '0.1' : '1';
+for (const r of document.querySelectorAll('input[name="calgo"]'))
+  r.addEventListener('input', () => {
+    $('cthr').value = { apca: 45, wcag2: 4.5, wcag1: 125 }[radioVal('calgo')];
+    $('cthr').step = radioVal('calgo') === 'wcag2' ? '0.1' : '1';
+    applyFilter();
+    scheduleHash();
+  });
+$('cthr').addEventListener('input', () => { applyFilter(); scheduleHash(); });
+$('cchips').addEventListener('click', e => {
+  const v = e.target.dataset?.thr;
+  if (v === undefined) return;
+  $('cthr').value = v;
   applyFilter();
+  scheduleHash();
 });
-$('cthr').addEventListener('input', applyFilter);
-$('creset').addEventListener('click', () => { anchorLabel = null; applyFilter(); });
 
 $('auto-seam').addEventListener('click', () => {
   if (!lastRecords.length) return;
@@ -786,36 +1031,44 @@ $('auto-seam').addEventListener('click', () => {
   syncValueLabels();
   generate();
 });
-$('preset').addEventListener('input', () => {
-  const v = $('preset').value;
-  if (!v) return;
+function loadPreset(v){
+  const hex2 = n => n.toString(16).padStart(2, '0');
   if (v === 'css'){
     $('input').value = Object.keys(culori.colorsNamed).sort().join('\n');
     $('ptitle').value = 'CSS named colours';
+  } else if (v === 'websafe'){
+    const lv = [0x00, 0x33, 0x66, 0x99, 0xCC, 0xFF], lines = [];
+    for (const r of lv) for (const g of lv) for (const b of lv)
+      lines.push('#' + hex2(r) + hex2(g) + hex2(b));
+    $('input').value = lines.join('\n');
+    $('ptitle').value = 'Web-safe colours';
+  } else if (v === 'rgb4'){
+    const lines = [];
+    for (let r = 0; r < 16; r++) for (let g = 0; g < 16; g++) for (let b = 0; b < 16; b++)
+      lines.push('#' + r.toString(16) + g.toString(16) + b.toString(16));
+    $('input').value = lines.join('\n');
+    $('ptitle').value = '#RGB cube';
+    document.querySelector('input[name="view"][value="grid"]').checked = true;   // Voronoi views cap out
   } else if (PRESET_DATA[v]){
     $('input').value = PRESET_DATA[v].text;
     $('ptitle').value = PRESET_DATA[v].title;
-  }
+  } else return;
   anchorLabel = null;
   generate();
-});
+}
+$('preset').addEventListener('input', () => loadPreset($('preset').value));
 $('clear').addEventListener('click', () => {
-  $('input').value = ''; $('ptitle').value = ''; $('preset').value = '';
+  $('input').value = ''; $('ptitle').value = ''; $('preset').selectedIndex = -1;
   anchorLabel = null;
   generate();
 });
 $('dl-json').addEventListener('click', () => {
   if (!lastRecords.length) return;
-  const clean = lastRecords.map(({ neutral, layout_H, y_val, plot_L, plot_x, shifted_H, ...keep }) => keep);
+  const clean = lastRecords.map(
+    ({ neutral, layout_H, y_val, plot_L, plot_x, shifted_H, hsl_h, hsl_s, hsl_l, ...keep }) => keep);
   const name = prompt('Save as…', slug($('ptitle').value) + '.json');
   if (name === null) return;
   download(name, JSON.stringify(clean, null, 2), 'application/json');
-});
-$('share').addEventListener('click', async () => {
-  const payload = await encodeState();
-  location.hash = payload;
-  try { await navigator.clipboard.writeText(location.href); toast('Share link copied to the clipboard.'); }
-  catch { prompt('Copy this link:', location.href); }
 });
 
 function download(name, text, type){
@@ -825,45 +1078,62 @@ function download(name, text, type){
   a.click();
   URL.revokeObjectURL(a.href);
 }
-document.addEventListener('click', async e => {
-  const dl = e.target.dataset?.dl, cp = e.target.dataset?.copy;
-  const uriEl = e.target.closest?.('a.uri-link');
-  if (dl && svgCache[dl]){
-    const def = `${slug($('ptitle').value)}-${dl}.svg`;
-    const name = prompt('Save as…', def);
-    if (name !== null) download(name.endsWith('.svg') ? name : name + '.svg', svgCache[dl], 'image/svg+xml');
-  }
-  if (cp && svgCache[cp]){
-    try { await navigator.clipboard.writeText(svgCache[cp]); toast('SVG source copied to the clipboard.'); }
-    catch { prompt('Copy the SVG source:', svgCache[cp]); }
-  }
-  if (uriEl){
-    e.preventDefault();
-    if (!uriEl.href.startsWith('data:')) return;
-    try {
-      await navigator.clipboard.writeText(uriEl.href);
-      toast('data: URI copied. Paste it in the address bar, or drag the link to a bookmark bar — browsers block top-level data: navigation on click.');
-    } catch { prompt('Copy the data: URI:', uriEl.href); }
-  }
+$('b-dl').addEventListener('click', () => {
+  if (!current.svg) return;
+  const def = `${slug($('ptitle').value)}-${current.kind}${effectiveBw() ? '-bw' : ''}.svg`;
+  const name = prompt('Save as…', def);
+  if (name !== null) download(name.endsWith('.svg') ? name : name + '.svg', current.svg, 'image/svg+xml');
+});
+$('b-copy').addEventListener('click', async () => {
+  if (!current.svg) return;
+  try { await navigator.clipboard.writeText(current.svg); toast('SVG source copied to the clipboard.'); }
+  catch { prompt('Copy the SVG source:', current.svg); }
+});
+$('b-uri').addEventListener('click', async e => {
+  e.preventDefault();
+  if (!$('b-uri').href.startsWith('data:')) return;
+  try {
+    await navigator.clipboard.writeText($('b-uri').href);
+    toast('data: URI copied. Paste it in the address bar, or drag the link to a bookmark bar — browsers block top-level data: navigation on click.');
+  } catch { prompt('Copy the data: URI:', $('b-uri').href); }
 });
 
-/* preview interactivity: click = contrast filter, double-click = copy name */
+/* preview interactivity: click = toggle contrast filter (and pin the info
+   panel), double-click = copy name, hover = transient info */
+const cellLabel = target => {
+  const cell = target.closest?.('path,rect');
+  if (!cell || !cell.closest('.svgbox')) return undefined;
+  return cell.querySelector('title')?.textContent;   // background rect has no title
+};
 $('outputs').addEventListener('click', e => {
-  const path = e.target.closest('path');
-  if (!path || !path.closest('.svgbox')) return;
-  const label = path.querySelector('title')?.textContent;
+  if (effectiveBw()) return;
+  const label = cellLabel(e.target);
   if (label === undefined || !labelMap.has(label)) return;
-  anchorLabel = label;
+  anchorLabel = label === anchorLabel ? null : label;   // click again = reset
   applyFilter();
+  scheduleHash();
 });
 $('outputs').addEventListener('dblclick', async e => {
-  const path = e.target.closest('path');
-  if (!path || !path.closest('.svgbox')) return;
-  const label = path.querySelector('title')?.textContent;
+  const label = cellLabel(e.target);
   if (!label) return;
   try { await navigator.clipboard.writeText(label); toast(`“${label}” copied to the clipboard.`); }
   catch { prompt('Copy:', label); }
 });
+$('outputs').addEventListener('mouseover', e => {
+  const label = cellLabel(e.target);
+  const rec = label !== undefined ? labelMap.get(label) : undefined;
+  if (rec) refreshPanel(rec);
+});
+$('outputs').addEventListener('mouseout', () => refreshPanel());
+
+/* hamburger overlay (near-square viewports only — CSS hides it in the other two layouts) */
+function setNavOpen(open){
+  document.body.classList.toggle('nav-open', open);
+  $('nav-toggle').setAttribute('aria-expanded', String(open));
+}
+$('nav-toggle').addEventListener('click', () => setNavOpen(!document.body.classList.contains('nav-open')));
+$('nav-backdrop').addEventListener('click', () => setNavOpen(false));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setNavOpen(false); });
 
 /* populate preset select from embedded data */
 for (const [key, p] of Object.entries(PRESET_DATA)){
@@ -872,12 +1142,17 @@ for (const [key, p] of Object.entries(PRESET_DATA)){
   $('preset').appendChild(o);
 }
 
-/* init: restore share-link state if present, then first render */
+/* init: restore share-link state if present, else the CSS named colours demo */
 (async () => {
   const hash = location.hash.replace(/^#/, '');
-  if (hash) applyState(await decodeState(hash));
+  const restored = hash ? applyState(await decodeState(hash)) : false;
   syncValueLabels();
-  generate();
+  if (restored){
+    generate();
+  } else {
+    $('preset').value = 'css';
+    loadPreset('css');
+  }
 })();
 </script>
 </body>
