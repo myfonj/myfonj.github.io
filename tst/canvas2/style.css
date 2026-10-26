@@ -1,0 +1,51 @@
+html, body {
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+	background-color: dimgray;
+}
+#hud {
+	position: fixed;
+	top: 0.5em;
+	left: 0.5em;
+	background-color: #333;
+	color: snow;
+	font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+	padding: 0.3em 0.8em;
+	border-radius: 3px;
+	pointer-events: none;
+	white-space: pre;
+}
+#cusp {
+	position: fixed;
+	display: none;
+	pointer-events: none;
+	text-align: center;
+	transform: translate(-50%, 0);
+	font: 13px system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+#cusp .arrow {
+	color: snow;
+	font-size: 16px;
+	line-height: 1;
+	text-shadow: 0 0 3px black, 0 0 3px black;
+}
+#cusp .label {
+	display: inline-block;
+	margin-top: 0.15em;
+	background-color: #333;
+	color: snow;
+	padding: 0.1em 0.6em;
+	border-radius: 3px;
+}
+#view {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	touch-action: none;
+	cursor: grab;
+}
+#view.dragging {
+	cursor: grabbing;
+}
